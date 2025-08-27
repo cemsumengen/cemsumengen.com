@@ -1,10 +1,11 @@
 [build]
-  publish = "public" # or your site folder (e.g., just "." if index.html is in root)
+  publish = "."           # Your site files are in the root
+  command = ""            # No build command needed for plain HTML
 
 [[plugins]]
   package = "@netlify/plugin-sitemap"
 
   [plugins.inputs]
-    buildDir = "public"   # adjust if needed
+    buildDir = "."        # Where your index.html lives
     prettyURLs = true
     trailingSlash = true
