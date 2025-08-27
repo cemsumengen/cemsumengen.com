@@ -1,0 +1,10 @@
+[build]
+  publish = "public" # or your site folder (e.g., just "." if index.html is in root)
+
+[[plugins]]
+  package = "@netlify/plugin-sitemap"
+
+  [plugins.inputs]
+    buildDir = "public"   # adjust if needed
+    prettyURLs = true
+    trailingSlash = true
