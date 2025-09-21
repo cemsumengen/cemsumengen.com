@@ -1,0 +1,2765 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReNew Product Strategy | Case Study</title>
+    <!-- Original font-family: system default Inter -->
+    <!-- Alternative professional fonts you can try:
+    Roboto, Poppins, Ranade, Ubuntu, Playfair Display
+    1. font-family: 'Montserrat', sans-serif;      // Modern, geometric, very professional
+    4. font-family: 'Work Sans', sans-serif;       // Clean, contemporary, professional
+    5. font-family: 'Manrope', sans-serif;        // Modern, geometric, tech-focused
+    6. font-family: 'Albert Sans', sans-serif;    // Fresh, contemporary, clear
+    7. font-family: 'Plus Jakarta Sans', sans-serif; // Modern, professional, sharp
+    8. font-family: 'Space Grotesk', sans-serif;  // Modern, tech-focused, unique
+    9. font-family: 'Instrument Sans', sans-serif; // Clean, modern, balanced
+    10. font-family: 'Supreme', sans-serif;       // Sleek, modern, minimalist
+    -->
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="favicon.png" type="image/png">
+
+    <style>
+        :root {
+            /* Colors */
+            --primary-color: #1a365d;
+            --secondary-color: #2c5282;
+            --accent-color: #60a5fa;  /* Changed to a brighter, more readable blue */
+            --text-color: #2d3748;
+            --light-gray: #edf2f7;
+            
+            /* Common spacing values */
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2rem;
+            --space-xl: 3rem;
+
+            /* Common sizes */
+            --content-width: 1050px;
+            --content-height: 600px;
+            --content-padding: 2rem;
+            
+            /* Breakpoints */
+            --bp-small: 480px;
+            --bp-medium: 768px;
+            --bp-large: 1024px;
+            --bp-xlarge: 1200px;
+
+            /* Mobile sizes */
+            --mobile-content-padding: 1rem;
+            --mobile-font-scale: 0.85;
+            
+            /* Agenda styles */
+            --agenda-width: 80%;
+            --bullet-spacing: 1.5em;
+        }
+
+        /* Agenda specific styles */
+        #slide2 .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #slide2 ul {
+            list-style-type: none;
+            padding: 0;
+            width: var(--agenda-width);
+            margin: 2rem auto;
+        }
+
+        #slide2 li {
+            position: relative;
+            padding-left: var(--bullet-spacing);
+            margin-bottom: 1rem;
+            line-height: 1.4;
+            font-size: 1.1rem;
+        }
+
+        #slide2 li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-size: 1.2em;
+        }
+
+        body {
+            font-family: 'Ubuntu', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            background: #f8fafc;
+        }
+
+        .slide {
+            display: none;
+            height: 100vh;
+            padding: 2rem;
+            box-sizing: border-box;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            opacity: 0;
+            transition: opacity 0.5s ease, box-shadow 0.3s ease;
+            box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.2);
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            opacity: 1;
+        }
+
+        /* Add fade-out class for smoother transitions */
+        .slide.fade-out {
+            opacity: 0;
+        }
+
+        .content {
+            width: var(--content-width);
+            height: var(--content-height);
+            margin: 0 auto;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.1);
+            padding: var(--space-lg);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .cover .content {
+            background: rgba(255, 255, 255, 0.1);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .cover h1 {
+            font-size: 3.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cover .tagline {
+            font-size: 1.5rem;
+            margin: 1.5rem 0 4rem 0;
+        }
+
+        .cover p {
+            font-size: 1.3rem;
+        }
+
+        .cover .date {
+            font-size: 1.2rem;
+            margin-top: 3rem;
+        }
+
+        /* Add scroll if content overflows */
+        .content>* {
+            max-width: 950px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 4px;
+            background: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background: var(--secondary-color);
+        }
+
+        button:disabled {
+            background: var(--light-gray);
+            color: #a0aec0;
+            cursor: not-allowed;
+        }
+
+        .slide-number {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: white;
+        }
+
+        li:before {
+            content: "•";
+            color: var(--accent-color);
+            position: absolute;
+            left: 0;
+        }
+
+        p {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Remove the .cover class styles since all slides now have the gradient */
+        .cover {
+            text-align: center;
+        }
+
+        /* Responsive design */
+        @media (max-width: 1200px) {
+            .content {
+                width: 90vw;
+                height: 80vh;
+                padding: var(--space-md);
+            }
+
+            .slide {
+                padding: var(--mobile-content-padding);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                width: 95vw;
+                height: 85vh;
+                padding: var(--mobile-content-padding);
+            }
+
+            .cover h1 {
+                font-size: calc(2rem + 2vw);
+            }
+
+            .cover .tagline {
+                font-size: calc(1rem + 1vw);
+                margin: 1rem 0 2rem 0;
+            }
+
+            .cover p {
+                font-size: calc(0.9rem + 0.5vw);
+            }
+
+            h2 {
+                font-size: calc(1.5rem + 1vw);
+            }
+
+            .stat-boxes {
+                flex-direction: column;
+                gap: var(--space-sm);
+            }
+
+            .table-row {
+                flex-direction: column;
+                gap: var(--space-sm);
+            }
+
+            .timeline-phases {
+                flex-direction: column;
+                gap: var(--space-md);
+            }
+
+            .app-logo {
+                width: 60px;
+                height: 60px;
+                top: 1rem;
+                left: 1rem;
+            }
+
+            .navigation {
+                bottom: 1rem;
+                right: 1rem;
+            }
+
+            .slide-number {
+                bottom: 1rem;
+                left: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content {
+                padding: 0.75rem;
+            }
+
+            .slide {
+                padding: 0.75rem;
+            }
+
+            button {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .cover h1 {
+                font-size: calc(1.8rem + 2vw);
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 0.5rem 0.25rem;
+            }
+        }
+
+        /* Make tables responsive */
+        @media (max-width: 768px) {
+            .comparison-table {
+                overflow-x: auto;
+                margin: 0 -1rem;
+                padding: 0 1rem;
+            }
+
+            .comparison-table table {
+                min-width: 600px; /* Ensure table remains readable */
+            }
+        }
+
+        .app-logo {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            width: 100px;
+            height: 100px;
+            z-index: 1000;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+            transition: filter 0.3s ease, transform 0.3s ease;
+        }
+        
+        .app-logo:hover {
+            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3));
+            transform: scale(1.05);
+        }
+
+        .tagline {
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            margin: 1rem 0 3rem 0;
+        }
+
+        .date {
+            margin-top: 2rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+        }
+
+        /* Updated agenda styling - more specific selectors */
+        #slide2>.content>.agenda-container>ul>li {
+            margin: 1.8rem 0;
+            padding-left: 2rem;
+            position: relative;
+            color: white;
+            font-size: 1.4rem;
+            opacity: 0;
+            transform: translateX(-20px);
+            /* This transition is a fallback and helps with the reset */
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        #slide2.active>.content>.agenda-container>ul>li {
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        #slide2.active>.content>.agenda-container>ul>li:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        #slide2.active>.content>.agenda-container>ul>li:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        #slide2.active>.content>.agenda-container>ul>li:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        #slide2.active>.content>.agenda-container>ul>li:nth-child(4) {
+            animation-delay: 0.8s;
+        }
+
+        #slide2.active>.content>.agenda-container>ul>li:nth-child(5) {
+            animation-delay: 1.0s;
+        }
+
+        #slide2.active>.content>.agenda-container>ul>li:nth-child(6) {
+            animation-delay: 1.2s;
+        }
+
+        #slide2.active>.content>.agenda-container>ul>li:nth-child(7) {
+            animation-delay: 1.4s;
+        }
+
+        #slide2.active>.content>.agenda-container>ul>li:nth-child(8) {
+            animation-delay: 1.6s;
+        }
+
+        #slide2.active>.content>.agenda-container>ul>li:nth-child(9) {
+            animation-delay: 1.8s;
+        }
+
+
+        
+        #slide2>.content>.agenda-container>ul>li::before {
+            content: "";
+            position: absolute;
+            left: -0.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.3);
+        }
+
+        #slide2>.content>.agenda-container>ul>li:hover {
+            transform: translateX(5px);
+            transition: transform 0.3s ease;
+        }
+
+        #slide2>.content>.agenda-container>ul>li:hover::before {
+            background: white;
+            border-color: var(--accent-color);
+            transition: all 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .thank-you {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            gap: 2rem;
+        }
+
+        .thank-you h2 {
+            font-size: 3rem;
+            margin: 0;
+        }
+
+        .thank-you img {
+            width: 100px;
+            height: 100px;
+        }
+
+        /* Shared scrollable content styles */
+        .scrollable-content {
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 1rem;
+            width: 95%;
+            margin: 0 auto;
+        }
+
+        .cover-container {
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 1rem;
+            padding-top: 3rem;
+            width: 95%;
+            margin: 0 auto;
+        }
+
+        /* Problem content specific styles */
+        .problem-content {
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 1rem;
+            width: 95%;
+            margin: 0 auto;
+        }
+
+        .problem-content h3 {
+            color: var(--accent-color);
+            font-size: 1.4rem;
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        .problem-content p {
+            margin: 1rem 0;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        .problem-content ul {
+            margin: 1rem 0;
+        }
+
+        .problem-content ul li {
+            opacity: 1;
+            transform: none;
+            animation: none;
+            margin: 0.7rem 0;
+        }
+
+        .problem-content ul li:before {
+            content: "•";
+            color: var(--accent-color);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: auto;
+            height: auto;
+            background: none;
+            border: none;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .stat-boxes {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            flex-shrink: 0;
+        }
+
+        .stat-boxes.two-boxes {
+            justify-content: space-between;
+            gap: 2rem;
+            /* Match table-row gap */
+            margin: 1.5rem 0;
+        }
+
+        /* Common card styles */
+        .card-base {
+            background: rgba(255, 255, 255, 0.1);
+            padding: var(--space-sm);
+            border-radius: 8px;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: var(--space-sm);
+            border-radius: 8px;
+            text-align: center;
+            flex: 1;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .stat-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-boxes.two-boxes .stat-box {
+            flex: 1;
+            width: calc(50% - var(--space-sm));
+        }
+
+        .stat-box h4 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1rem;
+            color: var(--accent-color);
+        }
+
+        .stat-box p {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .table-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+            margin: 1.5rem 0;
+            flex-shrink: 0;
+        }
+
+        .table-column {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .table-column:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        th,
+        td {
+            padding: 0.75rem 0.5rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.9);
+            /* Make all table content white */
+        }
+
+        td:last-child {
+            text-align: right;
+            color: rgba(255, 255, 255, 0.9);
+            /* Change from accent color to white */
+        }
+
+        .competitive-landscape {
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .competitive-landscape:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .competitive-landscape td {
+            color: rgba(255, 255, 255, 0.9);
+            /* Ensure competitive landscape cells are white */
+        }
+
+        .competitive-landscape td:last-child {
+            text-align: left;
+            /* Keep left alignment for competitive landscape */
+        }
+
+        /* Keep table titles in blue */
+        .table-column h3,
+        .competitive-landscape h3 {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: var(--accent-color);
+            /* Keep titles in accent color (blue) */
+        }
+
+        .key-takeaways {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .key-takeaways:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .key-takeaways h3 {
+            color: var(--accent-color);
+            text-align: center;
+            margin: 0 0 1.5rem 0;
+            font-size: 1.3rem;
+        }
+
+        .key-takeaways ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .key-takeaways>ul>li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .key-takeaways>ul>li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+        }
+
+        .key-takeaways ul ul {
+            margin: 0.5rem 0 0 1rem;
+        }
+
+        .key-takeaways ul ul li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin: 0.5rem 0;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .key-takeaways ul ul li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+        }
+
+        /* Standardized container styles based on slide4's market-overview */
+        .market-overview,
+        .benchmark-content,
+        .analysis-container,
+        .vision-container,
+        .category-container,
+        .metrics-content,
+        .strategy-content {
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 1rem;
+            width: 95%;
+            margin: 0 auto;
+        }
+
+        /* Standardized heading styles */
+        .market-overview h2,
+        .benchmark-content h2,
+        .analysis-container h2,
+        .vision-container h2,
+        .category-container h2,
+        .metrics-content h2,
+        .strategy-content h2 {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        /* Standard gap between sections */
+        .market-overview > *,
+        .benchmark-content > *,
+        .analysis-container > *,
+        .vision-container > *,
+        .category-container > *,
+        .metrics-content > *,
+        .strategy-content > * {
+            margin-bottom: 2rem;
+        }
+
+        /* Remove margin from last child */
+        .market-overview > *:last-child,
+        .benchmark-content > *:last-child,
+        .analysis-container > *:last-child,
+        .vision-container > *:last-child,
+        .category-container > *:last-child,
+        .metrics-content > *:last-child,
+        .strategy-content > *:last-child {
+            margin-bottom: 0;
+        }
+
+        .comparison-table {
+            margin-bottom: 2rem;
+        }
+
+        .comparison-table table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .comparison-table table:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .comparison-table th {
+            text-align: center;
+            padding: 1rem;
+            color: var(--accent-color);
+            font-weight: bold;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .comparison-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .comparison-table td:first-child {
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .comparison-table td:not(:first-child) {
+            text-align: center;
+        }
+
+        .comparison-table tr {
+            transition: background-color 0.3s ease;
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .strengths-list li::before {
+            content: "✓";
+            color: #4ade80;
+            margin-right: 0.5rem;
+        }
+
+        .weaknesses-list li::before {
+            content: "✕";
+            color: #f87171;
+            margin-right: 0.5rem;
+        }
+
+        /* Responsive list styles */
+        @media (max-width: 768px) {
+            .strengths-list, .weaknesses-list {
+                font-size: 0.9rem;
+            }
+
+            .strengths-list li, .weaknesses-list li {
+                margin: 0.5rem 0;
+            }
+        }
+
+        .strengths-list,
+        .weaknesses-list {
+            list-style: none;
+            padding-left: 0;
+            text-align: left;
+        }
+
+        .strategy-boxes {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .strategy-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .strategy-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 8px;
+        }
+
+        .strategy-box h3 {
+            color: var(--accent-color);
+            margin: 0 0 1rem 0;
+        }
+
+        .strategy-box ul {
+            margin: 0;
+            padding-left: 1.5rem;
+        }
+
+        .strategy-box ul ul {
+            margin-top: 0.5rem;
+            margin-left: 1rem;
+        }
+
+        .strategy-box li {
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-container {
+            margin-top: 2rem;
+            position: relative;
+        }
+
+        .timeline-phases {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .phase-card {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            position: relative;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .phase-card {
+                width: 100%;
+                margin-bottom: var(--space-md);
+            }
+
+            .phase-card:last-child {
+                margin-bottom: 0;
+            }
+
+            .phase-header {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+
+            .phase-duration {
+                margin-top: 0;
+            }
+
+            .strategy-boxes {
+                margin-top: var(--space-md);
+            }
+
+            .strategy-box {
+                padding: var(--space-sm);
+            }
+        }
+
+        .phase-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .phase-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .phase-header h3 {
+            margin: 0;
+            color: var(--accent-color);
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .phase-duration {
+            background: var(--accent-color);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .phase-card h4 {
+            color: white;
+            margin: 0 0 1rem 0;
+            font-size: 1.2rem;
+            line-height: 1.3;
+        }
+
+        .phase-card p {
+            margin: 0 0 1rem 0;
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+
+        .phase-card ul {
+            margin: 0;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .phase-card li {
+            margin: 0.7rem 0;
+            padding-left: 1.2rem;
+            position: relative;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .phase-card li::before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        /* Team structure styles */
+        .team-phases {
+            display: flex;
+            justify-content: space-between;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .team-card {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            position: relative;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .team-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .team-card h3 {
+            color: var(--accent-color);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .team-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .team-group h4 {
+            color: white;
+            margin: 1rem 0 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .team-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .team-card ul ul {
+            padding-left: 1.5rem;
+            margin-top: 0.25rem;
+        }
+
+        .team-card li {
+            margin: 0.4rem 0;
+            padding-left: 1.2rem;
+            position: relative;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .team-card li::before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+        }
+
+        .team-card li li::before {
+            content: "•";
+        }
+
+        .team-size {
+            display: inline-block;
+            background: var(--accent-color);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .team-phases {
+                flex-direction: column;
+            }
+
+            .team-card {
+                margin-bottom: 1rem;
+            }
+        }
+
+        /* Common list styles */
+        .list-base {
+            list-style-type: none;
+            padding: 0;
+            margin: var(--space-sm) 0;
+        }
+
+        .list-item-base {
+            margin: var(--space-sm) 0;
+            padding-left: var(--space-md);
+            position: relative;
+            color: white;
+        }
+
+        .list-item-base::before {
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+        }
+
+        /* Phase-specific styling */
+        .phase-1 {
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .phase-2 {
+            border-left: 4px solid #60a5fa;
+        }
+
+        .phase-3 {
+            border-left: 4px solid #93c5fd;
+        }
+
+        .strategy-content {
+            height: 100%;
+            overflow-y: auto;
+            padding-right: var(--space-sm);
+            width: 95%;
+            margin: 0 auto;
+        }
+
+        .strategy-content h2 {
+            text-align: center;
+            margin: var(--space-lg) 0;
+        }
+
+        /* Metrics styles */
+        .metrics-content {
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 1rem;
+            width: 95%;
+            margin: 0 auto;
+        }
+
+        .metrics-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: var(--space-lg);
+            border-radius: 8px;
+            margin-bottom: var(--space-md);
+        }
+
+        .metrics-table {
+            width: 100%;
+            margin-top: var(--space-lg);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .metrics-table th {
+            text-align: left;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .metrics-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Center align target columns but not header row */
+        .metrics-table td:nth-child(3),
+        .metrics-table td:nth-child(4) {
+            text-align: center;
+        }
+
+        .metrics-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Analysis Container Styles */
+        .analysis-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+            padding-right: 1rem;
+            padding: 0 1rem;
+        }
+
+        .analysis-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .analysis-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .analysis-box h3 {
+            color: var(--accent-color);
+            margin: 0 0 1.5rem 0;
+            font-size: 1.4rem;
+            text-align: center;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .analysis-content {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .analysis-section {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .analysis-section:hover {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .analysis-section h4 {
+            color: var(--accent-color);
+            margin: 0 0 1rem 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .analysis-section p {
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .analysis-section ul {
+            margin: 0;
+            padding-left: 1.2rem;
+            list-style-type: none;
+        }
+
+        .analysis-section li {
+            margin: 0.5rem 0;
+            position: relative;
+            padding-left: 1.2rem;
+        }
+
+        .analysis-section li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .analysis-content {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .analysis-box {
+                padding: 1.5rem;
+            }
+        }
+
+ 
+        .vision-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .vision-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .vision-box h3 {
+            color: var(--accent-color);
+            margin: 0 0 1.5rem 0;
+            font-size: 1.4rem;
+            text-align: center;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Gap Analysis Styles */
+        .gap-analysis {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            height: 100%;
+            overflow-y: auto;
+            padding-right: var(--space-sm);
+            width: 95%;
+            margin: 0 auto;
+        }
+
+        .gap-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .gap-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .gap-item h3 {
+            color: var(--accent-color);
+            margin: 0 0 1rem 0;
+            font-size: 1.2rem;
+        }
+
+        .gap-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .gap-section h4 {
+            color: rgba(255, 255, 255, 0.9);
+            margin: 0 0 0.5rem 0;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .gap-section p {
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .gap-section ul {
+            margin: 0;
+            padding-left: 1.2rem;
+        }
+
+        .gap-section li {
+            margin: 0.5rem 0;
+            line-height: 1.5;
+        }
+
+        .highlight {
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+
+        @media (max-width: 1024px) {
+            .gap-analysis {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Vision and Value Props Styles */
+        .vision-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+            padding-right: 1rem;
+            padding: 0 1rem;
+        }
+        
+        .agenda-container {
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 1rem;
+            margin: 0 auto;
+            width: 95%;
+        }
+
+        .vision-section {
+            text-align: left;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.2s ease;
+        }
+
+        .vision-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .vision-statement {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin: 1rem 0;
+            color: var(--text-color);
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        .value-prop-title {
+            text-align: center;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .value-props-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            padding: 0 1rem;
+        }
+
+        .value-prop-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .value-prop-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .value-prop-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .value-prop-number {
+            background: var(--accent-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .value-prop-header h3 {
+            color: var(--accent-color);
+            margin: 0;
+            font-size: 1.3rem;
+        }
+
+        .value-prop-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .value-prop-list li {
+            margin: 0.8rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .value-prop-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+        }
+
+        .subtext {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .value-props-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .vision-statement {
+                font-size: 1.2rem;
+                padding: 0 1rem;
+            }
+        }
+
+        .star-metric::before {
+            content: "★";
+            color: var(--accent-color);
+            margin-right: 0.25rem;
+        }
+    </style>
+</head>
+
+<body>
+    <img src="app_logo.png" alt="ReNew Logo" class="app-logo">
+
+    <div class="slide cover active" id="slide1">
+        <div class="content">
+            <div class="cover-container">
+                <h1>ReNew: The Future of Second-Hand Marketplace</h1>
+                <p class="tagline">"ReNew ile Yeniden Keşfet." – ReNew. ReLove. Rediscover.</p>
+                <p style="margin-top: 1rem;">Cem Sumengen</p>
+                <p class="date">Sept. 19th, 2025</p>
+                <br><b>AI-Powered, Trusted, Category-Focused Platform - </b><i>Presentation fully coded by AI.</i>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide2">
+        <div class="content">
+            <h2>Agenda</h2>
+            <div class="agenda-container">
+                <ul>
+                    <li>Problem Statement</li>
+                    <li>Turkey E-Commerce Market Overview (2024)</li>
+                    <li>Competitive Benchmark</li>
+                    <li>Market Gaps & Opportunities Analysis</li>
+                    <li>Unique Value Propositions</li>
+                    <li>Category-Focused Business Models</li>
+                    <li>Core Growth Strategy: Niche Down to Scale Up</li>
+                    <li>North Star Metrics & Growth Targets</li>
+                    <li>Team Structure & Hiring Plan</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide3">
+        <div class="content">
+            <h2>Problem Statement</h2>
+            <div class="problem-content">
+                <p>You are the Senior Product Leader at a newly established startup in Turkey. Your company operates a
+                    second-hand marketplace application, similar to Letgo, Dolap, or Gardrops, but it hasn't yet secured
+                    a significant market share. Investors have recognized the growth potential, but the dominance of
+                    competitors Hepsiburada's second-hand sections, Trendyol's second-hand sections, and Letgo's
+                    entrenched user habits) poses significant challenges.</p>
+                <h4>Your Task for Investors: "ReNew" Product Strategy & Growth Approach</h4>
+                <p>You are expected to design a comprehensive product strategy and growth approach that will position
+                    the brand "ReNew" meaningfully in the market within one year.</p>
+                <p>This strategy should clearly articulate how "ReNew" will differentiate itself in the crowded
+                    second-hand market and how it will attract both buyers and sellers. It's crucial to detail your
+                    approaches for gaining rapid market traction while focusing on a user-centric experience and
+                    ensuring sustainable growth.</p>
+                <p>In your presentation, outline priority initiatives and expected outcomes for the initial 3 months and
+                    the full 12-month period. Additionally, you are expected to address how you will measure success and
+                    manage technical constraints. You should also include your approach to fostering a culture of rapid
+                    experimentation and iteration, along with your proposed team structure
+                    to support this process.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide4">
+        <div class="content">
+            <h2>Turkey E-Commerce Market Overview (2024)</h2>
+
+            <div class="market-overview">
+                <div class="stat-boxes">
+                    <div class="stat-box">
+                        <h4>Market Size</h4>
+                        <p>$89.5B</p>
+                    </div>
+                    <div class="stat-box">
+                        <h4>CAGR (5 years)</h4>
+                        <p>30.2%</p>
+                    </div>
+                    <div class="stat-box">
+                        <h4>Retail Market Size</h4>
+                        <p>$48.3B</p>
+                    </div>
+                    <div class="stat-box">
+                        <h4>Retail Transaction Growth</h4>
+                        <p>10.1%</p>
+                    </div>
+                    <div class="stat-box">
+                        <h4>E-Commerce Share In Total Retail</h4>
+                        <p>19.1%</p>
+                    </div>
+                </div>
+
+                <div class="table-row">
+                    <div class="table-column">
+                        <h3>E-commerce Category Breakdown</h3>
+                        <table>
+                            <tr>
+                                <td>Food</td>
+                                <td>21.64%</td>
+                            </tr>
+                            <tr>
+                                <td>Clothing, Shoes, Accessories</td>
+                                <td>15.64%</td>
+                            </tr>
+                            <tr>
+                                <td>Air transportation</td>
+                                <td>14.94%</td>
+                            </tr>
+                            <tr>
+                                <td>Travel, transportation, storage</td>
+                                <td>12.93%</td>
+                            </tr>
+                            <tr>
+                                <td>Electronics</td>
+                                <td>12.24%</td>
+                            </tr>
+                            <tr>
+                                <td>Home, Garden, Furniture</td>
+                                <td>11.12%</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="table-column">
+                        <h3>Payment Methods</h3>
+                        <table>
+                            <tr>
+                                <td>Card</td>
+                                <td>66%</td>
+                            </tr>
+                            <tr>
+                                <td>Money transfer</td>
+                                <td>26%</td>
+                            </tr>
+                            <tr>
+                                <td>Cash on delivery</td>
+                                <td>3%</td>
+                            </tr>
+                            <tr>
+                                <td>Other</td>
+                                <td>5%</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <hr>
+                <h2>C2C Market</h2>
+                <div class="stat-boxes two-boxes">
+                    <div class="stat-box">
+                        <h4>C2C Market Size</h4>
+                        <p>$290M</p>
+                        <p style="font-size: 1.1rem; color: rgba(255,255,255,0.9);">(Adding refurbished / outlet /
+                            slightly defective but new segments estimate ~$600M)</p>
+
+                    </div>
+                    <div class="stat-box">
+                        <h4>C2C Transactions</h4>
+                        <p>17.5M</p>
+                    </div>
+                </div>
+
+                <div class="table-row">
+                    <div class="table-column">
+                        <h3>C2C Category Breakdown</h3>
+                        <table>
+                            <tr>
+                                <td>Clothing, Shoes, Accessories</td>
+                                <td>53.25%</td>
+                            </tr>
+                            <tr>
+                                <td>Electronics</td>
+                                <td>16.32%</td>
+                            </tr>
+                            <tr>
+                                <td>Mother & Child</td>
+                                <td>6.86%</td>
+                            </tr>
+                            <tr>
+                                <td>Games, Toys, Hobbies</td>
+                                <td>6.24%</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="table-column">
+                        <h3>Market Share Of Platforms</h3>
+                        <table>
+                            <tr>
+                                <td>Letgo</td>
+                                <td>30-40%</td>
+                            </tr>
+                            <tr>
+                                <td>Dolap</td>
+                                <td>20-30%</td>
+                            </tr>
+                            <tr>
+                                <td>Gardrops</td>
+                                <td>5-10%</td>
+                            </tr>
+                            <tr>
+                                <td>Others</td>
+                                <td>5-15%</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="competitive-landscape">
+                    <h3>Competitive Landscape</h3>
+                    <table>
+                        <tr>
+                            <th>Category</th>
+                            <th>Key Players</th>
+                            <th>Positioning</th>
+                        </tr>
+                        <tr>
+                            <td>Automotive</td>
+                            <td>Arabam.com, Otoplus</td>
+                            <td>Vehicle specialization, high trust</td>
+                        </tr>
+                        <tr>
+                            <td>Electronics</td>
+                            <td>EasyCep, GetMobil, Banayeni</td>
+                            <td>Trusted refurbished devices</td>
+                        </tr>
+                        <tr>
+                            <td>Fashion</td>
+                            <td>Dolap, Gardrops</td>
+                            <td>Fast fashion alternative, trendy UX</td>
+                        </tr>
+                        <tr>
+                            <td>Real Estate</td>
+                            <td>Emlakjet, Hepsiemlak</td>
+                            <td>Niche vertical focus</td>
+                        </tr>
+                        <tr>
+                            <td>General Items</td>
+                            <td>Letgo, Sahibinden</td>
+                            <td>Largest user base, broad categories. No category focus</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <hr>
+
+                <div class="key-takeaways">
+                    <h3>Key Takeaways</h3>
+                    <ul>
+                        <li>Second-hand market is relatively small.</li>
+                        <li>Turkey's second-hand e-commerce market is rapidly growing, driven by economic pressures,
+                            inflation, and increased price sensitivity among consumers.</li>
+                        <li>Global second-hand market growth (e.g., Vinted, Poshmark, ThredUp) shows similar patterns,
+                            with resale projected to double in size globally by 2027</li>
+                        <li>Buyers are category-sensitive:
+                            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                                <li>Fashion → Driven by fast fashion alternatives (Dolap, Gardrops).</li>
+                                <li>Electronics → Driven by refurbished/outlet demand (EasyCep, GetMobil).</li>
+                                <li>Vehicles → Dominated by Sahibinden, Arabam.com, and Letgo Auto+.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide" id="slide5">
+        <div class="content">
+            <h2>Competitive Benchmark</h2>
+            <div class="benchmark-content">
+                <div class="comparison-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th><img src="dolap.webp" alt="ReNew Logo" style="width: 40px; height: 40px; border-radius: 20%; object-fit: cover;"><br>Dolap</th>
+                                <th><img src="gardrops.webp" alt="ReNew Logo" style="width: 40px; height: 40px; border-radius: 20%; object-fit: cover;"><br>Gardrops</th>
+                                <th><img src="letgo.webp" alt="ReNew Logo" style="width: 40px; height: 40px; border-radius: 20%; object-fit: cover;"><br>Letgo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Ownership</td>
+                                <td>Trendyol (Alibaba Group)</td>
+                                <td>Independent / Private Investors</td>
+                                <td>OfferUp</td>
+                            </tr>
+                            <tr>
+                                <td>Business Model</td>
+                                <td>High Commission (15%)<br>Buyer Protection (5-11%)</td>
+                                <td>Low/No Commission<br>(5% for card payment)</td>
+                                <td>0% Commission<br>Buyer Protection (5%)<br>Ads + featured listings</td>
+                            </tr>
+                            <tr>
+                                <td>Target Audience</td>
+                                <td>Women, Gen Z, Millennial fashion enthusiasts</td>
+                                <td>Young women, students, budget-conscious shoppers</td>
+                                <td>Broad audience across all demographics</td>
+                            </tr>
+                            <tr>
+                                <td>Primary Vertical</td>
+                                <td>Fashion & Accessories</td>
+                                <td>Fashion & Accessories</td>
+                                <td>General Marketplace<br>(Electronics, Home, Auto, Fashion, etc.)</td>
+                            </tr>
+                            <tr>
+                                <td>Shipping / Logistics</td>
+                                <td>Integrated shipping with multiple courier options</td>
+                                <td>Integrated shipping with multiple courier options</td>
+                                <td>Integrated shipping with multiple courier options</td>
+                            </tr>
+                            <tr>
+                                <td>Key Strengths</td>
+                                <td>
+                                    <ul class="strengths-list">
+                                        <li>Strong Brand Trust (Trendyol)</li>
+                                        <li>Integrated payments, buyer protection, in-app dispute resolution</li>
+                                        <li>Seamless User Experience</li>
+                                        <li>Large inventory</li>
+                                        <li>Heavy social media ads, influencer collaborations</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul class="strengths-list">
+                                        <li>Low commission</li>
+                                        <li>Lower prices for buyers</li>
+                                        <li>Strong Social Community</li>
+                                        <li>Niche but loyal fashion resale community</li>
+                                        <li>Social media presence, influencer collaborations</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul class="strengths-list">
+                                        <li>High brand recognition</li>
+                                        <li>Massive User Base & Reach</li>
+                                        <li>Large category coverage</li>
+                                        <li>Fast listing</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Key Weaknesses</td>
+                                <td>
+                                    <ul class="weaknesses-list">
+                                        <li>High Commission Deters Sellers</li>
+                                        <li>Less Appealing for Low-Value Items</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul class="weaknesses-list">
+                                        <li>Less Trust from Buyers</li>
+                                        <li>Smaller Scale than Dolap</li>
+                                        <li>Lower logistics integration</li>
+                                        <li>Limited buyer protection, mostly manual dispute handling</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul class="weaknesses-list">
+                                        <li>Low Trust (Known for Scams)</li>
+                                        <li>Uncurated Listings</li>
+                                        <li>Security Concerns with Offline Deals</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="strategy-boxes">
+                    <div class="strategy-box">
+                        <h3>Key Takeaways</h3>
+                        <ul>
+                            <li>High commissions are detracting sellers.</li>
+                            <li>Category specialized platforms has limited customer reach.</li>
+                            <li>Letgo lacks category focus and curation as a general-purpose marketplace.</li>
+                            <li>Insufficient buyer protection and authentication.</li>
+                            <li>Low quality discovery, leading to a poor user experience.</li>
+                            <li>Market fragmentation is low. Few leading platforms for specific categories.</li>
+                            <li>Data and AI based features are underutilized (Personalization, fraud detection, fair
+                                price estimation, …)</li>
+                        </ul>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="slide" id="slide6">
+        <div class="content">
+            <h2>Market Gaps & Opportunities Analysis</h2>
+            <div class="analysis-container">
+                <div class="analysis-box">
+                    <h3>Lack of Category Focus</h3>
+                    <div class="analysis-content">
+                        <div class="analysis-section">
+                            <h4>Gap</h4>
+                            <p>Most platforms are broad and generic, with few specialized marketplaces beyond fashion and automotive.</p>
+                        </div>
+                        <div class="analysis-section">
+                            <h4>Opportunity</h4>
+                            <p><span class="highlight">Start vertical-first (fashion)</span>, then expand into electronics, sports gear, furniture, and others with tailored UX, logistics, and business models.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analysis-box">
+                    <h3>Weak Buyer Protection & Trust</h3>
+                    <div class="analysis-content">
+                        <div class="analysis-section">
+                            <h4>Gap</h4>
+                            <p>Existing platforms lack reliable fraud detection, escrow, dispute resolution, and refund guarantees, leading to low buyer confidence.</p>
+                        </div>
+                        <div class="analysis-section">
+                            <h4>Opportunity</h4>
+                            <p>Implement <span class="highlight">AI-driven fraud detection</span>, advanced seller verification, and refund guarantees to increase trust and conversion rates.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analysis-box">
+                    <h3>Poor Authentication for Premium Goods</h3>
+                    <div class="analysis-content">
+                        <div class="analysis-section">
+                            <h4>Gap</h4>
+                            <p>High risk of counterfeits for branded or luxury items.</p>
+                        </div>
+                        <div class="analysis-section">
+                            <h4>Opportunity</h4>
+                            <p>Introduce a <span class="highlight">multi-layered authentication process</span> for all high-value products.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analysis-box">
+                    <h3>Low-Quality Listings & Listing Friction</h3>
+                    <div class="analysis-content">
+                        <div class="analysis-section">
+                            <h4>Gap</h4>
+                            <p>Poor photos, missing details, and inconsistent categorization reduce buyer confidence and searchability.</p>
+                        </div>
+                        <div class="analysis-section">
+                            <h4>Opportunity</h4>
+                            <p>Provide <span class="highlight">AI-powered listing enhancements</span> (auto-tagging, photo clean-up, model previews), and incentivize sellers to create high-quality listings.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analysis-box">
+                    <h3>Weak Discovery & Pricing</h3>
+                    <div class="analysis-content">
+                        <div class="analysis-section">
+                            <h4>Gap</h4>
+                            <p>Limited personalization, poor search relevance, inconsistent condition descriptions, and lack of smart pricing tools.</p>
+                        </div>
+                        <div class="analysis-section">
+                            <h4>Opportunity</h4>
+                            <ul>
+                                <li><span class="highlight">AI-driven personalized feeds</span> and faceted search for better discoverability.</li>
+                                <li>Dynamic pricing suggestions and standardized condition grading.</li>
+                                <li>Visual discovery features such as <span class="highlight">AI-generated outfit previews</span>.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analysis-box">
+                    <h3>Underutilized Sustainability & Social Impact</h3>
+                    <div class="analysis-content">
+                        <div class="analysis-section">
+                            <h4>Gap</h4>
+                            <p>Platforms fail to highlight the environmental benefits of resale and lack social responsibility programs.</p>
+                        </div>
+                        <div class="analysis-section">
+                            <h4>Opportunity</h4>
+                            <p>Showcase <span class="highlight">CO₂ savings</span>, items reused, and seller impact to appeal to eco-conscious users. Launch donation campaigns and sustainability-driven partnerships to position ReNew as a <span class="highlight">purpose-driven brand</span>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="slide" id="slide7">
+        <div class="content">
+            <h2>Unique Value Propositions</h2>
+            <div class="vision-container">
+                
+                <div class="vision-box">
+                    <h3>Our Vision</h3>
+                    <div class="vision-content">
+                        <p>"To build the most trusted, AI-powered marketplace for quality second-hand goods — delivering category-specific experiences that connect people through seamless and sustainable commerce."</p>
+                    </div>
+                </div>
+   
+                <h3 class="value-prop-title">Value Propositions & Differentiation</h3>
+    
+                <div class="value-props-container">
+                    <div class="value-prop-box">
+                        <div class="value-prop-header">
+                            <span class="value-prop-number">1</span>
+                            <h3>Category Focus</h3>
+                        </div>
+                        <ul class="value-prop-list">
+                            <li><span class="highlight">Niche Down to Scale Up.</span> Launch New Categories as Mini Apps
+                            </li>
+                            <li>Build strong brand recognition</li>
+                            <li>Tailored business models, seller economics and strategies</li>
+                            <li>Tailored user experiences</li>
+                            <li>Category specific partnerships</li>
+                            <li>Capture niche market share</li>
+                        </ul>
+                    </div>
+    
+                    <div class="value-prop-box">
+                        <div class="value-prop-header">
+                            <span class="value-prop-number">2</span>
+                            <h3>AI-Driven User Experiences</h3>
+                        </div>
+                        <ul class="value-prop-list">
+                            <li><span class="highlight">Reduce workforce, improve efficiency</span> <span class="subtext">(Customer support, seller
+                                    support, content listings, security checks, …)</span></li>
+                            <li>Provide personalized experiences and recommendations</li>
+                            <li>High quality listings</li>
+                            <li>Consistent pricing</li>
+                            <li>Drive higher engagement</li>
+                        </ul>
+                    </div>
+    
+                    <div class="value-prop-box">
+                        <div class="value-prop-header">
+                            <span class="value-prop-number">3</span>
+                            <h3>Trust</h3>
+                        </div>
+                        <ul class="value-prop-list">
+                            <li><span class="highlight">Increase buyer confidence</span></li>
+                            <li>Boost willingness to pay</li>
+                            <li>Encourage repeat purchases</li>
+                            <li>Reduce transaction friction</li>
+                            <li>Strengthen brand credibility</li>
+                        </ul>
+                    </div>
+    
+                    <div class="value-prop-box">
+                        <div class="value-prop-header">
+                            <span class="value-prop-number">4</span>
+                            <h3>Sustainability</h3>
+                        </div>
+                        <ul class="value-prop-list">
+                            <li><span class="highlight">Built a purpose-driven brand</span></li>
+                            <li>Attract eco-conscious buyers</li>
+                            <li>Differentiate from competitors</li>
+                            <li>Promote long-term loyalty</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="slide" id="slide8">
+        <div class="content">
+            <h2><span style="text-align: center;">Category focused business models driving Trust, AI-driven User Experience, and Sustainability.</span></h2>
+            
+            <div class="analysis-container">
+                <div class="analysis-box">
+                    <h3>Fashion</h3>
+                    <div class="analysis-content">
+                        <div class="analysis-section">
+                            <h4>Category-Focused Business Models</h4>
+                            <ul>
+                                <li>Tiered commission structure:
+                                    <ul>
+                                        <li>Low/No commission → drive C2C growth, ads-based revenue model</li>
+                                        <li>Mid-level commission → boutiques and professional sellers</li>
+                                    </ul>
+                                </li>
+                                <li>Influencer & creator partnerships</li>
+                                <li>Integrated logistics with door-to-door pickup, delivery, and tracking</li>
+                            </ul>
+                        </div>
+                        <div class="analysis-section">
+                            <h4>Trust</h4>
+                            <ul>
+                                <li>Authentication for premium brands</li>
+                                <li>AI-powered dispute resolution</li>
+                            </ul>
+                        </div>
+                        <div class="analysis-section">
+                            <h4>AI-Driven User Experience</h4>
+                            <ul>
+                                <li>Personalized recommendations</li>
+                                <li>AI styling advisor</li>
+                                <li>AI mix & match with generated images</li>
+                                <li>AI-powered sizing guide</li>
+                                <li>AI visualization of outfits on virtual models</li>
+                                <li>Curated trends area: e.g., "Vintage Finds," "Season's Top Styles"</li>
+                                <li>AI-powered collections & discovery feeds</li>
+                            </ul>
+                        </div>
+                        <div class="analysis-section">
+                            <h4>Sustainability</h4>
+                            <ul>
+                                <li>Donation campaigns</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analysis-box">
+                    <h3>Electronics</h3>
+                    <div class="analysis-content">
+                        <div class="analysis-section">
+                            <h4>Category-Focused Business Models</h4>
+                            <ul>
+                                <li>Higher commission model due to higher buyer protection costs</li>
+                                <li>Extended warranty and repair services as upsell</li>
+                                <li>Partnership with refurbishment centers & dent stores</li>
+                            </ul>
+                        </div>
+                        <div class="analysis-section">
+                            <h4>Trust</h4>
+                            <ul>
+                                <li>Certified refurbished partnership with warranty</li>
+                                <li>Quality Guarantee Program: 48-hour return window</li>
+                            </ul>
+                        </div>
+                        <div class="analysis-section">
+                            <h4>AI-Driven User Experience</h4>
+                            <ul>
+                                <li>AI-powered price advisor</li>
+                            </ul>
+                        </div>
+                        <div class="analysis-section">
+                            <h4>Sustainability</h4>
+                            <ul>
+                                <li>Recycling partnerships to promote sustainability</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analysis-box">
+                    <h3>Automotive</h3>
+                    <div class="analysis-content">
+                        <div class="analysis-section">
+                            <h4>Category-Focused Business Models</h4>
+                            <ul>
+                                <li>Auction-based selling model</li>
+                                <li>Ads & premium listing revenue model</li>
+                                <li>Partnerships with used car dealerships</li>
+                                <li>Finance and insurance add-ons for additional revenue</li>
+                            </ul>
+                        </div>
+                        <div class="analysis-section">
+                            <h4>Trust</h4>
+                            <ul>
+                                <li>Vehicle inspection and verification services</li>
+                                <li>Seller verification, KYC procedures</li>
+                            </ul>
+                        </div>
+                        <div class="analysis-section">
+                            <h4>AI-Driven User Experience</h4>
+                            <ul>
+                                <li>AI price advisor for fair valuations</li>
+                            </ul>
+                        </div>
+                        <div class="analysis-section">
+                            <h4>Sustainability</h4>
+                            <ul>
+                                <li>Highlight low-emission vehicles</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analysis-box">
+                    <h3>Real Estate</h3>
+                    <div class="analysis-content">
+                        <div class="analysis-section">
+                            <h4>Category-Focused Business Models</h4>
+                            <ul>
+                                <li>Auction-based selling model</li>
+                                <li>Ads & premium listing revenue model</li>
+                                <li>Partnerships with real estate agents & brokers</li>
+                                <li>Partnerships with developers for exclusive new projects</li>
+                            </ul>
+                        </div>
+                        <div class="analysis-section">
+                            <h4>Trust</h4>
+                            <ul>
+                                <li>Seller verification, KYC procedures</li>
+                            </ul>
+                        </div>
+                        <div class="analysis-section">
+                            <h4>AI-Driven User Experience</h4>
+                            <ul>
+                                <li>AI price advisor for accurate market-based valuations</li>
+                                <li>AI opportunity finder: Detect under-priced or high-potential properties</li>
+                                <li>Interactive map discovery and neighborhood insights</li>
+                            </ul>
+                        </div>
+                        <div class="analysis-section">
+                            <h4>Sustainability</h4>
+                            <ul>
+                                <li>Highlight eco-friendly buildings or green neighborhoods</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="slide" id="slide9">
+        <div class="content">
+            <h2>Core Growth Strategy: Niche Down to Scale Up</h2>
+            <div class="strategy-content">
+                <div class="strategy-box">
+                    <p>Our core strategy is to niche down to scale up. Instead of trying to compete directly with
+                        everyone on all fronts, ReNew will focus on a specific, high-value vertical to build a dedicated
+                        user base and create a strong brand identity.</p>
+                </div>
+
+                <div class="strategy-image-container">
+                    <img src="app-interface-transparent.png" alt="ReNew App Interface" class="strategy-image" onclick="openImageModal(this.src)">
+                </div>
+
+                <div id="imageModal" class="image-modal" onclick="closeImageModal()">
+                    <img class="modal-content" id="modalImage">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .strategy-image-container {
+            margin-top: 2rem;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .strategy-image {
+            width: 40%;
+            height: auto;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+
+        }
+
+        .strategy-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+    </style>
+
+    <script>
+        function openImageModal(src) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.style.display = "flex";
+            modalImg.src = src;
+        }
+
+        function closeImageModal() {
+            document.getElementById('imageModal').style.display = "none";
+        }
+    </script>
+
+    <div class="slide" id="slide10">
+        <div class="content">
+            <h2>Core Growth Strategy: Niche Down to Scale Up</h2>
+            <div class="strategy-content">
+                <div class="strategy-box">
+                    <p>Our core strategy is to niche down to scale up. Instead of trying to compete directly with
+                        everyone on all fronts, ReNew will focus on a specific, high-value vertical to build a dedicated
+                        user base and create a strong brand identity.</p>
+                </div>
+
+                <div class="timeline-container">
+                    <div class="timeline-phases">
+                        <div class="phase-card phase-1">
+                            <div class="phase-header">
+                                <h3>Phase 1</h3>
+                                <span class="phase-duration">1-6 Months</span>
+                            </div>
+                            <h4>Market Introduction</h4>
+                            <p>Build the brand around <b style="color: var(--accent-color)">luxury, designer fashion and evening wear</b> resale market.</p>
+                            <ul>
+                                <li>Build & ship core mobile app + seller listing MVP.</li>
+                                <li>Iterate on user feedback and rapid experimentation to launch new app features.</li>
+                                <br>
+                                <li>Higher Average Transaction Value (ATV) with luxury items.</li>
+                                <li>High-value goods require a higher level of trust. Exploit competitor's lack of
+                                    robust verification processes.</li>
+                                <li>Celebrity & influencer partnerships</li>
+                                    <li>Stronger Seller & Buyer Motivation: Sellers list high-quality items, and buyers are
+                                    willing to pay for authenticity.</li>
+                            </ul>
+                        </div>
+
+                        <div class="phase-card phase-2">
+                            <div class="phase-header">
+                                <h3>Phase 2</h3>
+                                <span class="phase-duration">6-12 Months</span>
+                            </div>
+                            <h4>Vertical Specialization / Niche Extension</h4>
+                            <p><b style="color: var(--accent-color)">Conquer fashion category.</b> Extend to following niches:</p>
+                            <ul>
+                                <li>Baby clothes and gear / Baby clothing and essentials</li>
+                                <li>Wedding dresses, bridal accessories, and groom's suits</li>
+                                <li>Bags & accessories</li>
+                                <li>Luxury</li>
+                                <li>Maternity</li>
+                                <li>Modest wear / Hijab fashion</li>
+                            </ul>
+                        </div>
+
+                        <div class="phase-card phase-3">
+                            <div class="phase-header">
+                                <h3>Phase 3</h3>
+                                <span class="phase-duration">12+ Months</span>
+                            </div>
+                            <h4>Category Expansion</h4>
+                            <p><b style="color: var(--accent-color)">Launch new categories with highly specialized business models</b> and seamless customer experience.</p>
+                            <ul>
+                                <li>Electronics</li>
+                                <li>Home, Garden, Furniture</li>
+                                <li>Automotive</li>
+                                <li>Real Estate</li>
+                                <li>Sports</li>
+                                <li>Musical Instruments</li>
+                                <li>Luxury Watches</li>
+                                <li>Others</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="slide" id="slide11">
+        <div class="content">
+            <h2>North Star Metrics & Growth Targets (12 Months)</h2>
+            <div class="metrics-content">
+                <div class="team-phases" style="margin-bottom: 2rem;">
+                    <div class="team-card phase-1">
+                        <h3>Phase 1: Months 1–6<br><span style="color:var(--light-gray)">Focus On Luxury</span></h3>
+                        <ul>
+                            <li>Target audience: Affluent buyers and sellers → luxury, designer, evening wear.</li>
+                            <li>GMV strategy: High AOV with limited transaction volume.</li>
+                            <li>Acquisition: Influencer partnerships, curated seller onboarding, social proof to build trust.</li>
+                            <li>Experience: Premium support → sets NPS benchmark high.</li>
+                        </ul>
+                    </div>
+
+                    <div class="team-card phase-2">
+                        <h3>Phase 2: Months 7–12<br><span style="color:var(--light-gray)">Expansion to All Fashion</span></h3>
+                        <ul>
+                            <li>Target audience: Mass-market fashion resale buyers and sellers.</li>
+                            <li>GMV strategy: Increase transaction volume even as AOV declines.</li>
+                            <li>Acquisition: Referral programs, broader marketing campaigns.</li>
+                            <li>Focus on retention: Loyalty rewards and improved seller tools to drive repeat activity.</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <hr>
+                <p class="star-metric">North Star Metrics</p>
+                
+                <table class="metrics-table">
+                    <tr>
+                        <th>Category</th>
+                        <th>KPI</th>
+                        <th>Month 6 Target (Luxury focus)</th>
+                        <th>Month 12 Target (All fashion)</th>
+                    </tr>
+                    <tr>
+                        <td rowspan="6">Financial Health</td>
+                        <td class="star-metric">GMV (Gross Merchandise Value) (Monthly)</td>
+                        <td style="text-align: center">$500M</td>
+                        <td style="text-align: center">$2M+</td>
+                    </tr>
+                    <tr>
+                        <td class="star-metric">GMV Growth Rate (MoM)</td>
+                        <td style="text-align: center">45–55%</td>
+                        <td style="text-align: center">25–35%</td>
+                    </tr>
+                    <tr>
+                        <td class="star-metric">Take Rate (GMV → Revenue)</td>
+                        <td style="text-align: center">6%</td>
+                        <td style="text-align: center">10%</td>
+                    </tr>
+                    <tr>
+                        <td>Gross Margin on Transactions</td>
+                        <td style="text-align: center">15%+</td>
+                        <td style="text-align: center">25%+</td>
+                    </tr>
+                    <tr>
+                        <td>LTV / CAC</td>
+                        <td style="text-align: center">>2.0</td>
+                        <td style="text-align: center">>3.0</td>
+                    </tr>
+                    <tr>
+                        <td>Average Order Value (AOV)</td>
+                        <td style="text-align: center">₺2000</td>
+                        <td style="text-align: center">₺800</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="5">Growth & Acquisition</td>
+                        <td class="star-metric">Active Buyers / Month</td>
+                        <td style="text-align: center">12,000</td>
+                        <td style="text-align: center">70,000</td>
+                    </tr>
+                    <tr>
+                        <td class="star-metric">Active Sellers / Month</td>
+                        <td style="text-align: center">1,000</td>
+                        <td style="text-align: center">7,000</td>
+                    </tr>
+                    <tr>
+                        <td>Buyer Conversion Rate</td>
+                        <td style="text-align: center">2.50%</td>
+                        <td style="text-align: center">4%</td>
+                    </tr>
+                    <tr>
+                        <td>Listings Published / Week</td>
+                        <td style="text-align: center">2,000</td>
+                        <td style="text-align: center">10,000</td>
+                    </tr>
+                    <tr>
+                        <td>New vs. Returning Buyers Ratio</td>
+                        <td style="text-align: center">80/20</td>
+                        <td style="text-align: center">60/40</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="4">Engagement & Retention</td>
+                        <td class="star-metric">Repeat Buyer Rate (30/90-day)</td>
+                        <td style="text-align: center">20% / 35%</td>
+                        <td style="text-align: center">30% / 50%</td>
+                    </tr>
+                    <tr>
+                        <td>Seller Retention Rate</td>
+                        <td style="text-align: center">70%</td>
+                        <td style="text-align: center">80%+</td>
+                    </tr>
+                    <tr>
+                        <td>Average Time to Sale</td>
+                        <td style="text-align: center">14 days</td>
+                        <td style="text-align: center">7 days</td>
+                    </tr>
+                    <tr>
+                        <td>Churn Rate (Sellers & Buyers)</td>
+                        <td style="text-align: center">15%</td>
+                        <td style="text-align: center">10%</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="4">Customer Experience & Trust</td>
+                        <td class="star-metric">Net Promoter Score (NPS)</td>
+                        <td style="text-align: center">50+</td>
+                        <td>55+</td>
+                    </tr>
+                    <tr>
+                        <td>Order Dispute / Refund Rate</td>
+                        <td style="text-align: center">3%</td>
+                        <td style="text-align: center">2%</td>
+                    </tr>
+                    <tr>
+                        <td>Fraud Incidents Detected & Resolved</td>
+                        <td style="text-align: center">95%+ detection & resolution</td>
+                        <td style="text-align: center">98%+ detection & resolution</td>
+                    </tr>
+                    <tr>
+                        <td>Support Resolution Time</td>
+                        <td style="text-align: center">24 hours</td>
+                        <td style="text-align: center">12 hours</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="slide" id="slide12">
+        <div class="content">
+            <h2>Team Structure & Hiring Plan</h2>
+            <div class="strategy-content">
+                <div class="team-phases">
+                    <div class="team-card phase-1">
+                        <h3>Phase 1: Seed Team (9 People) <span class="team-size">Months 0-3</span></h3>                        
+                        <div class="team-group">
+                            <h4>Product & Growth Team <span class="team-size">4 people</span></h4>
+                            <ul>
+                                <li>Head of Product / PM (1)</li>
+                                <li>Growth marketer (1)</li>
+                                <li>Designer / UX (1)</li>
+                                <li>Data Generalist / Analyst (1) (Part-time)</li>
+                            </ul>
+                        </div>
+
+                        <div class="team-group">
+                            <h4>Technical Team <span class="team-size">3-4 people</span></h4>
+                            <ul>
+                                <li>Engineering Lead (1)</li>
+                                <li>Mobile + frontend engineer (1)</li>
+                                <li>Backend engineer (1)</li>
+                                <li>Test Engineer (1)</li>
+                            </ul>
+                        </div>
+
+                        <div class="team-group">
+                            <h4>Operations & Community <span class="team-size">2 people</span></h4>
+                            <ul>
+                                <li>Community Manager / Creator Partnerships (1)</li>
+                                <li>Ops / Logistics lead (1)</li>
+                                <li>Support (contract) (1)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="team-card phase-2">
+                        <h3>Phase 2: Scale Team (~25 total) <span class="team-size">Months 4-12</span></h3>
+                        <div class="team-group">
+                            <h4>Product & Growth Team</h4>
+                            <ul>
+                                <li>Product Manager (+1)</li>
+                                <li>Data Analyst (Full-time) (+1)</li>
+                                <li>Designer / UX (+1)</li>
+                                <li>ML Engineer (Fraud detection, personalization) (+2)</li>
+                            </ul>
+                        </div>
+
+                        <div class="team-group">
+                            <h4>Technical Team</h4>
+                            <ul>
+                                <li>DevOps / Cloud Engineer (+1)</li>
+                                <li>Frontend engineer (+1)</li>
+                                <li>Backend engineer (+1)</li>
+                            </ul>
+                        </div>
+
+                        <div class="team-group">
+                            <h4>Operations & Community</h4>
+                            <ul>
+                                <li>Trust & Safety Team (+3)</li>
+                                <li>Customer Support Team (+3 - +4)</li>
+                                <li>Community Manager / Creator Partnerships (+1)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide13">
+        <div class="content">
+            <div class="thank-you">
+                <h2>Thank You</h2>
+                <img src="app_logo.png" alt="ReNew Logo">
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button onclick="previousSlide()" id="prevBtn">Previous</button>
+        <button onclick="nextSlide()" id="nextBtn">Next</button>
+    </div>
+
+    <div class="slide-number" id="slideNumber"></div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 13;
+
+        function updateSlideNumber() {
+            document.getElementById('slideNumber').textContent = `${currentSlide} / ${totalSlides}`;
+        }
+
+        function updateButtons() {
+            document.getElementById('prevBtn').disabled = currentSlide === 1;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+        }
+
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            const currentSlideElement = document.querySelector('.slide.active');
+
+            // Deactivate the current slide
+            if (currentSlideElement) {
+                currentSlideElement.classList.remove('active');
+
+                // ONLY reset animations if the current slide is the Agenda slide
+                if (currentSlideElement.id === 'slide2') {
+                    const items = currentSlideElement.querySelectorAll('li');
+                    items.forEach(item => {
+                        item.style.opacity = '0';
+                        item.style.transform = 'translateX(-20px)';
+                    });
+                }
+            }
+
+            // Activate the new slide
+            const nextSlideElement = document.getElementById(`slide${n}`);
+            if (nextSlideElement) {
+                nextSlideElement.classList.add('active');
+            }
+
+            currentSlide = n;
+            updateSlideNumber();
+            updateButtons();
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 1) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        // Initialize
+        showSlide(currentSlide); // Use showSlide to correctly initialize the first slide
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') previousSlide();
+        });
+
+        // Touch navigation
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, false);
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, false);
+
+        function handleSwipe() {
+            const swipeThreshold = 50; // minimum distance for swipe
+            const swipeDistance = touchEndX - touchStartX;
+            
+            if (Math.abs(swipeDistance) > swipeThreshold) {
+                if (swipeDistance > 0) {
+                    previousSlide(); // Swipe right
+                } else {
+                    nextSlide(); // Swipe left
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
