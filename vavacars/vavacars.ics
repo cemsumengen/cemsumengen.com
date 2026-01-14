@@ -1,0 +1,32 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//VavaCars//NONSGML Inspection App//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:appointment-34TT333-20260113T143000
+DTSTAMP:20260113T084000Z
+DTSTART:20260113T113000Z
+DURATION:PT45M
+SUMMARY:🚗 VavaCars Ekspertiz Randevusu - 34TT333 Audi A3
+LOCATION:İSTANBUL CENNET - Cennet\, Yesİlova Yan Yolu NO:98\, 34290 Küçükçe
+ kmece/İstanbul\, Turkey
+DESCRIPTION:📍 Adres: İSTANBUL CENNET - Cennet\, Yesİlova Yan Yolu NO:98\,
+  34290 Küçükçekmece/İstanbul\, Turkey\n\nRandevu saatinde sizi hazır şeki
+ lde bekleyeceğiz. Sonraki müşterilerimizi bekletmemek için hassasiyetini
+ zi rica ederiz. Gelemeyecekseniz lütfen randevunuzu iptal ediniz.\n\n• A
+ racınızın boya kalınlığını doğru ölçebilmemiz için dışının yeni yıkanmış
+  ve temiz olması gerekiyor. Kirli ve tozluysa ekspertiz yapamıyoruz.\n\n•
+  Aracınızla vedalaşmaya hazır olun\, tüm kişisel eşyalıklarınızı alın ve 
+ varsa yedek anahtarını getirin.\n\n• Aracınızı ruhsat sahibi olarak siz 
+ veya 1. derece yakınınız ruhsat ve kimliğinizle getirmeli.\n\n• Muayene b
+ itiş tarihine en az 20 gün kalmış olmalı.\n\n🗓️ Randevunuzu değiştirmek 
+ ya da iptal etmek için: https://tr.vava.cars/sell/booked-appointment
+URL:https://tr.vava.cars/sell/booked-appointment
+BEGIN:VALARM
+TRIGGER:-PT2H
+ACTION:DISPLAY
+DESCRIPTION:Reminder: VavaCars Inspection Appointment
+END:VALARM
+END:VEVENT
+END:VCALENDAR
