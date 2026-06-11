@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VavaCars Cepte</title>
+
+  <script>
+    var APP_STORE_URL  = "https://apps.apple.com/tr/app/vavacars-cepte/id6759321045?l=tr";
+    var PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.vavacars.c2bdigital";
+
+    (function () {
+      var ua = navigator.userAgent || navigator.vendor || window.opera || "";
+
+      var isAndroid = /android/i.test(ua);
+      // iPadOS 13+ reports itself as "MacIntel", so also check for touch support
+      var isIOS = /iPad|iPhone|iPod/.test(ua) ||
+                  (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+      if (isAndroid) {
+        window.location.replace(PLAY_STORE_URL);
+      } else if (isIOS) {
+        window.location.replace(APP_STORE_URL);
+      }
+      // Other devices (desktop etc.): no redirect, badges below are shown
+    })();
+  </script>
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .frame {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      padding: 40px 48px;
+      border: 2px solid #ddd;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+    h1 {
+      margin: 0 0 8px 0;
+      font-size: 1.25rem;
+      text-align: center;
+    }
+    .badge img {
+      width: 220px;
+      height: auto;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <h1>VavaCars Cepte Uygulamasını İndirin</h1>
+    <a class="badge" href="https://apps.apple.com/tr/app/vavacars-cepte/id6759321045?l=tr">
+      <img src="appstore-badge.png" alt="App Store'dan İndir">
+    </a>
+    <a class="badge" href="https://play.google.com/store/apps/details?id=com.vavacars.c2bdigital">
+      <img src="playstore-badge.png" alt="Google Play'den İndir">
+    </a>
+  </div>
+</body>
+</html>
