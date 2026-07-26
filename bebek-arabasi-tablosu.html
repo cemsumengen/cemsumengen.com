@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bebek Arabası Markaları — Model & Segment Tablosu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F4F5F3;
+    --card:#FFFFFF;
+    --ink:#1E2A30;
+    --ink-soft:#586771;
+    --ink-faint:#8A97A0;
+    --line:#E3E5E0;
+    --accent:#35617A;
+    --accent-tint:#E8EEF2;
+    --accent-tint-2:#F1F5F7;
+    --star:#BE8626;
+    --star-empty:#D8D6CD;
+    --zebra:#FAFAF8;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:40px 20px 72px}
+
+  /* Header */
+  header{margin-bottom:28px}
+  .eyebrow{
+    font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent);margin:0 0 10px
+  }
+  h1{
+    font-family:"Fraunces",Georgia,serif;
+    font-weight:500;font-size:clamp(26px,4.5vw,38px);line-height:1.12;
+    margin:0 0 12px;letter-spacing:-.01em
+  }
+  .lede{margin:0;max-width:60ch;color:var(--ink-soft);font-size:15.5px}
+
+  /* Legend */
+  .legend{
+    display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:28px 0 12px
+  }
+  @media (max-width:720px){.legend{grid-template-columns:1fr}}
+  .panel{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px 20px
+  }
+  .panel h2{
+    font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--accent);margin:0 0 14px
+  }
+  .seg{display:flex;gap:11px;padding:7px 0;border-top:1px solid var(--line)}
+  .seg:first-of-type{border-top:none;padding-top:0}
+  .seg .tag{
+    flex:0 0 auto;font-weight:600;font-size:12.5px;color:var(--accent);
+    background:var(--accent-tint);border-radius:7px;padding:3px 9px;height:fit-content;
+    white-space:nowrap;margin-top:1px
+  }
+  .seg .desc{font-size:13.5px;color:var(--ink-soft);line-height:1.5}
+  .scale-row{display:flex;align-items:baseline;gap:10px;padding:6px 0}
+  .scale-row .st{font-size:15px;letter-spacing:1px;white-space:nowrap;min-width:74px}
+  .scale-row .lab{font-size:13.5px;color:var(--ink-soft)}
+  .fill{color:var(--star)}
+  .empty{color:var(--star-empty)}
+
+  .scroll-hint{
+    display:none;font-size:12.5px;color:var(--ink-faint);text-align:center;margin:14px 0 6px
+  }
+  @media (max-width:820px){.scroll-hint{display:block}}
+
+  /* Table */
+  .tablecard{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    overflow:hidden;margin-top:8px
+  }
+  .scroller{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{border-collapse:collapse;width:100%;min-width:760px}
+  thead th{
+    background:var(--accent-tint-2);
+    text-align:left;vertical-align:bottom;
+    font-size:13px;font-weight:600;color:var(--ink);
+    padding:14px 16px;border-bottom:1.5px solid var(--line);
+    white-space:nowrap
+  }
+  thead th .sz{display:block;font-weight:500;font-size:11px;color:var(--ink-faint);letter-spacing:.03em;margin-top:2px}
+  thead th.brandhead{background:var(--accent);color:#fff}
+  tbody td{
+    padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:top;
+    font-size:14px
+  }
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:nth-child(even) td{background:var(--zebra)}
+  /* sticky brand column */
+  .brandcell,thead th.brandhead{
+    position:sticky;left:0;z-index:2
+  }
+  .brandcell{
+    background:var(--card);font-weight:600;font-size:15px;color:var(--ink);
+    border-right:1.5px solid var(--line);min-width:132px;white-space:nowrap
+  }
+  tbody tr:nth-child(even) .brandcell{background:var(--zebra)}
+  thead th.brandhead{border-right:1.5px solid var(--accent)}
+
+  ul.models{list-style:none;margin:0;padding:0}
+  ul.models li{padding:2px 0}
+  ul.models li .m{color:var(--ink)}
+  ul.models li .r{margin-left:7px;font-size:12.5px;letter-spacing:.5px;white-space:nowrap}
+  .none{color:var(--ink-faint)}
+
+  /* Prestige tiers */
+  .prestige{margin:26px 0 12px}
+  .prestige > h2{font-family:"Fraunces",Georgia,serif;font-weight:500;font-size:22px;margin:0 0 4px}
+  .prestige > .sub{margin:0 0 16px;color:var(--ink-soft);font-size:14.5px;max-width:66ch}
+  .tier{
+    display:grid;grid-template-columns:215px 1fr;gap:18px;align-items:start;
+    background:var(--card);border:1px solid var(--line);border-left:5px solid var(--tc);
+    border-radius:0 12px 12px 0;padding:15px 20px;margin-bottom:10px
+  }
+  @media (max-width:640px){.tier{grid-template-columns:1fr;gap:9px;padding:14px 16px}}
+  .tier .name{font-weight:600;font-size:16px;margin:0;color:var(--tc)}
+  .tier .en{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin:2px 0 0}
+  .tier .band{font-size:12.5px;color:var(--ink-soft);margin:8px 0 0}
+  .tags{display:flex;flex-wrap:wrap;gap:7px}
+  .bt{font-size:13px;color:var(--ink);background:var(--zebra);border:1px solid var(--line);border-radius:999px;padding:3px 11px;line-height:1.5}
+
+  /* Notes */
+  .notes{margin-top:34px}
+  .notes h2{
+    font-family:"Fraunces",Georgia,serif;font-weight:500;font-size:22px;margin:0 0 6px
+  }
+  .notes .panel{margin-top:14px}
+  .notes h3{
+    font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--accent);margin:0 0 10px
+  }
+  .notes ul{margin:0;padding-left:18px}
+  .notes li{margin:6px 0;font-size:14px;color:var(--ink-soft)}
+  .notes li b{color:var(--ink);font-weight:600}
+  .pill{
+    display:inline-block;font-size:11px;font-weight:600;border-radius:6px;padding:1px 7px;
+    margin-right:2px;vertical-align:1px
+  }
+  .pill.add{background:#E7F0EA;color:#2E6B45}
+  .pill.move{background:#FBF0DD;color:#8A5E12}
+  .pill.rm{background:#F6E7E4;color:#8C3B2C}
+
+  /* Spec tables (transposed: features as rows, models as columns) */
+  .specs{margin-top:34px;border-top:1px solid var(--line);padding-top:26px}
+  .specs > h2{font-family:"Fraunces",Georgia,serif;font-weight:500;font-size:22px;margin:0 0 4px}
+  .specs > .sub{margin:0 0 6px;color:var(--ink-soft);font-size:14.5px;max-width:72ch}
+  .specs .foot{margin:2px 0 18px;color:var(--ink-faint);font-size:12.5px;max-width:72ch}
+  .spec-block{margin-bottom:26px}
+  .spec-block h3{
+    font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);
+    margin:0 0 10px;padding-left:11px;border-left:3px solid var(--accent)
+  }
+  .spec-card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .spec-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table.spec{border-collapse:separate;border-spacing:0;font-size:13px;min-width:100%}
+  table.spec th,table.spec td{
+    padding:9px 12px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);
+    text-align:left;vertical-align:top;min-width:150px
+  }
+  table.spec tr th:last-child,table.spec tr td:last-child{border-right:none}
+  table.spec tbody tr:last-child td{border-bottom:none}
+  table.spec thead th{
+    background:var(--accent-tint-2);font-size:11px;font-weight:600;color:var(--ink);
+    position:sticky;top:0;z-index:3
+  }
+  table.spec thead th .bn{display:block;font-size:9.5px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.04em}
+  table.spec thead th .mn{display:block;font-weight:700;font-size:12.5px;color:var(--ink)}
+  table.spec td.rl,table.spec thead th:first-child{
+    position:sticky;left:0;background:var(--card);font-weight:600;color:var(--ink);
+    border-right:2px solid var(--line);min-width:162px;white-space:normal;z-index:2
+  }
+  table.spec thead th:first-child{background:var(--accent-tint-2);z-index:4}
+  table.spec tbody tr:nth-child(even) td{background:var(--zebra)}
+  table.spec tbody tr:nth-child(even) td.rl{background:var(--zebra)}
+  table.spec .yes{color:#2E6B57;font-weight:600}
+  table.spec .no{color:var(--ink-faint)}
+  table.spec .na{color:var(--ink-faint)}
+  table.spec .r{white-space:nowrap}
+  table.spec .r .fill{color:var(--star);letter-spacing:1px}
+  table.spec .r .empty{color:var(--star-empty);letter-spacing:1px}
+  table.spec .mid{color:var(--ink-soft)}
+  table.spec tbody tr:hover td{background:var(--accent-tint)}
+  table.spec tbody tr:hover td.rl{background:var(--accent-tint)}
+  /* pros / cons lists */
+  table.spec ul.pc{margin:0;padding:0;list-style:none;white-space:normal}
+  table.spec ul.pc li{position:relative;padding-left:15px;margin:0 0 3px;font-size:12.5px;line-height:1.35}
+  table.spec ul.pc li:last-child{margin-bottom:0}
+  table.spec ul.pc li:before{position:absolute;left:0;top:0;font-weight:700}
+  table.spec tr.r-pros td.rl{color:#2E6B57}
+  table.spec tr.r-cons td.rl{color:#B0453B}
+  table.spec tr.r-pros ul.pc li:before{content:"+";color:#2E8B63}
+  table.spec tr.r-cons ul.pc li:before{content:"–";color:#C05A4E}
+  table.spec tr.r-pros td{background:#F3F8F5}
+  table.spec tr.r-cons td{background:#FBF4F2}
+  table.spec tr.r-pros:hover td,table.spec tr.r-cons:hover td{filter:brightness(.985)}
+  .seg-note{margin:-4px 0 12px;color:var(--ink-soft);font-size:13px;max-width:80ch;background:var(--accent-tint);border-left:3px solid var(--accent);padding:8px 12px;border-radius:0 8px 8px 0}
+  .updbar{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin:0 0 4px;font-size:12.5px;color:var(--ink-soft)}
+  .updbar .pill{background:var(--accent-tint);border:1px solid var(--line);border-radius:999px;padding:2px 10px;color:var(--accent);font-weight:600}
+  .swatches{display:flex;flex-wrap:wrap;gap:6px 16px;margin:8px 0 0;font-size:12px;color:var(--ink-soft)}
+  .swatches span{display:inline-flex;align-items:center;gap:6px}
+  .swatches i{width:12px;height:12px;border-radius:3px;display:inline-block}
+
+  footer{margin-top:36px;font-size:12.5px;color:var(--ink-faint);text-align:center;line-height:1.6}
+
+  @media print{
+    body{background:#fff}
+    .scroller{overflow:visible}
+    table{min-width:0}
+    .panel,.tablecard{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">Türkiye &amp; Avrupa · marka rehberi</p>
+    <h1>Bebek arabası markaları<br>prestij &amp; model rehberi</h1>
+    <p class="lede">Üç bölüm: markaların prestij segmentasyonu, seçili 8 premium markanın boyuta göre güncel model tablosu ve her segment için ayrıntılı teknik karşılaştırma (artılar/eksiler dahil).</p>
+    <div class="updbar">
+      <span class="pill">Temmuz 2026 güncellemesi</span>
+      <span>İki bağımsız AI değerlendirmesi + resmî kaynaklar derlenerek doğrulandı · düşük bulunurluklu modeller çıkarıldı, eksik modeller ve veriler eklendi.</span>
+    </div>
+  </header>
+
+  <section class="prestige">
+    <h2>Markaların prestij segmentasyonu</h2>
+    <p class="sub">Markalar genel pazar konumlanması ve fiyat düzeyine göre beş kademeye ayrıldı. Konumlanma özneldir ve yaklaşıktır; geniş ürün yelpazesine sahip bazı markalar (ör. Cybex, Maxi-Cosi) birden fazla kademeye yayılabilir. TL bandları çok kabadır ve kur/enflasyonla değişir.</p>
+
+    <div class="tier" style="--tc:#9C7A2E">
+      <div>
+        <p class="name">Ultra-premium</p>
+        <p class="en">Ultra-premium</p>
+        <p class="band">~₺100.000+ · tasarım ikonları / köklü markalar</p>
+      </div>
+      <div class="tags">
+        <span class="bt">Stokke</span><span class="bt">Bugaboo</span><span class="bt">Silver Cross</span><span class="bt">Mima</span>
+      </div>
+    </div>
+
+    <div class="tier" style="--tc:#35617A">
+      <div>
+        <p class="name">Lüks</p>
+        <p class="en">Luxury</p>
+        <p class="band">~₺65.000–100.000</p>
+      </div>
+      <div class="tags">
+        <span class="bt">Cybex</span><span class="bt">Nuna</span><span class="bt">UPPAbaby</span><span class="bt">Inglesina</span><span class="bt">Joolz</span><span class="bt">iCandy</span><span class="bt">Egg</span><span class="bt">Anex</span><span class="bt">Emmaljunga</span>
+      </div>
+    </div>
+
+    <div class="tier" style="--tc:#3E7C6E">
+      <div>
+        <p class="name">Premium</p>
+        <p class="en">Premium</p>
+        <p class="band">~₺40.000–65.000</p>
+      </div>
+      <div class="tags">
+        <span class="bt">Peg Perego</span><span class="bt">Mamas &amp; Papas</span><span class="bt">Thule</span><span class="bt">Babyzen</span><span class="bt">Baby Jogger</span><span class="bt">Jané</span><span class="bt">Venicci</span><span class="bt">Doona</span><span class="bt">gb Platinum</span><span class="bt">Easywalker</span><span class="bt">Bébécar</span><span class="bt">Leclerc</span>
+      </div>
+    </div>
+
+    <div class="tier" style="--tc:#7E756A">
+      <div>
+        <p class="name">Orta segment</p>
+        <p class="en">Mid-range</p>
+        <p class="band">~₺20.000–40.000</p>
+      </div>
+      <div class="tags">
+        <span class="bt">Chicco</span><span class="bt">Joie</span><span class="bt">Maxi-Cosi</span><span class="bt">Bébé Confort</span><span class="bt">Britax Römer</span><span class="bt">Graco</span><span class="bt">Recaro</span><span class="bt">ABC Design</span><span class="bt">Hauck</span><span class="bt">Concord</span><span class="bt">Cam</span><span class="bt">Brevi</span><span class="bt">CBX</span><span class="bt">Kanz</span>
+      </div>
+    </div>
+
+    <div class="tier" style="--tc:#A0A6AC">
+      <div>
+        <p class="name">Giriş seviyesi</p>
+        <p class="en">Entry-level</p>
+        <p class="band">~₺6.000–20.000 · ağırlıklı yerli</p>
+      </div>
+      <div class="tags">
+        <span class="bt">Prego</span><span class="bt">Baby2Go</span><span class="bt">Babyhope</span><span class="bt">Kraft</span><span class="bt">Beneto</span><span class="bt">Baby Home</span><span class="bt">Crystal Baby</span><span class="bt">Chipolino</span><span class="bt">Kinderkraft</span><span class="bt">Lionelo</span><span class="bt">Pierre Cardin</span><span class="bt">Casual</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="prestige" style="margin-top:34px;border-top:1px solid var(--line);padding-top:26px">
+    <h2>Seçili premium markalar — model &amp; segment tablosu</h2>
+    <p class="sub">Yukarıdaki listeden 8 marka, boyuta göre dört segmentte. Modellerin yanındaki yıldızlar fiyat bandını (yaklaşık Avrupa perakende) gösterir.</p>
+  </section>
+
+  <div class="legend">
+    <div class="panel">
+      <h2>Segmentler</h2>
+      <div class="seg"><span class="tag">Kabin Boy</span><span class="desc">Ultra kompakt, uçak kabinine sığacak şekilde katlanan, en hafif; seyahat odaklı.</span></div>
+      <div class="seg"><span class="tag">Compact</span><span class="desc">Günlük şehir kullanımı için hafif, tek elle katlanır; kabinden biraz daha donanımlı.</span></div>
+      <div class="seg"><span class="tag">Full-size</span><span class="desc">Tam donanımlı, çift yönlü koltuk / portbebe uyumlu, travel-system; günlük ana araba.</span></div>
+      <div class="seg"><span class="tag">Arazi</span><span class="desc">Büyük tekerlek, güçlü süspansiyon; engebeli zemin, outdoor veya koşu odaklı.</span></div>
+    </div>
+    <div class="panel">
+      <h2>Fiyat bandı (yıldız)</h2>
+      <div class="scale-row"><span class="st"><span class="fill">★</span><span class="empty">☆☆☆☆</span></span><span class="lab">Ekonomik — ~€200 altı</span></div>
+      <div class="scale-row"><span class="st"><span class="fill">★★</span><span class="empty">☆☆☆</span></span><span class="lab">Uygun fiyatlı — ~€200–400</span></div>
+      <div class="scale-row"><span class="st"><span class="fill">★★★</span><span class="empty">☆☆</span></span><span class="lab">Orta segment — ~€400–650</span></div>
+      <div class="scale-row"><span class="st"><span class="fill">★★★★</span><span class="empty">☆</span></span><span class="lab">Premium — ~€650–950</span></div>
+      <div class="scale-row"><span class="st"><span class="fill">★★★★★</span></span><span class="lab">Üst segment — ~€950 üzeri</span></div>
+    </div>
+  </div>
+
+  <p class="scroll-hint">← Tabloyu yana kaydırın →</p>
+
+  <div class="tablecard">
+    <div class="scroller">
+      <table id="grid">
+        <thead>
+          <tr>
+            <th class="brandhead">Marka</th>
+            <th>Kabin Boy<span class="sz">en küçük</span></th>
+            <th>Compact / Şehir<span class="sz">hafif · şehir</span></th>
+            <th>Full-size<span class="sz">tam boy</span></th>
+            <th>Arazi / All-terrain<span class="sz">en büyük · outdoor</span></th>
+          </tr>
+        </thead>
+        <tbody><!-- filled by script --></tbody>
+      </table>
+    </div>
+  </div>
+
+  <section class="notes">
+    <h2>Notlar</h2>
+
+    <div class="panel">
+      <h3>Okuma notları</h3>
+      <ul>
+        <li>Yıldızlar yaklaşık <b>Avrupa perakende</b> fiyat bandını gösterir. Türkiye'de ithalat/vergi nedeniyle bantlar genelde bir kademe yukarı kayar; fiyat, yalın şasi mi yoksa portbebe / travel-system dâhil mi olduğuna göre de değişir.</li>
+        <li><b>"—"</b>: markanın o segmentte belirgin/güncel bir modeli yok. Maxi-Cosi ve Nuna'nın gerçek anlamda arazi/koşu arabası bulunmuyor.</li>
+        <li>Bir model birden fazla segmente uyabilir. Her markanın standart tam boy modeli Full-size'da; belirgin outdoor/arazi modelleri (Cybex Talos S Lux, Inglesina Aptica XT, M&amp;P Ocarro 2) ve koşu arabaları Arazi'de. <b>Bugaboo Fox 5</b> arazi tekerleklerine sahip olsa da markanın tek tam boy modeli olduğu için Full-size'a yazıldı. Maxi-Cosi kendi gamını <b>Cabin / Compact / Comfort</b> olarak ayırır; bu tablodaki Kabin / Compact / Full-size ile örtüşür.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="specs">
+    <h2>Teknik özellik karşılaştırması</h2>
+    <p class="sub">Her segment için ayrı tablo; 8 markanın modelleri artı ayrıca <b>8 marka dışı öne çıkan modeller</b>. Özellikler satırlarda, modeller sütunlarda — tabloyu <b>yana kaydırarak</b> tüm modelleri görebilirsiniz. Her modelde <b>artılar ve eksiler</b> ayrı satırlarda yer alır. Veriler resmî üretici siteleri, bağımsız incelemeler ve iki AI değerlendirmesinden derlenmiştir; doğrulanamayan değerler <b>"—"</b> ile gösterildi (uydurma yok), <b>"≈"</b> yaklaşık değeri belirtir.</p>
+    <p class="foot">* Doğumdan kullanım için genellikle oto koltuğu / portbebe gerekir (Evet*). · <b>Ağırlık operasyoneldir</b> (şase + koltuk); yalnızca şase ağırlığı değil. · Tam yatış = koltuğun tam düz olabilmesi (Kısmi = yalnızca dinlenme açısı). · Katlanmış ölçü ≈ U×G×Y (cm). · Katlanma/süspansiyon üretici-inceleme belgelerine dayanır; teyit edilemeyen hücreler "—". · Fiyat bandı yıldızları üstteki tabloyla aynıdır (yaklaşık Avrupa perakende).</p>
+    <div class="swatches">
+      <span><i style="background:#2E6B57"></i>Evet / güçlü yön</span>
+      <span><i style="background:#B0453B"></i>Eksi / kısıt</span>
+      <span><i style="background:var(--ink-faint)"></i>Kısmi / veri yok (—)</span>
+      <span><i style="background:var(--star)"></i>Fiyat bandı (yıldız)</span>
+    </div>
+    <div id="specTables"></div>
+  </section>
+
+  <footer>
+    Teknik veriler üretici resmi siteleri ve ürün incelemelerinden derlenmiştir; yaklaşık değerlerdir ve zamanla / konfigürasyona göre değişebilir.<br>Temmuz 2026 · Türkiye &amp; Avrupa pazarı esas alınmıştır.
+  </footer>
+
+</div>
+
+<script>
+  var SEG = ["kabin","compact","full","arazi"];
+  var DATA = [
+    { brand:"Bugaboo", cells:[
+        [["Butterfly",3]],
+        [["Dragonfly",4]],
+        [["Fox 5",5]],
+        []
+    ]},
+    { brand:"Cybex", cells:[
+        [["Coya",3],["Libelle 2",2]],
+        [["Mios",4],["Melio",3],["Eezy S Twist+ 2",2]],
+        [["Priam",5],["e-Priam",5],["Balios S Lux 2",3]],
+        [["Talos S Lux",4]]
+    ]},
+    { brand:"UPPAbaby", cells:[
+        [["Minu V3",3]],
+        [["Cruz V3",4]],
+        [["Vista V3",5]],
+        [["Ridge",4]]
+    ]},
+    { brand:"Nuna", cells:[
+        [["TRVL",3],["TRVL lx",3]],
+        [["TRIV Next",3]],
+        [["MIXX Next",4]],
+        []
+    ]},
+    { brand:"Maxi-Cosi", cells:[
+        [["Lara²",2]],
+        [["Leona²",2],["Zelia S",2],["Adorra",3]],
+        [["Fame",5],["Oxford",4]],
+        []
+    ]},
+    { brand:"Inglesina", cells:[
+        [["Quid³",2]],
+        [["Electa",3]],
+        [["Aptica",4]],
+        [["Aptica XT",5]]
+    ]},
+    { brand:"Chicco", cells:[
+        [["We",1],["Goody Plus",1],["Goody Pro",2]],
+        [["Best Friend Pro",2]],
+        [["One4Ever",2],["Mysa",3],["Seety",3]],
+        []
+    ]},
+    { brand:"Mamas & Papas", cells:[
+        [["Airo",3]],
+        [["Vardo",3]],
+        [["Strada",4],["Flip XT³",3]],
+        [["Ocarro 2",4]]
+    ]}
+  ];
+
+  function stars(n){
+    var f = "★".repeat(n), e = "☆".repeat(5-n);
+    return '<span class="r" aria-label="fiyat bandı '+n+' / 5">'+
+           '<span class="fill">'+f+'</span><span class="empty">'+e+'</span></span>';
+  }
+  function cell(list){
+    if(!list || !list.length) return '<span class="none">—</span>';
+    var out = '<ul class="models">';
+    for(var i=0;i<list.length;i++){
+      out += '<li><span class="m">'+list[i][0]+'</span>'+stars(list[i][1])+'</li>';
+    }
+    return out + '</ul>';
+  }
+  var tb = document.querySelector('#grid tbody'), html='';
+  for(var r=0;r<DATA.length;r++){
+    html += '<tr><td class="brandcell">'+DATA[r].brand+'</td>';
+    for(var c=0;c<4;c++){ html += '<td>'+cell(DATA[r].cells[c])+'</td>'; }
+    html += '</tr>';
+  }
+  tb.innerHTML = html;
+
+  // ---- Technical specs — consolidated from two independent AI audits + official sources ----
+  // "—" = doğrulanamadı (uydurma yok); "≈" = yaklaşık. Ağırlıklar operasyonel (şase + koltuk).
+  // fields: usage, birth, flat, rev, w, fold, foldtype, basket, cabin, susp, price(1-5), feat, pros[], cons[]
+  var SPECS = {
+    "Kabin Boy": [
+      {b:"Bugaboo",m:"Butterfly",usage:"0 ay*–22 kg",birth:"Evet*",flat:"Kısmi",rev:"Hayır",w:"7,3 kg",fold:"≈54×45×23",foldtype:"Tek el",basket:"8 kg",cabin:"Evet",susp:"Evet",price:3,feat:"1 sn. katlanma · geniş koltuk",pros:["1 saniyede tek elle muazzam katlanma","Sınıfının en geniş ve uzun oturma alanı","Dört tekerlekli bağımsız süspansiyon"],cons:["Ryanair/Norwegian kabin sınırlarını milimetrik aşıyor","Gerçek tam yatış açısı sunmuyor","Çok pahalı"]},
+      {b:"Cybex",m:"Coya",usage:"0 ay*–22 kg",birth:"Evet*",flat:"Kısmi",rev:"Hayır",w:"6,6 kg",fold:"52×44×18",foldtype:"Tek el",basket:"≈5 kg",cabin:"Evet",susp:"Evet",price:3,feat:"Neredeyse düz yatış",pros:["Çok ince katlanma profili","Nefes alan mesh doku ve lüks deri detaylar","Pürüzsüz, neredeyse düz yatış"],cons:["Fiyat/performans eğrisinde oldukça pahalı","Katlama mekanizması alışılmışın dışında"]},
+      {b:"Cybex",m:"Libelle 2",usage:"6 ay+*–22 kg",birth:"Evet*",flat:"Kısmi",rev:"Hayır",w:"5,9 kg",fold:"48×32×20",foldtype:"İki kademeli",basket:"—",cabin:"Evet",susp:"—",price:2,feat:"En küçük katlanmalardan",pros:["Ultra hafif, taşıması çok kolay","Katlandığında inanılmaz küçük ebat","Bütçe dostu Cybex modeli"],cons:["Oturma ünitesi oldukça sığ","Tam yatış fonksiyonu yok","Koltuk 6 ay+, tekerlekler engebeli zemine uygun değil"]},
+      {b:"UPPAbaby",m:"Minu V3",usage:"0 ay*–22 kg",birth:"Evet*",flat:"Kısmi",rev:"Hayır",w:"7,6 kg",fold:"≈46×25×55",foldtype:"Tek el",basket:"9 kg",cabin:"Evet",susp:"Evet",price:3,feat:"FAA/IATA kabin · derin yatış",pros:["Kompakt boyutta tam boy puset konforu ve yaylanması","Arnavut kaldırımı/bozuk yolda eşsiz stabilite","Geniş kapasiteli alt sepet (9 kg)"],cons:["Kabin ebatlarına göre nispeten hantal","Çift elle katlama dinamiği"]},
+      {b:"Nuna",m:"TRVL",usage:"0 ay–22,7 kg",birth:"Evet*",flat:"Kısmi",rev:"Hayır",w:"≈6,6 kg",fold:"≈30×44×58",foldtype:"Otomatik",basket:"—",cabin:"Evet",susp:"—",price:3,feat:"Butonla otomatik katlanma",pros:["Tuşa basınca otomatik katlanma (self-fold)","Yenidoğana uygun düz yatış profili","Kabin dostu"],cons:["Oturma ünitesi çıkarılamaz ve sadece öne bakar","Alt sepet erişimi sınırlı","Türkiye'de sınırlı bulunabilirlik"]},
+      {b:"Nuna",m:"TRVL lx",usage:"0 ay–22,7 kg",birth:"Evet*",flat:"Kısmi",rev:"Hayır",w:"7,1 kg",fold:"34×52×71",foldtype:"Otomatik",basket:"—",cabin:"Evet",susp:"—",price:3,feat:"Otomatik katlanma · büyük tekerlek",pros:["Otomatik katlanma rahatlığı","Büyütülmüş profilli tekerleklerle daha akıcı sürüş","Neredeyse düz yatış"],cons:["İsmine rağmen uçak kabinine sığmaz","Ebeveyne dönük (çift yönlü) değil","Türkiye'de sınırlı bulunabilirlik"]},
+      {b:"Maxi-Cosi",m:"Lara²",usage:"0 ay*–22 kg",birth:"Evet*",flat:"Evet",rev:"Hayır",w:"6,4 kg",fold:"51×50×26",foldtype:"Otomatik",basket:"—",cabin:"Evet",susp:"—",price:2,feat:"IATA · otomatik katlanma · düz yatış",pros:["Erişimi kolay iki adet eşya sepeti","Tek elle pratik otomatik katlanma","Bütçe dostu erişilebilirlik"],cons:["Tekerlekler küçük, şehir engellerinde zorlanır","Malzeme kalitesi premium rakiplerin bir kademe gerisinde"]},
+      {b:"Inglesina",m:"Quid³",usage:"0 ay–22 kg",birth:"Evet",flat:"Evet",rev:"Hayır",w:"6,4 kg",fold:"≈47×19×59",foldtype:"Tek el",basket:"—",cabin:"Evet",susp:"—",price:2,feat:"Kendinden ayakta · tam yatış",pros:["Nefes alan 3D mesh dokusu","Kendinden ayakta duran dik ve ince katlanma","Hızlı açılır tente ve tam yatış"],cons:["İtme kolu yüksekliği ayarlanamıyor","Alt sepet derinliği ve hacmi kısıtlı"]},
+      {b:"Chicco",m:"We",usage:"0 ay–22 kg",birth:"Evet",flat:"Evet",rev:"Hayır",w:"5,5 kg",fold:"—",foldtype:"—",basket:"—",cabin:"Evet",susp:"Evet",price:1,feat:"Ultra hafif (5,5 kg) · düz yatış",pros:["5,5 kg ile sınıfının en hafiflerinden","Kutuda taşıma çantası standart gelir","Düz yatış imkânı"],cons:["İskelet yapısı kullanımda esneme hissi verebilir","Yalnızca temel donanıma sahip"]},
+      {b:"Chicco",m:"Goody Plus",usage:"0 ay–22 kg",birth:"Evet",flat:"Evet",rev:"Hayır",w:"6,9 kg",fold:"56×46,5×25",foldtype:"Otomatik",basket:"—",cabin:"Evet",susp:"Evet",price:1,feat:"'Sihirli' otomatik katlanma · düz yatış",pros:["Sihirli otomatik katlanma (kendi kendine kapanır)","Yenidoğan için düz yatış","Çarpıcı şeffaf tekerlek tasarımı"],cons:["Tek yönlü (yalnızca öne bakar)","Uzun boylu çocuklarda baş mesafesi daralabilir"]},
+      {b:"Chicco",m:"Goody Pro",usage:"0 ay–22 kg",birth:"Evet",flat:"Evet",rev:"Hayır",w:"7,9 kg",fold:"59×28×47",foldtype:"Otomatik",basket:"—",cabin:"Evet",susp:"Evet",price:2,feat:"Otomatik katlanma · oto koltuğu uyumlu",pros:["Kusursuz sihirli otomatik katlanma","Oto koltuğu adaptörleriyle tam uyum","Çarpıcı şeffaf tekerlek tasarımı"],cons:["Kabin standardına göre yüksekliği fazla (59 cm)","Uzun boylu çocuklarda baş mesafesi daralabilir"]},
+      {b:"Mamas & Papas",m:"Airo",usage:"0 ay–22 kg",birth:"Evet",flat:"Evet",rev:"Hayır",w:"≈7,6 kg",fold:"≈55×45×25",foldtype:"Tek el",basket:"—",cabin:"Evet",susp:"—",price:3,feat:"En hafif M&P · düz yatış",pros:["M&P'nin en hafif kabin modeli","Hızlı katlanma ve kabin dostu profil","Yenidoğana uygun düz yatış"],cons:["Basit oturma ünitesi","Küçük alt sepet","Türkiye'de ithalatçı/bayi üzerinden"]}
+    ],
+    "Compact / Şehir": [
+      {b:"Bugaboo",m:"Dragonfly",usage:"0 ay–22 kg",birth:"Evet",flat:"Evet",rev:"Evet",w:"7,9 kg",fold:"≈36×52×90",foldtype:"Koltukla",basket:"10 kg",cabin:"Hayır",susp:"Evet",price:4,feat:"Portbebe ile katlanır · düz yatış",pros:["Portbebe takılıyken bile kendi üzerine katlanabilen eşsiz mekanizma","10 kg kapasiteli genişletilebilir XL sepet","Üstün manevra kabiliyeti"],cons:["Katlanmış boyutları hâlâ uzun (~90 cm)","Çok yüksek fiyat","Arazi puseti değil"]},
+      {b:"Cybex",m:"Mios",usage:"6 ay+*–22 kg",birth:"Evet*",flat:"Evet",rev:"Evet",w:"≈9,8 kg",fold:"≈75×50×33",foldtype:"Tek el",basket:"5 kg",cabin:"Hayır",susp:"Evet",price:4,feat:"Platinum · dar/çevik",pros:["Nefes alan lüks file (mesh) sırtlık","Eşsiz çeviklik ve dar alan manevrası","Kişiselleştirilebilir göz alıcı tasarım"],cons:["Oturma ünitesi 3-4 yaş için dar gelebilir","Alt sepet 5 kg ile oldukça kısıtlı"]},
+      {b:"Cybex",m:"Melio",usage:"0 ay–22 kg",birth:"Evet",flat:"Kısmi",rev:"Evet",w:"6,0 kg",fold:"71,5×49×37,5",foldtype:"Tek el",basket:"—",cabin:"Hayır",susp:"Evet",price:3,feat:"Çift yönlü olmasına rağmen çok hafif",pros:["Ters çevrilebilir koltuğa sahip en hafif modellerden","Yazın nefes alan, rüzgâr geçirmeyen XXL gölgelik","Yenidoğan için pürüzsüz yatış"],cons:["Katlandığında seyahat için büyük kalır","Mios kadar tok bir metal hissi vermez"]},
+      {b:"Cybex",m:"Eezy S Twist+ 2",usage:"0 ay–22 kg",birth:"Evet*",flat:"Kısmi",rev:"Evet",w:"8,3 kg",fold:"51,5×45×30,5",foldtype:"Tek el",basket:"—",cabin:"Hayır",susp:"Evet",price:2,feat:"360° dönen koltuk",pros:["Oturma ünitesini çıkarmadan 360° döndürme (devrimsel)","Pratik tek elle katlanma","Doğumdan uygun"],cons:["Süspansiyon bozuk zeminler için zayıf","Kaldırım çıkışlarında ağırlık merkezi zorlar"]},
+      {b:"UPPAbaby",m:"Cruz V3",usage:"0 ay–22 kg",birth:"Evet",flat:"Evet",rev:"Evet",w:"≈11,8 kg",fold:"≈43×57×82",foldtype:"Koltukla",basket:"13,6 kg",cabin:"Hayır",susp:"Evet",price:4,feat:"Doğumdan düz yatış · tam donanım",pros:["Ayrı portbebe olmadan yenidoğan içliğiyle kullanım","Pazarın zirvesinde devasa sepet (13,6 kg)","Çok konforlu yüksek oturuş"],cons:["Apartman merdivenlerinde taşımak için fazla ağır ve geniş","Büyük katlanma"]},
+      {b:"Nuna",m:"TRIV Next",usage:"0 ay–22,7 kg",birth:"Evet",flat:"Evet",rev:"Evet",w:"8,3 kg",fold:"—",foldtype:"Tek el",basket:"—",cabin:"Hayır",susp:"—",price:3,feat:"Kompakt · çift yönlü",pros:["Tam donanımlı olmasına rağmen 8,3 kg ile çok hafif","Hızlı, kompakt ve yekpare kapanma","Çift yönlü koltuk"],cons:["Türkiye iç pazarında bulunabilirlik ve distribütör sıkıntısı","Cruz'dan küçük sepet"]},
+      {b:"Maxi-Cosi",m:"Leona²",usage:"0 ay–22 kg",birth:"Evet",flat:"Kısmi",rev:"Evet",w:"8,6 kg",fold:"—",foldtype:"Tek el",basket:"—",cabin:"Hayır",susp:"Evet",price:2,feat:"Patlamaz tekerlek · 4 tek. süspansiyon",pros:["Patlamaz profilli dayanıklı tekerlekler","Ters çevrilebilir, kendinden ayakta duran pratik katlama","Bütçe dostu"],cons:["Alışveriş sepeti hacmi günlük kullanım için yetersiz","Küçük tekerlek"]},
+      {b:"Maxi-Cosi",m:"Zelia S",usage:"0 ay–22 kg",birth:"Evet",flat:"Evet",rev:"Evet",w:"≈9,6 kg",fold:"—",foldtype:"Tek el",basket:"—",cabin:"Hayır",susp:"—",price:2,feat:"2'si 1 arada koltuk↔portbebe",pros:["Oturma ünitesinin cırtlarla portbebeye dönüştüğü akıllı 2'si 1 arada tasarım","Tam düz yatış uyumu","Uygun fiyat"],cons:["Malzeme ve sürüş konforu premium segmentin biraz gerisinde"]},
+      {b:"Maxi-Cosi",m:"Adorra",usage:"0 ay–22 kg",birth:"Evet",flat:"Evet",rev:"Evet",w:"12,5 kg",fold:"—",foldtype:"Tek el",basket:"—",cabin:"Hayır",susp:"—",price:3,feat:"Geniş sepet · çift yönlü (aslında tam boy)",pros:["Çocuk için olağanüstü geniş iç hacim ve kalın pedler","Çok derin eşya sepeti","Çift yönlü koltuk"],cons:["Ağır direksiyon hissi ve kalın profille kompakt olmaktan uzak (~12,5 kg)"]},
+      {b:"Inglesina",m:"Electa",usage:"0 ay–22 kg",birth:"Evet",flat:"Evet",rev:"Evet",w:"8,7 kg",fold:"≈73×50×30",foldtype:"Tek el",basket:"—",cabin:"Hayır",susp:"—",price:3,feat:"Valiz boyu katlanma · çift yönlü",pros:["Koltuk üzerindeyken tek elle kapanıp valiz gibi ayakta durma","Lüks ve devasa alt sepet","Şehir için yekpare şasi"],cons:["Süspansiyon arazi için fazla sert","Çok uzun ebeveynler için oturma ünitesi alçak"]},
+      {b:"Chicco",m:"Best Friend Pro",usage:"0 ay–15 kg",birth:"Evet",flat:"Evet",rev:"Evet",w:"11,2 kg",fold:"60×30×77",foldtype:"Tek el",basket:"—",cabin:"Hayır",susp:"—",price:2,feat:"Doğumdan çift yönlü · travel sistem",pros:["Ana kucağıyla takım alındığında son derece ekonomik travel sistem","Kompakt katlanma"],cons:["Çift yönlü değil","Taşıma kapasitesi pazar standardının altında (15 kg)","Ağır"]},
+      {b:"Mamas & Papas",m:"Vardo",usage:"0 ay–22 kg",birth:"Evet",flat:"Evet",rev:"Evet",w:"—",fold:"—",foldtype:"Tek el",basket:"—",cabin:"Hayır",susp:"—",price:3,feat:"Süper kompakt katlanma · çift yönlü",pros:["Geniş, ters çevrilebilir puset koltuğu","Tam boy puset konforu","Süper kompakt katlanma"],cons:["Kompakt sınıfı için hantal","Türkiye'de ithalatçı/bayi üzerinden"]}
+    ],
+    "Full-size": [
+      {b:"Bugaboo",m:"Fox 5",usage:"0 ay–22 kg",birth:"Evet",flat:"Evet",rev:"Evet",w:"≈9,9 kg",fold:"≈89×53×34",foldtype:"Koltukla",basket:"10 kg",cabin:"Hayır",susp:"Evet",price:5,feat:"XL all-terrain · tam süspansiyon · portbebe dahil",pros:["Akıcı süspansiyon ve pürüzsüz sürüş","10 kg / 39 litre alışveriş sepeti","Çocuk büyüdükçe uzatılabilen tente ve ayaklık","Portbebe dahil"],cons:["Otomobil bagajında büyük yer tutar","Katlama öğrenme süreci gerektirir","Yüksek maliyet"]},
+      {b:"Cybex",m:"Priam",usage:"0 ay–22 kg",birth:"Evet",flat:"Evet",rev:"Evet",w:"12,9 kg",fold:"≈87×48×17",foldtype:"Tek el",basket:"5 kg",cabin:"Hayır",susp:"Evet",price:5,feat:"Platinum amiral · tek çekişli kemer",pros:["Otomotiv benzeri tek çekişli emniyet kemeri","Arka süspansiyonların sağladığı lüks yaylanma","Göz alıcı şasi renk seçenekleri"],cons:["Kaldırıp indirmede yoran 12,9 kg kütle","Cüssesine kıyasla 5 kg'lık çok dar sepet"]},
+      {b:"Cybex",m:"e-Priam",usage:"0 ay–22 kg",birth:"Evet",flat:"Evet",rev:"Evet",w:"15,3 kg",fold:"≈87×48×17",foldtype:"Tek el",basket:"5 kg",cabin:"Hayır",susp:"Evet",price:5,feat:"Elektrikli itiş desteği · Priam donanımı",pros:["Elektrik motor desteğiyle yokuşlarda efor gerektirmez","Uygulama kontrollü otomatik sallama (beşik) fonksiyonu","Lüks Priam donanımı"],cons:["Batarya ile 15,3 kg'lık ağır kütle","Şarjı bittiğinde kullanması zor","Lüksün tepe fiyatı"]},
+      {b:"Cybex",m:"Balios S Lux 2",usage:"0 ay–22 kg",birth:"Evet",flat:"Evet",rev:"Evet",w:"≈11,5 kg",fold:"—",foldtype:"Tek el",basket:"10 kg",cabin:"Hayır",susp:"Evet",price:3,feat:"Patlamaz all-terrain · düz yatış",pros:["Büyütülmüş 10 kg kapasiteli alışveriş sepeti","4 tekerlekli şok emici muazzam süspansiyon","Fiyat/performans amiral gemisi"],cons:["Kapatıldığında bagajda geniş yer kaplar","Ağır"]},
+      {b:"UPPAbaby",m:"Vista V3",usage:"0 ay–22 kg",birth:"Evet",flat:"Evet",rev:"Evet",w:"12,5 kg",fold:"41×65×86",foldtype:"Koltukla",basket:"13,6 kg",cabin:"Hayır",susp:"Evet",price:5,feat:"Portbebe dahil · 3 çocuğa genişler",pros:["İkiz/üç çocuk için genişletilebilir modüler mimari","13,5 kg kapasiteli ikonik sepet","Portbebe dahil, premium yapı"],cons:["Tek çocuk için fazla hantal","Manevrada ağırlığı ciddi hissedilir","Büyük katlanma"]},
+      {b:"Nuna",m:"MIXX Next",usage:"0 ay–22,7 kg",birth:"Evet",flat:"Evet",rev:"Evet",w:"≈12,8 kg",fold:"—",foldtype:"Tek el",basket:"—",cabin:"Hayır",susp:"Evet",price:4,feat:"Doğumdan tam düz yatış",pros:["Tam ve pürüzsüz düz yatış profili","Manyetik tokalarla hızlı sabitleme","Mevsimlik çift katmanlı minder"],cons:["Kardeş genişleme opsiyonu yok","Yapısal olarak ağır kütle","Türkiye'de kısıtlı bulunabilirlik"]},
+      {b:"Maxi-Cosi",m:"Fame",usage:"0 ay–22 kg",birth:"Evet",flat:"Evet",rev:"Evet",w:"—",fold:"—",foldtype:"Otomatik",basket:"—",cabin:"Hayır",susp:"—",price:5,feat:"LumiRide LED · 360° dönen oto koltuğu sistemi",pros:["Şasiye entegre LumiRide LED aydınlatma ile gece güvenliği","360° dönen oto koltuğu sistemi","Mükemmel sarsıntı emilimi"],cons:["Çok yüksek pazar fiyatı","Tam takımda ~13,5 kg"]},
+      {b:"Maxi-Cosi",m:"Oxford",usage:"0 ay–22 kg",birth:"Evet",flat:"Evet",rev:"Evet",w:"11,5 kg",fold:"48×58×68",foldtype:"Tek el",basket:"—",cabin:"Hayır",susp:"Evet",price:4,feat:"Travel sistem · portbebeli",pros:["Orta-üst segmentte yüksek f/p Travel Sistem","İdeal ve dengeli kullanım aralığı","Geniş çift yönlü puset"],cons:["İkonik lükslerin yanında daha mütevazı tasarım","Katlandığında boyutları küçülmez"]},
+      {b:"Inglesina",m:"Aptica",usage:"0 ay–22 kg",birth:"Evet",flat:"Evet",rev:"Evet",w:"—",fold:"—",foldtype:"Tek el",basket:"5 kg",cabin:"Hayır",susp:"Evet",price:4,feat:"Glam · patlamaz tekerlek · 4 tek. süspansiyon",pros:["Lüks İtalyan tekstil kalitesi","Geniş portbebe ve evde kullanılabilen stant modülü (Welcome Pad)","Her mevsim çift yönlü koltuk"],cons:["Şasi kalın, araç bagajında kaba durur","Süspansiyon esnemez ve katı hissettirir"]},
+      {b:"Chicco",m:"One4Ever",usage:"0 ay–22 kg",birth:"Evet",flat:"Evet",rev:"Evet",w:"≈7,9 kg",fold:"61×51×31",foldtype:"Tek klik",basket:"—",cabin:"Hayır",susp:"Evet",price:2,feat:"Modüler 2 koltuk · otomatik katlanma",pros:["Büyümeye göre değişen iki farklı oturma ünitesiyle gelir","İlk koltukla kullanıldığında çok hafif","Otomatik kapanma"],cons:["Büyük yaşlara uygun ikinci koltuk ters çevrilemez (öne bakar)","Orta boy tekerlek"]},
+      {b:"Chicco",m:"Mysa",usage:"0 ay–22 kg",birth:"Evet",flat:"Evet",rev:"Evet",w:"9,0 kg",fold:"—",foldtype:"Tek el",basket:"—",cabin:"Hayır",susp:"—",price:3,feat:"Çift yönlü · kompakt (9 kg)",pros:["Modern, şık görünümlü kumaş dokuları","Çift yönlü modellere göre iyi fiyat/performans","Hafif (9 kg)"],cons:["Sürüş hissi üst düzey markaların yaylanma akıcılığından yoksun"]},
+      {b:"Chicco",m:"Seety",usage:"0 ay–22 kg",birth:"Evet",flat:"—",rev:"—",w:"—",fold:"—",foldtype:"—",basket:"—",cabin:"Hayır",susp:"—",price:3,feat:"Travel sistem · şehir",pros:["Şehir içi için 7 kg'lık çok hafif travel sistem çözümü","Uygun fiyat"],cons:["Tekerlek ebatları çok küçük","Süspansiyon bozuk zeminleri tolere edemez","Muhtemelen tek yönlü"]},
+      {b:"Mamas & Papas",m:"Strada",usage:"0 ay–15 kg",birth:"Evet",flat:"Evet",rev:"Evet",w:"10,4 kg",fold:"70×56×36",foldtype:"Tek el",basket:"—",cabin:"Hayır",susp:"—",price:4,feat:"Şık şehir · tek elle valiz gibi katlanır",pros:["Geniş, ters çevrilebilir ve şık koltuk","Tek elle valiz gibi katlanma","Elmas işlemeli kumaşlar"],cons:["15 kg taşıma limiti (düşük)","Hantal","Türkiye'de ithalatçı/bayi üzerinden"]},
+      {b:"Mamas & Papas",m:"Flip XT³",usage:"0 ay–22 kg",birth:"Evet",flat:"Evet",rev:"Evet",w:"—",fold:"—",foldtype:"—",basket:"—",cabin:"Hayır",susp:"Evet",price:3,feat:"Ters çevrilebilir 'flip' koltuk",pros:["Piyasadaki en geniş ters çevrilebilir koltuklardan","Tam yatış ve yumuşak süspansiyon","Koltuk her iki yönde katlanır"],cons:["Tampon barı standart değil","Ağır"]}
+    ],
+    "Arazi / All-terrain": [
+      {b:"Cybex",m:"Talos S Lux",usage:"0 ay–22 kg",birth:"Evet",flat:"Evet",rev:"Evet",w:"12,5 kg",fold:"53×59×78",foldtype:"Tek el",basket:"10 kg",cabin:"Hayır",susp:"Evet",price:4,feat:"All-terrain patlamaz lastik · tam süspansiyon",pros:["Devasa arazi lastikleriyle dağ/taş tanımaz","Kalın ayak rüzgârlığıyla tam kış koruması","Çift yönlü ve geniş"],cons:["Zorlu katlanma mekanizması pratiklikten uzak","Katlandığında kendi başına dik durmaz","Çok ağır"]},
+      {b:"UPPAbaby",m:"Ridge",usage:"0 ay*–25 kg",birth:"Evet*",flat:"Kısmi",rev:"Hayır",w:"13,2 kg",fold:"50×65×92",foldtype:"—",basket:"—",cabin:"Hayır",susp:"Evet",price:4,feat:"Koşu · köpük lastik · disk fren · 2 aşamalı",pros:["Yokuş aşağı koşular için elcikte disk fren","Pazardaki en yüksek taşıma kapasitesi (25 kg)","Büyük havalı arazi tekerlekleri"],cons:["Yalnızca öne bakar","Cüsseli tekerleklerle kompakt bagajlara sığmaz","Ağır"]},
+      {b:"Inglesina",m:"Aptica XT",usage:"0 ay–22 kg",birth:"Evet",flat:"Evet",rev:"Evet",w:"≈11,2 kg",fold:"≈90×53×42",foldtype:"Tek el",basket:"5 kg",cabin:"Hayır",susp:"Evet",price:5,feat:"Adaptive Cruise · ayarlı süspansiyon",pros:["Çocuğun ağırlığına/zemine göre ayarlanabilen Adaptif Seyir Sistemi","Yenilmez off-road konforu","Gece uykusu sertifikalı geniş portbebe"],cons:["Tank hissi veren tasarım dar market reyonlarında eziyet","Devasa alan kaplar (bagaj düşmanı)"]},
+      {b:"Mamas & Papas",m:"Ocarro 2",usage:"0 ay–22 kg",birth:"Evet",flat:"Evet",rev:"Evet",w:"≈13,5 kg",fold:"76×58×37",foldtype:"Tek el",basket:"—",cabin:"Hayır",susp:"Evet",price:4,feat:"All-terrain patlamaz tekerlek · çift süspansiyon",pros:["Lüks, yumuşak ve yaylı sürüş","Geniş, ters çevrilebilir koltuk","Büyük ve koruyucu tente"],cons:["Ağır (~13,5 kg)","Hantal, bagajda yer kaplar"]}
+    ],
+    "Diğer öne çıkan modeller — 8 marka dışı": [
+      {b:"Stokke",m:"YOYO 3",usage:"0 ay*–22 kg",birth:"Evet*",flat:"Kısmi",rev:"Hayır",w:"6,3 kg",fold:"52×44×18",foldtype:"İki kademeli",basket:"—",cabin:"Evet",susp:"Evet",price:3,feat:"İkonik kabin · Hytrel süspansiyon (eski Babyzen YOYO)",pros:["Patentli Hytrel elastomer süspansiyon","Ultra kompakt yapı ve benzersiz çeviklik","Delikli, havalandırmalı yeni sırtlık"],cons:["Gerçek tam yatış (lie-flat) sunmuyor","Çanta takılıyken bebek alınınca geriye devrilme riski","Çift el gerektiren katlama"]},
+      {b:"Joolz",m:"Aer 2",usage:"0 ay*–22 kg",birth:"Evet*",flat:"Kısmi",rev:"Hayır",w:"6,0 kg",fold:"53×44×23,5",foldtype:"Tek el",basket:"—",cabin:"Evet",susp:"Evet",price:3,feat:"En hafif kabin · en iyi tek elle katlama",pros:["Saniyeler süren kusursuz tek el katlanma","Yüksek omuz askısı ve ergonomik uzun itme kolu","Geri dönüştürülmüş birinci sınıf materyal"],cons:["Yatış ayarı fermuarlı, uyuyan bebeği sarsabilir","Alt sepet günlük alışveriş için yetersiz"]},
+      {b:"Ergobaby",m:"Metro 3",usage:"0 ay–22 kg",birth:"Evet",flat:"Evet",rev:"Hayır",w:"8,3 kg",fold:"54×44×25",foldtype:"Tek el",basket:"—",cabin:"Evet",susp:"Evet",price:2,feat:"Gerçek tam yatış · AGR omurga sertifikalı",pros:["Alman AGR omurga dostu sertifikası","Bebekler için gerçek tam yatış (true lie-flat)","Derin dolgulu hafızalı sünger koltuk"],cons:["Ultra hafif rakiplere göre elde/omuzda ağır (8,3 kg)","Daha büyük katlanma"]},
+      {b:"Silver Cross",m:"Reef 2",usage:"0 ay–22 kg",birth:"Evet",flat:"Evet",rev:"Evet",w:"—",fold:"—",foldtype:"Tek el",basket:"—",cabin:"Hayır",susp:"Evet",price:4,feat:"Mat metalik lüks · tek elle katlanma",pros:["Mat metalik lüks çerçeve","Tek elle katlanma","Lüks kaplamalar ve büyük tente"],cons:["Ağır","Yüksek fiyat"]},
+      {b:"Anex",m:"Eli",usage:"0 ay–~22 kg",birth:"Evet",flat:"Evet",rev:"Evet",w:"10,5 kg",fold:"74×59×30",foldtype:"Standart (ayakta)",basket:"10 kg",cabin:"Hayır",susp:"Evet",price:4,feat:"EPP yalıtımlı portbebe · üçlü şok emilim",pros:["Isı/ses yalıtımlı süper hafif EPP portbebe devrimi","Üçlü şok emilim (triple shock) sistemi","Ekolojik Sorona yataklı lüks iç yüzey"],cons:["Arka aks açıklığı (59 cm) asansör ve market kasalarında sorun olabilir","Ağır (10,5 kg)"]},
+      {b:"Doona",m:"Car Seat & Stroller",usage:"0 ay–15,8 kg",birth:"Evet",flat:"—",rev:"Hayır",w:"7,8 kg",fold:"66×44×57",foldtype:"Tekerlek içeri katlanır",basket:"Yok",cabin:"Evet",susp:"Evet",price:4,feat:"Oto koltuğu↔puset saniyeler içinde · FAA/TÜV",pros:["Oto koltuğundan pusete 1 saniyede dönüşüm","Taksi/Uber için paha biçilemez","Uçak içi koltuk kullanımı onaylı (FAA/TÜV)"],cons:["Eşya saklama sepeti yok","15,8 kg / 81 cm ile kısa kullanım ömrü","Puset formu dışında taşıması çok ağır"]}
+    ]
+  };
+
+  var SEGNOTE = {
+    "Diğer öne çıkan modeller — 8 marka dışı": "Her iki bağımsız AI değerlendirmesi de bu modelleri premium bir karşılaştırmada önemli eksikler olarak işaret etti. Türkiye'de bulunurlukları değişkendir; ithalatçı/butik üzerinden temin edilebilir."
+  };
+
+  function yn(v){
+    if(v && v.indexOf("Evet")===0) return '<span class="yes">'+v+'</span>';
+    if(v==="Hayır") return '<span class="no">Hayır</span>';
+    return '<span class="na">—</span>';
+  }
+  function fla(v){
+    if(v==="Evet") return '<span class="yes">Evet</span>';
+    if(v==="Hayır") return '<span class="no">Hayır</span>';
+    if(!v || v==="—") return '<span class="na">—</span>';
+    return '<span class="mid">'+v+'</span>';
+  }
+  function pstars(n){ return '<span class="r"><span class="fill">'+"★".repeat(n)+'</span><span class="empty">'+"☆".repeat(5-n)+'</span></span>'; }
+  function plist(arr){
+    if(!arr || !arr.length) return '<span class="na">—</span>';
+    var s='<ul class="pc">';
+    for(var i=0;i<arr.length;i++){ s+='<li>'+arr[i]+'</li>'; }
+    return s+'</ul>';
+  }
+  var SROWS = [
+    ["Kullanım (yaş–maks)","usage"],
+    ["Doğumdan uygun","birth"],
+    ["Tam yatış (lie-flat)","flat"],
+    ["Çift yönlü koltuk","rev"],
+    ["Ağırlık (operasyonel)","w"],
+    ["Katlanmış ölçü (cm)","fold"],
+    ["Katlanma","foldtype"],
+    ["Sepet kapasitesi","basket"],
+    ["Uçak kabini (kabin boy)","cabin"],
+    ["Süspansiyon","susp"],
+    ["Fiyat bandı (~€)","price"],
+    ["Öne çıkan özellik","feat"],
+    ["Artılar","pros"],
+    ["Eksiler","cons"]
+  ];
+  var YNF = {birth:1,rev:1,cabin:1};
+  var specHtml = '';
+  Object.keys(SPECS).forEach(function(seg){
+    var models = SPECS[seg];
+    specHtml += '<div class="spec-block"><h3>'+seg+'</h3>';
+    if(SEGNOTE[seg]){ specHtml += '<p class="seg-note">'+SEGNOTE[seg]+'</p>'; }
+    specHtml += '<div class="spec-card"><div class="spec-scroll"><table class="spec"><thead><tr><th>Özellik</th>';
+    models.forEach(function(md){ specHtml += '<th><span class="bn">'+md.b+'</span><span class="mn">'+md.m+'</span></th>'; });
+    specHtml += '</tr></thead><tbody>';
+    SROWS.forEach(function(row){
+      var key = row[1];
+      var rc = key==="pros" ? ' class="r-pros"' : (key==="cons" ? ' class="r-cons"' : "");
+      specHtml += '<tr'+rc+'><td class="rl">'+row[0]+'</td>';
+      models.forEach(function(md){
+        var val = md[key], out;
+        if(key==="price"){ out = pstars(val); }
+        else if(key==="pros" || key==="cons"){ out = plist(val); }
+        else if(key==="flat"){ out = fla(val); }
+        else if(YNF[key]){ out = yn(val); }
+        else if(val===undefined || val==="—"){ out = '<span class="na">—</span>'; }
+        else { out = val; }
+        specHtml += '<td>'+out+'</td>';
+      });
+      specHtml += '</tr>';
+    });
+    specHtml += '</tbody></table></div></div></div>';
+  });
+  document.getElementById('specTables').innerHTML = specHtml;
+</script>
+</body>
+</html>
