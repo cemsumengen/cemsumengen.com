@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Arda’nın ek gıda planı</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F3F6F2; --surface:#FFFFFF; --ink:#1D2A23; --muted:#5B6A61; --line:#DAE3DC;
+  --leaf:#2F6B4F; --leaf-soft:#E2EEE6; --pumpkin:#D9741C; --pumpkin-soft:#FBEBDC;
+  --alert:#B3261E; --alert-soft:#FBE4E1; --amber:#9A6A00; --amber-soft:#FFF2CC; --sky:#22698A; --sky-soft:#DDEEF5;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#111714; --surface:#19211D; --ink:#E5EEE8; --muted:#9DAEA4; --line:#2A3630;
+    --leaf:#7CC3A0; --leaf-soft:#1F3229; --pumpkin:#F2A65A; --pumpkin-soft:#3A2814;
+    --alert:#FF8A80; --alert-soft:#3D1D1A; --amber:#F2C14E; --amber-soft:#3A3014; --sky:#7EC4E3; --sky-soft:#17303C;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#111714; --surface:#19211D; --ink:#E5EEE8; --muted:#9DAEA4; --line:#2A3630;
+  --leaf:#7CC3A0; --leaf-soft:#1F3229; --pumpkin:#F2A65A; --pumpkin-soft:#3A2814;
+  --alert:#FF8A80; --alert-soft:#3D1D1A; --amber:#F2C14E; --amber-soft:#3A3014; --sky:#7EC4E3; --sky-soft:#17303C;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 110px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 "Figtree",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+h1,h2,h3{font-family:"Bricolage Grotesque","Figtree",system-ui,sans-serif;line-height:1.15;margin:0}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--leaf);outline-offset:2px}
+.wrap{max-width:680px;margin:0 auto;padding:0 16px 48px}
+
+/* header */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-bottom:1px solid var(--line)}
+.top .wrap{padding-top:14px;padding-bottom:0}
+.title{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.title h1{font-size:1.45rem;font-weight:700;letter-spacing:-.01em}
+.title span{color:var(--muted);font-size:.85rem;white-space:nowrap}
+nav.tabs{display:flex;gap:4px;margin-top:10px;overflow-x:auto}
+nav.tabs a{flex:1;text-align:center;padding:10px 8px 12px;color:var(--muted);text-decoration:none;font-weight:600;font-size:.95rem;border-bottom:3px solid transparent;white-space:nowrap}
+nav.tabs a[aria-current="page"]{color:var(--ink);border-color:var(--pumpkin)}
+
+section.view{display:none;padding-top:18px}
+section.view.on{display:block}
+
+/* day nav */
+.daynav{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:8px}
+.daynav button.arrow{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);font-size:1.3rem;cursor:pointer}
+.daynav button.arrow:disabled{opacity:.35;cursor:default}
+.daylabel{text-align:center}
+.daylabel h2{font-size:1.35rem}
+.daylabel p{margin:2px 0 0;color:var(--muted);font-size:.9rem}
+.todaybtn{display:block;margin:8px auto 0;border:0;background:none;color:var(--leaf);font-weight:600;cursor:pointer;padding:6px 10px}
+.todaybtn[hidden]{display:none}
+
+.strip{display:flex;gap:4px;overflow-x:auto;padding:14px 2px 10px;scrollbar-width:none}
+.strip::-webkit-scrollbar{display:none}
+.strip button{flex:0 0 auto;width:22px;height:30px;border-radius:6px;border:0;cursor:pointer;opacity:.28;position:relative;padding:0}
+.strip button.done{opacity:1}
+.strip button.sel{outline:2px solid var(--ink);outline-offset:2px;opacity:1}
+.strip button.today::after{content:"";position:absolute;left:50%;bottom:-7px;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:var(--ink)}
+.strip button.react{box-shadow:inset 0 0 0 2px var(--alert)}
+
+/* plate hero */
+.hero{display:grid;grid-template-columns:132px 1fr;gap:18px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:18px;margin-top:6px}
+.plate{width:132px;height:132px;border-radius:50%;position:relative;background:var(--paper);border:1px solid var(--line)}
+.plate .core{position:absolute;inset:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:.8rem;line-height:1.1;padding:6px;color:#1D2A23}
+.plate .dot{position:absolute;width:11px;height:11px;border-radius:50%;margin:-5.5px 0 0 -5.5px}
+.hero h3{font-size:1.5rem}
+.hero .meta{margin:4px 0 8px;color:var(--muted);font-size:.92rem}
+.tag{display:inline-block;font-size:.78rem;font-weight:700;padding:3px 9px;border-radius:999px;margin:0 6px 6px 0}
+.tag.new{background:var(--pumpkin-soft);color:var(--pumpkin)}
+.tag.allergen{background:var(--alert-soft);color:var(--alert)}
+.tag.calm{background:var(--leaf-soft);color:var(--leaf)}
+.tip{font-size:.92rem;margin:0}
+@media (max-width:420px){.hero{grid-template-columns:1fr;justify-items:center;text-align:center}}
+
+/* meals */
+.meals{margin-top:18px;display:grid;gap:10px}
+.meal{display:grid;grid-template-columns:1fr auto;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 14px 14px 16px}
+.meal.checked{border-color:var(--leaf);background:var(--leaf-soft)}
+.meal h4{margin:0;font-size:1rem}
+.meal h4 small{font-weight:500;color:var(--muted);margin-left:6px}
+.meal ul{margin:6px 0 0;padding-left:18px}
+.meal li{margin:2px 0}
+.meal li.newitem{font-weight:700}
+.check{width:46px;height:46px;border-radius:14px;border:2px solid var(--line);background:var(--paper);cursor:pointer;font-size:1.3rem;font-weight:700;color:transparent;align-self:start}
+.meal.checked .check{background:var(--leaf);border-color:var(--leaf);color:var(--surface)}
+
+.phase{margin-top:16px;padding:12px 14px;border-left:4px solid var(--pumpkin);background:var(--surface);border-radius:0 12px 12px 0;font-size:.93rem}
+.phase b{display:block;margin-bottom:2px}
+
+.observe{margin-top:18px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.observe h4{margin:0 0 8px;font-size:1rem}
+.rx{display:flex;gap:6px;flex-wrap:wrap}
+.rx button{flex:1 1 30%;min-height:44px;border-radius:12px;border:1px solid var(--line);background:var(--paper);cursor:pointer;font-weight:600;font-size:.9rem;padding:8px}
+.rx button[aria-pressed="true"][data-r="ok"]{background:var(--leaf);color:var(--surface);border-color:var(--leaf)}
+.rx button[aria-pressed="true"][data-r="mild"]{background:var(--amber-soft);color:var(--amber);border-color:var(--amber)}
+.rx button[aria-pressed="true"][data-r="severe"]{background:var(--alert);color:var(--surface);border-color:var(--alert)}
+.observe textarea{width:100%;margin-top:10px;min-height:64px;border-radius:12px;border:1px solid var(--line);background:var(--paper);padding:10px;resize:vertical}
+.warn{margin-top:10px;padding:10px 12px;border-radius:12px;font-size:.9rem}
+.warn.mild{background:var(--amber-soft);color:var(--ink)}
+.warn.severe{background:var(--alert-soft);color:var(--ink)}
+.warn[hidden]{display:none}
+
+/* plan */
+.foods{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 4px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:5px 10px 5px 6px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:.85rem;color:var(--muted)}
+.chip i{width:14px;height:14px;border-radius:50%;display:inline-block}
+.chip.done{color:var(--ink);font-weight:600}
+.chip.cur{border-color:var(--pumpkin);color:var(--ink);font-weight:600}
+.chip.react{border-color:var(--alert);color:var(--alert);font-weight:600}
+.chip.up i{opacity:.35}
+.legend{font-size:.82rem;color:var(--muted);margin:0 0 14px}
+.week{margin-top:20px}
+.week h3{font-size:1.1rem}
+.week p.wk{margin:2px 0 8px;color:var(--muted);font-size:.88rem}
+.drow{display:grid;grid-template-columns:86px 1fr auto;gap:10px;align-items:center;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:6px;cursor:pointer}
+.drow.istoday{border-color:var(--ink)}
+.drow .d{font-size:.88rem;color:var(--muted)}
+.drow .d b{display:block;color:var(--ink);font-size:.95rem}
+.drow .f{display:flex;align-items:center;gap:8px;font-weight:600;font-size:.95rem}
+.drow .f i{width:12px;height:12px;border-radius:50%;flex:0 0 auto}
+.drow .f small{font-weight:500;color:var(--muted)}
+.drow .s{font-size:.85rem;color:var(--muted);white-space:nowrap}
+.drow .s.full{color:var(--leaf);font-weight:700}
+.drow .s.bad{color:var(--alert);font-weight:700}
+
+.settings{margin-top:28px;padding-top:16px;border-top:1px solid var(--line);font-size:.92rem}
+.settings label{display:block;font-weight:600;margin-bottom:6px}
+.settings input[type=date]{padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--surface)}
+.settings p{color:var(--muted);margin:6px 0 14px}
+.reset{border:1px solid var(--alert);color:var(--alert);background:none;border-radius:10px;padding:8px 14px;cursor:pointer;font-weight:600}
+
+/* info */
+details{background:var(--surface);border:1px solid var(--line);border-radius:16px;margin-top:10px}
+summary{cursor:pointer;padding:15px 16px;font-weight:700;font-family:"Bricolage Grotesque","Figtree",sans-serif;font-size:1.05rem;list-style:none;display:flex;justify-content:space-between;gap:10px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--muted);font-weight:500}
+details[open] summary::after{content:"–"}
+details .body{padding:0 16px 16px;font-size:.95rem}
+details .body ul{padding-left:18px;margin:6px 0}
+details .body li{margin:4px 0}
+details .body p{margin:6px 0}
+details.urgent{border-color:var(--alert)}
+.callout{background:var(--alert-soft);border-radius:12px;padding:10px 12px;margin:8px 0}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.9rem;min-width:420px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:700}
+
+.season{display:grid;gap:12px}
+.season .box{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.season h3{font-size:1.1rem;margin-bottom:6px}
+.season ul{margin:4px 0;padding-left:18px}
+.season li{margin:3px 0}
+.foot{margin-top:28px;font-size:.85rem;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.meal,.check{transition:background .15s,border-color .15s}}
+nav.tabs a{flex:1 0 auto;padding:10px 10px 12px;font-size:.92rem}
+.lead{color:var(--muted);font-size:.93rem;margin:6px 0 12px}
+h2.sec{font-size:1.3rem}
+.warnline{color:var(--alert);font-size:.88rem;margin:6px 0 0}
+.primary{background:var(--leaf);color:var(--surface);border:0;border-radius:12px;padding:11px 18px;font-weight:700;cursor:pointer;min-height:44px}
+.primary:disabled{opacity:.4;cursor:default}
+.ghost{background:none;border:1px solid var(--line);border-radius:12px;padding:10px 16px;font-weight:600;cursor:pointer;min-height:44px;color:var(--muted)}
+
+/* warnings */
+.wbox{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin-bottom:12px;font-size:.9rem}
+.wbox p{margin:4px 0;padding-left:18px;position:relative}
+.wbox p::before{content:"!";position:absolute;left:2px;font-weight:800;color:var(--pumpkin)}
+.wbox p.info::before{content:"i";color:var(--muted)}
+
+/* sequence */
+.seqcard{display:grid;grid-template-columns:8px 1fr;background:var(--surface);border:1px solid var(--line);border-radius:14px;margin-top:8px;overflow:hidden}
+.seqcard.locked{opacity:.62}
+.seqcard.outside{border-style:dashed;opacity:.7}
+.seqcard.now{border-color:var(--pumpkin)}
+.seqcard .bar{height:100%}
+.seqcard .in{padding:10px 12px}
+.seqtop{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:.84rem;color:var(--muted)}
+.seqname{font-weight:700;font-size:1.02rem;margin:3px 0 4px}
+.seqname .num{color:var(--muted);font-weight:600;margin-right:6px}
+.stepper{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.stepper button{width:34px;height:32px;border:0;background:var(--paper);cursor:pointer;font-size:1.05rem}
+.stepper button:disabled{opacity:.3;cursor:default}
+.stepper span{padding:0 8px;font-size:.85rem;font-weight:600;color:var(--ink);white-space:nowrap}
+.acts{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.acts button{min-width:40px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--paper);cursor:pointer;font-size:.9rem;padding:0 10px}
+.acts button:disabled{opacity:.3;cursor:default}
+.seqfoot{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.tag.mix{background:var(--leaf-soft);color:var(--leaf)}
+.tag.doc{background:var(--amber-soft);color:var(--amber)}
+
+/* chips & food lists */
+.chips{display:flex;gap:6px;overflow-x:auto;padding:4px 0 8px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chips button{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 14px;font-weight:600;font-size:.88rem;cursor:pointer;color:var(--muted)}
+.chips button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.grp{font-family:"Bricolage Grotesque","Figtree",sans-serif;font-weight:700;font-size:1rem;margin:16px 0 4px}
+.frow{display:grid;grid-template-columns:16px 1fr 30px;gap:10px;align-items:center;width:100%;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:10px 12px;margin-top:6px;cursor:pointer}
+.frow i{width:16px;height:16px;border-radius:50%}
+.frow .fn{font-weight:600}
+.frow small{display:block;font-weight:400;color:var(--muted);font-size:.8rem}
+.frow .tick{width:28px;height:28px;border-radius:8px;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;color:transparent;font-weight:800}
+.frow[aria-pressed="true"]{border-color:var(--leaf);background:var(--leaf-soft)}
+.frow[aria-pressed="true"] .tick{background:var(--leaf);border-color:var(--leaf);color:var(--surface)}
+details.food{margin-top:6px;border-radius:12px}
+details.food summary{font-size:.98rem;padding:11px 14px;align-items:center}
+details.food summary .nm{display:flex;align-items:center;gap:10px}
+details.food summary i{width:14px;height:14px;border-radius:50%;flex:0 0 auto}
+details.food summary small{display:block;font-family:"Figtree",sans-serif;font-weight:400;color:var(--muted);font-size:.8rem}
+details.food .body{font-size:.92rem}
+details.food .body .primary{margin-top:8px;min-height:40px;padding:8px 14px}
+
+/* sheet */
+.sheet{position:fixed;inset:0;z-index:20;background:rgba(10,20,15,.45);display:flex;align-items:flex-end;justify-content:center}
+.sheet[hidden]{display:none}
+.panel{background:var(--paper);width:100%;max-width:680px;max-height:90%;border-radius:20px 20px 0 0;display:flex;flex-direction:column;padding:14px 16px 0}
+.shhead{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.shhead h3{font-size:1.2rem}
+.shhead button{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--surface);cursor:pointer}
+.panel input[type=search]{width:100%;margin-top:10px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--surface)}
+.shlist{overflow-y:auto;flex:1;padding-bottom:8px;-webkit-overflow-scrolling:touch}
+.shfoot{border-top:1px solid var(--line);padding:12px 0 calc(12px + env(safe-area-inset-bottom,0px));display:flex;gap:12px;align-items:center;justify-content:space-between}
+.shfoot #shSel{font-size:.88rem}
+.shfoot #shSel .warnline{margin:2px 0 0}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:12px;font-size:.9rem;z-index:30;max-width:90%}
+.toast[hidden]{display:none}
+.lvp{display:inline-block;font-family:"Figtree",sans-serif;font-size:.72rem;font-weight:700;padding:1px 8px;border-radius:999px;margin-right:6px;vertical-align:1px;white-space:nowrap}
+.lv1{background:var(--leaf-soft);color:var(--leaf)} .lv2{background:var(--sky-soft);color:var(--sky)}
+.lv3{background:var(--amber-soft);color:var(--amber)} .lv4{background:var(--alert-soft);color:var(--alert)}
+.chips button .ld{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
+.lvlegend{display:grid;gap:8px;margin:4px 0 10px}
+.lvlegend div{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;font-size:.9rem}
+.startcard{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin-bottom:14px}
+.startcard label{display:block;font-weight:700;margin-bottom:8px}
+.startcard .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.startcard input[type=date]{padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--paper);font-size:1rem}
+.startcard p{margin:8px 0 0;font-size:.88rem;color:var(--muted)}
+.sync{border:0;background:none;color:var(--muted);font:inherit;font-size:.78rem;margin-left:8px;padding:4px 0;cursor:pointer}
+.sync.ok{color:var(--leaf)} .sync.err{color:var(--amber)}
+.settitle{font-size:1.05rem;margin-bottom:4px}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px}
+.gate{align-items:center;padding:16px}
+.gate .panel{border-radius:20px;padding:20px;max-width:440px}
+.gate input{width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font-size:1.05rem;margin-top:4px}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="title"><h1>Arda’nın ek gıda planı</h1><span><span id="rangeLbl">61 gün</span><button class="sync" id="sync" type="button"></button></span></div>
+    <nav class="tabs" aria-label="Bölümler">
+      <a href="#gun" data-v="gun">Gün</a>
+      <a href="#plan" data-v="plan">Plan</a>
+      <a href="#sira" data-v="sira">Sıra</a>
+      <a href="#besinler" data-v="besinler">Besinler</a>
+      <a href="#bilgi" data-v="bilgi">Bilgiler</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<section class="view" id="v-gun">
+  <div class="daynav">
+    <button class="arrow" id="prev" aria-label="Önceki gün">‹</button>
+    <div class="daylabel"><h2 id="dTitle"></h2><p id="dSub"></p></div>
+    <button class="arrow" id="next" aria-label="Sonraki gün">›</button>
+  </div>
+  <button class="todaybtn" id="goToday" hidden>Bugüne dön</button>
+  <div class="strip" id="strip" aria-label="61 günlük şerit"></div>
+  <div class="hero">
+    <div class="plate" id="plate" aria-hidden="true"></div>
+    <div>
+      <div id="tags"></div>
+      <h3 id="foodName"></h3>
+      <p class="meta" id="foodMeta"></p>
+      <p class="tip" id="foodTip"></p>
+      <p class="warnline" id="foodWarn" hidden></p>
+    </div>
+  </div>
+  <div class="meals" id="meals"></div>
+  <div class="phase" id="phase"></div>
+  <div class="observe">
+    <h4>Gözlem</h4>
+    <div class="rx" id="rx">
+      <button data-r="ok" aria-pressed="false">Sorun yok</button>
+      <button data-r="mild" aria-pressed="false">Hafif belirti</button>
+      <button data-r="severe" aria-pressed="false">Belirgin reaksiyon</button>
+    </div>
+    <div class="warn mild" id="wMild" hidden>Besini o gün durdurun, belirtiyi (fotoğrafla) not edin ve doktorunuza danışın. Belirti geçene kadar yeni besin eklemeyin; Sıra bölümünden bu adımı uzatabilirsiniz.</div>
+    <div class="warn severe" id="wSevere" hidden><b>Dudak, dil ya da yüzde şişlik, nefes darlığı, hırıltı, yaygın kurdeşen, tekrarlayan kusma ya da aşırı halsizlik varsa hemen 112’yi arayın.</b> Bu besini doktorunuzla konuşmadan tekrar vermeyin.</div>
+    <textarea id="note" placeholder="Not: ne kadar yedi, kaka, uyku, cilt…"></textarea>
+  </div>
+</section>
+
+<section class="view" id="v-plan">
+  <h2 class="sec">Tanıştığı besinler</h2>
+  <div class="foods" id="foods"></div>
+  <p class="legend">Renkli ve kalın: tamamlandı. Turuncu çerçeve: şu an tanışıyor. Kırmızı: reaksiyon not edildi. Soluk: sırada.</p>
+  <div id="weeks"></div>
+  <div class="settings">
+    <h3 class="settitle">Ortak kayıt ve yedek</h3>
+    <p id="codeInfo"></p>
+    <div class="btnrow">
+      <button class="ghost" id="codeChange">Aile kodunu değiştir</button>
+      <button class="ghost" id="goLocal">Yalnızca bu cihazda kullan</button>
+    </div>
+    <div class="btnrow">
+      <button class="ghost" id="backupDl">Yedeği indir</button>
+      <button class="ghost" id="backupUp">Yedekten yükle</button>
+      <input type="file" id="backupFile" accept="application/json,.json" hidden>
+    </div>
+    <p>Başlangıç tarihini Sıra bölümünün en üstünden değiştirebilirsiniz.</p>
+    <button class="reset" id="reset">Tüm işaretleri sil</button>
+  </div>
+</section>
+
+<section class="view" id="v-sira">
+  <div class="startcard">
+    <label for="startDate">Başlangıç günü (1. gün)</label>
+    <div class="row"><input type="date" id="startDate"><button class="ghost" id="startToday">Bugün başlat</button></div>
+    <p id="startInfo"></p>
+  </div>
+  <h2 class="sec">Tanışma sırası</h2>
+  <p class="lead">Adımlar yukarıdan aşağı uygulanır. Bir adım tek besin ya da karışım olabilir. Yeni besin içeren adıma 3 gün, yalnızca bildiği besinlerden oluşan pekiştirme adımına 1 gün önerilir. Başlamış adımlar kilitlenir; içinde bulunduğunuz adımı yalnızca uzatabilirsiniz.</p>
+  <div id="warns"></div>
+  <div id="seq"></div>
+  <div class="seqfoot"><button class="primary" id="addEnd">Sona adım ekle</button><button class="ghost" id="resetSeq">Varsayılan sıraya dön</button></div>
+</section>
+
+<section class="view" id="v-besinler">
+  <h2 class="sec">Besinler</h2>
+  <p class="lead">Mevsiminde olanlar, yıl boyu bulunanlar ve dondurup sakladığınız ya da hazır dondurulmuş alabileceğiniz mevsim dışı ürünler. Hazırlama notu için besine dokunun.</p>
+  <details class="lvhelp" open><summary>Kademeler ne anlama geliyor?</summary><div class="body"><div class="lvlegend" id="lvLegend"></div>
+  <p class="lead" style="margin:0">Bu sınıflama yaygın uygulamalardan derlenmiş bir rehberdir, resmi bir liste değildir. Türkiye’de doktorlar arasında farklılık olabilir.</p></div></details>
+  <div class="chips" id="libLv"></div>
+  <div class="chips" id="libChips"></div>
+  <div id="lib"></div>
+</section>
+
+<!-- BİLGİLER -->
+<section class="view" id="v-bilgi">
+  <details class="urgent" open>
+    <summary>Ne zaman acil yardım?</summary>
+    <div class="body">
+      <div class="callout"><b>Hemen 112:</b> dudak, dil, göz çevresi ya da yüzde şişlik; nefes darlığı, hırıltı, ses kısıklığı; tüm vücuda yayılan kurdeşen; tekrarlayan kusma; solukluk, morarma, aşırı halsizlik ya da uyandırmakta zorlanma.</div>
+      <p><b>Gecikmiş reaksiyona dikkat:</b> İnek sütü alerjisi olan bebeklerde, yeni bir besinden 1–4 saat sonra başlayan tekrarlayan kusma, solukluk ve halsizlik görülebilir (FPIES). Pirinç, yulaf ve yumurta en sık tetikleyenler arasındadır. Bu tabloda da acil değerlendirme gerekir.</p>
+      <p><b>Doktora danışın:</b> ağız çevresinde kızarıklık ya da birkaç kabarcık, egzamada belirgin alevlenme, ishal, kakada kan ya da mukus, belirgin huzursuzluk.</p>
+      <p>Yeni besini sabah ya da öğle verin ve sonrasında en az 2 saat bebeği gözünüzün önünde tutun. Uykudan hemen önce yeni besin denemeyin.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Temel kurallar</summary>
+    <div class="body"><ul>
+      <li>Anne sütü ya da doktorunuzun önerdiği mama hâlâ ana besin. Ek gıda “ek”; ilk haftalarda önce süt, 30–60 dk sonra kaşık.</li>
+      <li>Her yeni besini <b>3 gün</b> tek başına deneyin; bu sürede başka yeni besin eklemeyin. Planda yeni besin her zaman turuncu ve kalın.</li>
+      <li>Bebek mama sandalyesinde dik otursun. Yatarken, ağlarken, araçta ya da gezinirken yedirmeyin.</li>
+      <li><b>Tuz, şeker, bal yok.</b> Lezzet için zeytinyağı yeterli.</li>
+      <li>Miktarlar hedef değil, yaklaşık bir çerçeve. Başını çevirir, ağzını kapatır ya da kaşığı iterse durun; zorlamayın, oyalayarak yedirmeyin.</li>
+      <li>Bebek hastaysa ya da aşı günüyse yeni besin başlatmayın. Sıra bölümünde o adımın süresini uzatın ya da araya bir pekiştirme adımı ekleyin.</li>
+      <li>Karışım adımlarında aynı anda birden fazla yeni besin olmamasına dikkat edin; tepki olursa hangisinden olduğunu ayırt edemezsiniz.</li>
+      <li>Kıvam: ilk haftalar pürüzsüz ve akışkan, Kasım sonu daha koyu, Aralık’ta çatalla ezilmiş ve hafif pütürlü. Pütürlüye geçişi çok geciktirmek çiğneme becerisini zorlaştırır.</li>
+    </ul></div>
+  </details>
+
+  <details>
+    <summary>İnek sütü proteini alerjisi için özel notlar</summary>
+    <div class="body"><ul>
+      <li><b>Verilmeyecekler:</b> süt, yoğurt, ayran, peynir, lor, tereyağı, kaymak, krema ve bunları içeren her şey.</li>
+      <li><b>Keçi ve koyun sütü ürünleri de çoğunlukla çapraz reaksiyon verir</b>; “keçi yoğurdu dokunmaz” önerilerine uymayın, doktorunuz özellikle önermedikçe vermeyin.</li>
+      <li>Pişirmede tereyağı yerine zeytinyağı kullanın.</li>
+      <li><b>Etiket okuyun:</b> süt tozu, kazein, kazeinat, peynir altı suyu (whey), laktalbümin, laktoglobulin, süt yağı, krema ve “süt içerebilir” ibaresi. Hazır kavanoz mamalar, tahıllı bebek mamaları, bisküvi ve ekmeklerde sık bulunur.</li>
+      <li><b>Dana ve sığır eti:</b> inek sütü alerjisi olan bebeklerin bir kısmı sığır etine de reaksiyon verebilir. Doktorunuzun kuzu ile başlatması bu yüzden mantıklı; dana etine geçmeden önce ona sorun.</li>
+      <li>Süt alerjisi olan bebeklerde başka besin alerjileri de biraz daha sık görülür. Bu yüzden 3 gün kuralına ve gözlem notlarına özellikle sadık kalın.</li>
+      <li>Anne sütüyle besleniyorsa annenin diyetiyle ilgili kararlar doktorunuzun önerisiyle sürsün.</li>
+    </ul></div>
+  </details>
+
+  <details>
+    <summary>Kuzu kıyma ve yumurta sarısı hazırlama</summary>
+    <div class="body">
+      <p><b>Kuzu kıyma (8. günden itibaren)</b></p>
+      <ul>
+        <li>Yağsız kuzu but tercih edin, kasaba önünüzde çektirin.</li>
+        <li>Sebzelerle birlikte suda tamamen pişirin; hiç pembe kalmasın. İlk günler püreyle birlikte pürüzsüzleşene kadar ezin.</li>
+        <li>Pratik yol: 250 g kıymayı sebzelerle pişirip buz kalıplarına bölün, dondurun. Bir küp yaklaşık 1 yemek kaşığıdır.</li>
+        <li>Demirin emilimi C vitamini kaynaklarıyla (brokoli, ıspanak, karnabahar) aynı öğünde artar.</li>
+      </ul>
+      <p><b>Yumurta sarısı (11. günden itibaren)</b></p>
+      <ul>
+        <li>Yumurtayı 10–12 dk katı haşlayın. Sarıyı ayırın, beyaza değen ince tabakayı bıçakla sıyırın.</li>
+        <li>Anne sütü, mama ya da sebze suyuyla ezip kremamsı yapın. Rafadan ya da az pişmiş sarı vermeyin.</li>
+        <li>¼ sarı ile başlayıp 3 günde ½’ye çıkın. Sonra Kasım boyunca gün aşırı ½, Aralık’ta gün aşırı 1 tam sarı. Tolere edilen alerjenleri düzenli vermek, tolerans için önerilir.</li>
+        <li>Yumurta beyazı ya da tam yumurta için doktorunuzun yönlendirmesini bekleyin.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>Miktarlar ve ölçüler</summary>
+    <div class="body">
+      <p>Tatlı kaşığı ≈ 5 ml, yemek kaşığı (yk) ≈ 15 ml, yarım su bardağı ≈ 100 ml (≈ 6–7 yk).</p>
+      <div class="tbl"><table>
+        <tr><th>Dönem</th><th>Öğün</th><th>Öğün başına</th></tr>
+        <tr><td>1–7. gün</td><td>1</td><td>1–2 tatlı kaşığından 2–3 yk’ye</td></tr>
+        <tr><td>8–13. gün</td><td>1 (+ yumurta tadımı)</td><td>2–4 yk</td></tr>
+        <tr><td>14–31. gün</td><td>2</td><td>Öğle 4–6 yk, ikindi 2–4 yk</td></tr>
+        <tr><td>32–45. gün</td><td>3</td><td>Öğle 5–7 yk, diğerleri 3–4 yk</td></tr>
+        <tr><td>46–61. gün</td><td>3</td><td>Öğle 6–8 yk (≈ yarım su bardağı), diğerleri 4–5 yk</td></tr>
+      </table></div>
+      <p>Daha az yediği günler normaldir. Kilo takibi ve ıslak bez sayısı, tek tek öğünlerden daha önemli göstergelerdir.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Öğürme mi, boğulma mı?</summary>
+    <div class="body">
+      <p><b>Öğürme</b> normal ve koruyucu bir reflekstir: bebek ses çıkarır, öksürür, yüzü kızarır, dili öne gelir. Müdahale etmeden sakin bekleyin.</p>
+      <p><b>Boğulma</b> sessizdir: ses çıkaramaz, nefes alamaz, morarır. Hemen bebek ilk yardımını uygulayın (yüzüstü 5 sırt vuruşu, sırtüstü 5 göğüs basısı) ve 112’yi arayın. Bir bebek ilk yardım kursu almanızı öneririm.</p>
+      <p>Bu dönemde verilmeyecek boğulma riskli yiyecekler: bütün kuruyemiş, bütün üzüm ve zeytin, çiğ sert sebze ve elma parçaları, patlamış mısır.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>1 yaşından önce verilmeyecekler</summary>
+    <div class="body"><ul>
+      <li>Bal (botulizm riski), tuz, şeker, hazır çorba ve bulyon.</li>
+      <li>Süt ve tüm süt ürünleri (sizin durumunuzda keçi ve koyun sütü ürünleri dahil).</li>
+      <li>Meyve suyu, çay, bitki çayları, şekerli içecekler.</li>
+      <li>Sucuk, salam, sosis gibi şarküteri ürünleri.</li>
+      <li>Çiğ ya da az pişmiş et ve yumurta.</li>
+      <li>Pirinç sütü ve pirinç keki (arsenik); normal pirinci bol suda pişirip süzün.</li>
+      <li>Yumurta beyazı, balık, baklagiller, narenciye ve kivi gibi besinler için zamanlamayı doktorunuza sorun; Türkiye’de uygulama doktordan doktora değişiyor.</li>
+    </ul></div>
+  </details>
+
+  <details>
+    <summary>Demir, D vitamini ve su</summary>
+    <div class="body"><ul>
+      <li>Doğumdan gelen demir depoları 6. ay civarında azalır. Kuzu, yumurta sarısı ve yeşil sebzeler bu yüzden planın merkezinde.</li>
+      <li>D vitamini ve demir damlasına doktorunuzun söylediği şekilde devam edin; ek gıda bunların yerini tutmaz.</li>
+      <li>Su: yemekle birlikte birkaç yudum, açık bardak ya da alıştırma bardağıyla. Kaynatılıp soğutulmuş ya da bebeklere uygun içme suyu kullanın.</li>
+    </ul></div>
+  </details>
+
+  <details>
+    <summary>Hazırlama, saklama ve kaka değişiklikleri</summary>
+    <div class="body"><ul>
+      <li>Sebzeleri buharda ya da az suda pişirin; pişirme suyunu kıvam ayarlamada kullanın.</li>
+      <li>Buzdolabı: et ya da yumurta içeren yemek en fazla 24 saat, sebze ve meyve püresi 48 saat. Dondurucu: buz kalıplarında 1 ay.</li>
+      <li>Yemeği bir kez ısıtın. Bebeğin kaşık soktuğu kasede kalanı atın.</li>
+      <li>Ispanak ve pırasayı taze hazırlayın; bekletip yeniden ısıtmayın (nitrat).</li>
+      <li>Kakanın rengi, kokusu ve kıvamı değişecek; havuçta turuncu, ıspanakta yeşil olması normal.</li>
+      <li>Muz, pirinç, elma, ayva ve ham Trabzon hurması kabız yapabilir. Armut, su ve sebzeler yumuşatır.</li>
+    </ul></div>
+  </details>
+  <details>
+    <summary>Ocak’ta doktorunuza sorabilecekleriniz</summary>
+    <div class="body"><ul>
+      <li>Tam yumurta ve yumurta beyazına geçiş</li>
+      <li>Balık (Kasım–Şubat hamsi, istavrit, levrek mevsimi), kırmızı mercimek ve nohut</li>
+      <li>Tahin, yer fıstığı ezmesi gibi diğer alerjenler</li>
+      <li>Narenciye, kivi ve çilek</li>
+      <li>Dana etine geçiş</li>
+      <li>Parmak gıdalara ve daha iri dokuya geçiş</li>
+    </ul></div>
+  </details>
+</section>
+
+<p class="foot">Bu rehber genel bilgilendirme amaçlıdır; sıralama ve miktarlar yaygın önerilere dayanan bir çerçevedir. Arda’nın çocuk doktorunun ve alerji uzmanının önerileri her zaman önceliklidir. Sıranız, işaretleriniz ve notlarınız yalnızca bu cihazdaki tarayıcıda saklanır.</p>
+</main>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="shTitle">
+    <div class="shhead"><h3 id="shTitle"></h3><button id="shClose" aria-label="Kapat">✕</button></div>
+    <input type="search" id="shQ" placeholder="Besin ara" aria-label="Besin ara">
+    <div class="chips" id="shLv"></div>
+    <div class="chips" id="shChips"></div>
+    <div class="shlist" id="shList"></div>
+    <div class="shfoot"><div id="shSel"></div><button class="primary" id="shSave"></button></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+<div class="sheet gate" id="gate" hidden>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+    <h3 id="gateTitle">Aile kodu</h3>
+    <p class="lead">Eşinizle aynı kodu girin. Aynı kodu giren herkes aynı planı ve işaretleri görür, düzenleyebilir. Kod bu telefonda hatırlanır.</p>
+    <input type="text" id="gateCode" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="En az 6 karakter" aria-label="Aile kodu">
+    <p class="warnline" id="gateErr" hidden></p>
+    <div class="btnrow"><button class="primary" id="gateGo">Devam et</button><button class="ghost" id="gateLocal">Şimdilik yalnızca bu cihazda</button></div>
+  </div>
+</div>
+
+<script>
+(function(){
+/* ---------- besin kütüphanesi ---------- */
+// cat: sebze|meyve|tahil|protein  s: m=Kasım–Aralık, y=yıl boyu, d=dondurulmuş/saklanmış
+// p: miktar profili std|small|protein|yolk  fl: al alerjen, gas, kab kabız yapabilir, yum kabızlığa iyi, nit taze hazırla, dr doktora danış, doc doktor önerisi
+const LIB={
+ havuc:{n:'Havuç',cat:'sebze',s:'m',c:'#E8742A',form:'Havuç püresi',p:'std',fl:[],t:'Soyup doğrayın, buharda ya da az suda 15–20 dk pişirip ezin. Pişirme suyu ya da anne sütü/mamayla inceltin.'},
+ balkabagi:{n:'Balkabağı',cat:'sebze',s:'m',c:'#F0A23B',form:'Balkabağı püresi',p:'std',fl:[],t:'Kabuğunu ve çekirdeklerini ayıklayın, buharda ya da fırında pişirip ezin. Doğal tatlıdır, bebekler genelde sever.'},
+ tatlipatates:{n:'Tatlı patates',cat:'sebze',s:'m',c:'#D9673A',form:'Tatlı patates püresi',p:'std',fl:[],t:'Fırında ya da haşlayarak pişirip ezin; balkabağına benzer tatlılıktadır.'},
+ brokoli:{n:'Brokoli',cat:'sebze',s:'m',c:'#3E8E4F',form:'Brokoli püresi',p:'small',fl:['gas'],t:'Çiçek kısımlarını 6–8 dk buharda pişirip diğer sebzelerle ezin. İlk gün az verin.'},
+ karnabahar:{n:'Karnabahar',cat:'sebze',s:'m',c:'#E8E1D0',form:'Karnabahar püresi',p:'small',fl:['gas'],t:'Çiçeklerini 8–10 dk buharda pişirip patatesle ezin.'},
+ ispanak:{n:'Ispanak',cat:'sebze',s:'m',c:'#2F6B3A',form:'Ispanak',p:'small',fl:['nit'],t:'Yapraklarını iyice yıkayıp 3–5 dk buharda pişirin, patates ya da pirinçle ezin. Taze hazırlayın; bekletip yeniden ısıtmayın.'},
+ pirasa:{n:'Pırasa',cat:'sebze',s:'m',c:'#9CBF7E',form:'Pırasa',p:'small',fl:['nit'],t:'Beyaz ve açık yeşil kısmını kullanın, katmanları iyice yıkayın. Havuç ve pirinçle pişirip ezin.'},
+ kereviz:{n:'Kereviz',cat:'sebze',s:'m',c:'#CFD8B0',form:'Kereviz püresi',p:'small',fl:['al'],t:'Kök kerevizi soyup havuç ya da patatesle haşlayıp ezin. Tadı belirgindir; nadiren alerji yapabilir.'},
+ pancar:{n:'Pancar',cat:'sebze',s:'m',c:'#8E2C48',form:'Pancar püresi',p:'small',fl:['nit'],t:'Haşlayıp ya da fırınlayıp ezin. Kakayı kırmızıya boyayabilir, bu normaldir.'},
+ lahana:{n:'Lahana',cat:'sebze',s:'m',c:'#B8CFA4',form:'Lahana',p:'small',fl:['gas'],t:'İnce doğrayıp iyice yumuşayana kadar pişirin, patatesle ezin.'},
+ pazi:{n:'Pazı',cat:'sebze',s:'m',c:'#4F7F3A',form:'Pazı',p:'small',fl:['nit'],t:'Yapraklarını ıspanak gibi kısa pişirip ezin. Taze hazırlayın.'},
+ salgam:{n:'Şalgam',cat:'sebze',s:'m',c:'#D9C3D6',form:'Şalgam püresi',p:'small',fl:[],t:'Soyup haşlayın, havuç ya da patatesle ezin. Şalgam suyu değil, sebzenin kendisi.'},
+ patates:{n:'Patates',cat:'sebze',s:'y',c:'#D9B97A',form:'Patates püresi',p:'std',fl:[],t:'Haşlayıp çatalla ezin; blender patatesi yapışkan yapar.'},
+ kabak:{n:'Kabak',cat:'sebze',s:'d',c:'#9BC26B',form:'Kabak püresi',p:'std',fl:[],t:'Yaz sebzesidir; dondurulmuş ya da sera kabağı kullanabilirsiniz. Buharda 5–6 dk pişirip ezin.'},
+ bezelye:{n:'Bezelye',cat:'sebze',s:'d',c:'#6FAF4A',form:'Bezelye püresi',p:'std',fl:['gas'],t:'Dondurulmuş bezelyeyi 5–6 dk haşlayın, ezip kabukları kalmasın diye süzgeçten geçirin. Bütün tane vermeyin.'},
+ fasulye:{n:'Taze fasulye',cat:'sebze',s:'d',c:'#4E8F3E',form:'Taze fasulye püresi',p:'std',fl:[],t:'Dondurulmuş fasulyeyi iyice yumuşayana kadar pişirip ezin; lifli kısımlar için süzgeçten geçirin.'},
+ enginar:{n:'Enginar',cat:'sebze',s:'d',c:'#7B9A5C',form:'Enginar püresi',p:'small',fl:[],t:'Dondurulmuş enginar kalbini haşlayıp patatesle ezin. Taze enginar Aralık sonunda gelmeye başlar.'},
+ elma:{n:'Elma',cat:'meyve',s:'m',c:'#8DB255',form:'Elma püresi',p:'std',fl:[],t:'Soyup çekirdeğini çıkarın, buharda 8–10 dk pişirip ezin.'},
+ armut:{n:'Armut',cat:'meyve',s:'m',c:'#B9C26A',form:'Armut püresi',p:'std',fl:['yum'],t:'Olgun armudu soyun; çok yumuşaksa çiğ ezin, değilse 5 dk buharda pişirin.'},
+ ayva:{n:'Ayva',cat:'meyve',s:'m',c:'#E4C54A',form:'Ayva püresi',p:'std',fl:['kab'],t:'Soyup 20–25 dk haşlayın ya da fırında yumuşatıp ezin. Çiğ ayva vermeyin.'},
+ trabzon:{n:'Trabzon hurması',cat:'meyve',s:'m',c:'#E6802E',form:'Trabzon hurması',p:'std',fl:['kab'],t:'Jöle kıvamına gelmiş çok olgun meyveyi seçin, kabuk ve çekirdeği çıkarıp ezin. Ham olanı buruk olur.'},
+ avokado:{n:'Avokado',cat:'meyve',s:'m',c:'#6E8B3D',form:'Avokado ezmesi',p:'std',fl:[],t:'Olgun avokadoyu çatalla ezin, pişirmeye gerek yok. Kasım–Mart yerli avokado mevsimi.'},
+ mandalina:{n:'Mandalina',cat:'meyve',s:'m',c:'#F29B38',form:'Mandalina',p:'small',fl:['dr'],t:'Zarlarını ve çekirdeklerini ayıklayıp ezin ya da başka bir meyveye karıştırın.',w:'Asitlidir, ağız çevresinde kızarıklık yapabilir. Birçok doktor narenciyeyi biraz sonraya bırakıyor; sorun.'},
+ kivi:{n:'Kivi',cat:'meyve',s:'m',c:'#7BA33E',form:'Kivi',p:'small',fl:['al','dr'],t:'Olgun kiviyi soyup ezin; tohumları sorun değil.',w:'Kivi bazı bebeklerde alerji yapabilir; başlamadan doktorunuza danışın.'},
+ muz:{n:'Muz',cat:'meyve',s:'y',c:'#F3D35B',form:'Muz ezmesi',p:'std',fl:['kab'],t:'Benekli, olgun muzu çatalla ezin.'},
+ seftali:{n:'Şeftali',cat:'meyve',s:'d',c:'#F4A97A',form:'Şeftali püresi',p:'std',fl:['yum'],t:'Dondurulmuş dilimleri buharda 3–4 dk ısıtıp ezin.'},
+ kayisi:{n:'Kayısı',cat:'meyve',s:'d',c:'#F3A33C',form:'Kayısı püresi',p:'std',fl:['yum'],t:'Dondurulmuş kayısıyı kısa pişirip ezin; kabuk kalırsa süzgeçten geçirin.'},
+ erik:{n:'Erik',cat:'meyve',s:'d',c:'#7D3C6B',form:'Erik püresi',p:'std',fl:['yum'],t:'Dondurulmuş eriği kısa pişirip kabuğunu süzün. Kabızlıkta en etkili meyvelerden.'},
+ kiraz:{n:'Kiraz',cat:'meyve',s:'d',c:'#A3233A',form:'Kiraz püresi',p:'std',fl:[],t:'Çekirdeği çıkarılmış dondurulmuş kirazı kısa pişirip ezin. Çekirdekleri mutlaka kontrol edin.'},
+ yabanmersini:{n:'Yaban mersini',cat:'meyve',s:'d',c:'#4B5A9A',form:'Yaban mersini püresi',p:'std',fl:[],t:'Dondurulmuş mersini ısıtıp iyice ezin. Bütün tane vermeyin.'},
+ cilek:{n:'Çilek',cat:'meyve',s:'d',c:'#D8434F',form:'Çilek püresi',p:'small',fl:['dr'],t:'Dondurulmuş çileği ısıtıp ezin.',w:'Ağız çevresinde kızarıklık yapabilir (çoğu zaman temasla, alerji değil). Doktorunuz sonraya bırakmayı önermiş olabilir.'},
+ mango:{n:'Mango',cat:'meyve',s:'d',c:'#F6B73C',form:'Mango püresi',p:'std',fl:[],t:'Dondurulmuş mango küplerini ısıtıp ezin.'},
+ kurukayisi:{n:'Kuru kayısı',cat:'meyve',s:'d',c:'#C47A2C',form:'Kuru kayısı (ıslatılmış) püresi',p:'small',fl:['yum'],t:'Kükürtsüz (koyu renkli) kuru kayısıyı bir gece suda bekletip haşlayın, ezin. Demir ve lif kaynağı.'},
+ kuruerik:{n:'Kuru erik',cat:'meyve',s:'d',c:'#4A2A3A',form:'Kuru erik (ıslatılmış) püresi',p:'small',fl:['yum'],t:'Çekirdeksiz kuru eriği suda bekletip haşlayın, ezin. Kabızlıkta 1–2 yemek kaşığı yeterli.'},
+ pirinc:{n:'Pirinç',cat:'tahil',s:'y',c:'#D8CFBC',form:'Pirinç lapası',p:'std',fl:['kab'],t:'Yıkayıp 1 ölçüye 6–8 ölçü suyla lapa kıvamına getirin, fazla suyunu süzün (arsenik azalır). Pirinç sütü ve keki vermeyin.'},
+ yulaf:{n:'Yulaf',cat:'tahil',s:'y',c:'#C8A97E',form:'Yulaf lapası',p:'std',fl:[],t:'İnce yulafı suyla 5 dk pişirip anne sütü/mamayla inceltin. Glüten taşıyabilir. Hazır yulaflı mamalarda süt tozu olabilir.'},
+ bulgur:{n:'İnce bulgur',cat:'tahil',s:'y',c:'#B88A55',form:'Bulgur lapası',p:'std',fl:[],t:'İnce bulguru bol suda 10–15 dk yumuşayana kadar pişirip ezin. Glüten içerir.'},
+ irmik:{n:'İrmik',cat:'tahil',s:'y',c:'#E6D2A0',form:'İrmik lapası',p:'std',fl:[],t:'Sütle değil, su ve anne sütü/mamayla koyulaşana kadar pişirin. Glüten içerir.'},
+ kinoa:{n:'Kinoa',cat:'tahil',s:'y',c:'#D9C9A3',form:'Kinoa lapası',p:'std',fl:[],t:'İyice yıkayın (acılığı gider), bol suda yumuşayana kadar pişirip ezin.'},
+ karabugday:{n:'Karabuğday',cat:'tahil',s:'y',c:'#8C6A4E',form:'Karabuğday lapası',p:'std',fl:[],t:'Glütensizdir. Yıkayıp bol suda pişirin ve ezin.'},
+ kuzu:{n:'Kuzu kıyma',cat:'protein',s:null,c:'#B5525C',form:'Pişmiş kuzu kıyma',p:'protein',fl:['doc'],t:'Yağsız kuzu kıymayı sebzelerle suda tamamen pişirin, pembe kalmasın. İlk günler püreyle birlikte pürüzsüzleşene kadar ezin.'},
+ yumurta:{n:'Yumurta sarısı',cat:'protein',s:null,c:'#F2C94C',form:'Haşlanmış yumurta sarısı',p:'yolk',fl:['al','doc'],t:'10–12 dk katı haşlayın, sarıyı ayırıp beyaza değen tabakayı sıyırın, anne sütü/mamayla ezin. Öğleden ayrı, sabah verin.'},
+ tavuk:{n:'Tavuk',cat:'protein',s:null,c:'#E3B38C',form:'Pişmiş tavuk',p:'protein',fl:[],t:'Derisiz but ya da göğsü sebzelerle haşlayın, ince didikleyip püreyle ezin.'},
+ hindi:{n:'Hindi',cat:'protein',s:null,c:'#D9A07A',form:'Pişmiş hindi',p:'protein',fl:[],t:'Derisiz hindi göğsü ya da kıymasını haşlayıp ezin.'},
+ mercimek:{n:'Kırmızı mercimek',cat:'protein',s:null,c:'#E07A3F',form:'Kırmızı mercimek',p:'small',fl:['gas','dr'],t:'Yıkayıp sebzelerle çorba gibi pişirin ve ezin.',w:'Türkiye’de mercimek çoğunlukla 8. aydan sonra öneriliyor; doktorunuza danışın.'}
+};
+const CATS={sebze:'Sebze',meyve:'Meyve',tahil:'Tahıl',protein:'Protein'};
+const LEVELS={
+ 1:{n:'İlk basamak',d:'Alerji ve sindirim riski düşük, tadı yumuşak. Klasik başlangıç besinleri; ilk günler için güvenli seçim.'},
+ 2:{n:'Erken dönem',d:'Genelde iyi tolere edilir. İlk birkaç besinden sonra eklenir; gaz, kabızlık, glüten ya da gecikmiş tepki gibi bilinmesi gereken bir özelliği olabilir.'},
+ 3:{n:'Dikkatli',d:'Nitrat, asitlik ya da ağız çevresinde kızarıklık nedeniyle az miktarda, taze ve ilk iki haftadan sonra denenir.'},
+ 4:{n:'Doktorla',d:'Alerjen ya da Türkiye’de çoğunlukla sonraya bırakılan besinler. Doktorunuzun onayı ya da yönlendirmesiyle.'}
+};
+const LV={havuc:1,balkabagi:1,tatlipatates:1,patates:1,kabak:1,elma:1,armut:1,avokado:1,muz:1,seftali:1,
+ brokoli:2,karnabahar:2,bezelye:2,fasulye:2,salgam:2,enginar:2,lahana:2,ayva:2,trabzon:2,kayisi:2,erik:2,kiraz:2,mango:2,yabanmersini:2,kurukayisi:2,kuruerik:2,
+ pirinc:2,yulaf:2,bulgur:2,irmik:2,kinoa:2,karabugday:2,kuzu:2,tavuk:2,hindi:2,
+ ispanak:3,pazi:3,pancar:3,pirasa:3,kereviz:3,cilek:3,mandalina:3,
+ yumurta:4,kivi:4,mercimek:4};
+const XFL={pirinc:['fpi'],yulaf:['glu','fpi'],bulgur:['glu'],irmik:['glu'],yumurta:['fpi'],mandalina:['acid'],cilek:['acid'],kivi:['acid']};
+Object.keys(LIB).forEach(k=>{LIB[k].lv=LV[k]||2;(XFL[k]||[]).forEach(f=>{if(!LIB[k].fl.includes(f))LIB[k].fl.push(f);});});
+const lvPill=k=>'<span class="lvp lv'+LIB[k].lv+'">'+LIB[k].lv+'. '+lc(LEVELS[LIB[k].lv].n)+'</span>';
+const SEAS={m:'Kasım–Aralık mevsiminde',y:'Yıl boyu',d:'Mevsim dışı, dondurulmuş ya da saklanmış'};
+const FLAGS={glu:'glüten içerir',fpi:'süt alerjili bebeklerde gecikmiş tepkiye dikkat',acid:'asitli',al:'alerjen',gas:'gaz yapabilir',kab:'kabız yapabilir',yum:'kabızlığa iyi gelir',nit:'taze hazırlayın',dr:'doktora danışın',doc:'doktor önerisi'};
+const MEATS=['kuzu','tavuk','hindi'];
+const DEFAULT_SEQ=[
+ [['havuc'],3],[['balkabagi'],3],[['havuc','balkabagi'],1],[['kuzu'],3],[['yumurta'],3],[['elma'],3],[['pirinc'],3],
+ [['patates'],3],[['armut'],3],[['brokoli'],3],[['yulaf'],3],[['avokado'],3],[['ayva'],3],[['tatlipatates'],3],
+ [['tavuk'],3],[['ispanak'],3],[['trabzon'],3],[['bulgur'],3],[['pirasa'],3],[['muz'],3],[['karnabahar'],3]
+].map(([f,len])=>({f,len}));
+const TOTAL=61;
+const lc=x=>x.toLocaleLowerCase('tr');
+const cap=x=>x.charAt(0).toLocaleUpperCase('tr')+x.slice(1);
+const nm=k=>LIB[k].n;
+
+/* ---------- depolama ---------- */
+const KEY='arda-ekgida-v1',CODE_KEY='arda-ekgida-kod',LOCAL_KEY='arda-ekgida-yerel',PEND_KEY='arda-ekgida-bekleyen';
+let st={start:'2026-11-01',days:{},seq:null};
+try{const raw=localStorage.getItem(KEY);if(raw){const p=JSON.parse(raw);if(p&&typeof p==='object')st=Object.assign(st,p);}}catch(e){}
+function validSeq(q){return Array.isArray(q)&&q.length&&q.every(s=>s&&Array.isArray(s.f)&&s.f.length&&s.f.every(k=>LIB[k])&&Number.isInteger(s.len)&&s.len>=1&&s.len<=7);}
+const validDate=x=>typeof x==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(x);
+function normalize(){
+  if(!validSeq(st.seq)) st.seq=JSON.parse(JSON.stringify(DEFAULT_SEQ));
+  if(!st.days||typeof st.days!=='object') st.days={};
+  if(!validDate(st.start)) st.start='2026-11-01';
+}
+normalize();
+function save(){try{localStorage.setItem(KEY,JSON.stringify({start:st.start,seq:st.seq,days:st.days}));}catch(e){}}
+function rec(d){return st.days[d]||(st.days[d]={m:{},r:null,note:''});}
+/* ---------- ortak kayıt (Netlify /api/state) ---------- */
+const SLOTS_ALL=['kahvalti','oglen','ikindi'],RXS=[null,'ok','mild','severe'];
+const vDay=d=>Number.isInteger(d)&&d>=1&&d<=400;
+function cleanDays(days){const out={};if(!days||typeof days!=='object')return out;
+  for(const [k,r] of Object.entries(days)){const d=Number(k);if(!vDay(d)||!r||typeof r!=='object')continue;const m={};SLOTS_ALL.forEach(x=>{if(r.m&&r.m[x])m[x]=true;});
+    out[d]={m,r:RXS.includes(r.r)?r.r:null,note:typeof r.note==='string'?r.note.slice(0,2000):''};}
+  return out;}
+function applyOp(S,op){ // sunucudaki applyOp ile aynı
+  const R=d=>S.days[d]||(S.days[d]={m:{},r:null,note:''});
+  if(op.t==='meal'&&vDay(op.d)&&SLOTS_ALL.includes(op.slot)) R(op.d).m[op.slot]=!!op.val;
+  else if(op.t==='rx'&&vDay(op.d)&&RXS.includes(op.val)) R(op.d).r=op.val;
+  else if(op.t==='note'&&vDay(op.d)&&typeof op.val==='string') R(op.d).note=op.val.slice(0,2000);
+  else if(op.t==='meta'){if(validDate(op.start))S.start=op.start;if(validSeq(op.seq))S.seq=op.seq;}
+  else if(op.t==='clear') S.days={};
+  else if(op.t==='replace'&&op.state){if(validDate(op.state.start))S.start=op.state.start;if(validSeq(op.state.seq))S.seq=op.state.seq;S.days=cleanDays(op.state.days);}
+}
+let code=null,localOnly=false,pending=[],inflight=false,lastRev=0,sendT=null,status='';
+try{code=localStorage.getItem(CODE_KEY);localOnly=localStorage.getItem(LOCAL_KEY)==='1';pending=JSON.parse(localStorage.getItem(PEND_KEY)||'[]');if(!Array.isArray(pending))pending=[];}catch(e){pending=[];}
+function savePending(){try{localStorage.setItem(PEND_KEY,JSON.stringify(pending));}catch(e){}}
+function commit(op,delay){
+  applyOp(st,op);save();
+  if(!code) return;
+  if(op.t==='note') pending=pending.filter(x=>!(x.t==='note'&&x.d===op.d));
+  if(op.t==='meta'&&op.seq) pending=pending.filter(x=>!(x.t==='meta'&&x.seq&&!x.start));
+  pending.push(JSON.parse(JSON.stringify(op)));savePending();setStatus('saving');
+  clearTimeout(sendT);sendT=setTimeout(flush,delay||300);
+}
+async function api(method,body){
+  const r=await fetch('/api/state',{method,cache:'no-store',headers:{'content-type':'application/json','x-family-code':code},body:body?JSON.stringify(body):undefined});
+  if(!r.ok) throw new Error('HTTP '+r.status);
+  return r.json();
+}
+async function flush(){
+  if(!code||inflight||!pending.length) return;
+  inflight=true;const batch=pending.slice();setStatus('saving');
+  try{const srv=await api('POST',{ops:batch});pending=pending.slice(batch.length);savePending();inflight=false;adopt(srv);setStatus(pending.length?'saving':'ok');if(pending.length){clearTimeout(sendT);sendT=setTimeout(flush,200);}}
+  catch(e){inflight=false;setStatus('err');clearTimeout(sendT);sendT=setTimeout(flush,15000);}
+}
+function adopt(srv){
+  lastRev=srv.rev||0;
+  st.start=validDate(srv.start)?srv.start:st.start;st.seq=validSeq(srv.seq)?srv.seq:st.seq;st.days=cleanDays(srv.days);
+  normalize();pending.forEach(op=>applyOp(st,op));save();build();refresh();
+}
+async function pull(){
+  if(!code||inflight) return;
+  if(pending.length){flush();return;}
+  try{const srv=await api('GET');setStatus('ok');if((srv.rev||0)!==lastRev&&!inflight&&!pending.length)adopt(srv);}
+  catch(e){setStatus('err');}
+}
+function setStatus(x){
+  status=x;const el=document.getElementById('sync');if(!el)return;
+  el.className='sync '+(x==='ok'?'ok':x==='err'?'err':'');
+  el.textContent=!code?'Yalnızca bu cihaz':x==='ok'?'● Eşitlendi':x==='err'?'Bağlantı yok, tekrar denenecek':'Kaydediliyor…';
+  const ci=document.getElementById('codeInfo');
+  if(ci) ci.textContent=code?'Aile kodu: '+code.slice(0,2)+'•'.repeat(Math.max(3,code.length-2))+'. Aynı kodu giren herkes aynı veriyi görür. '+(x==='err'?'Şu an sunucuya ulaşılamıyor; değişiklikler bu telefonda bekliyor ve bağlantı gelince gönderilecek.':''):'Şu an veriler yalnızca bu telefonun tarayıcısında. Eşinizle ortak takip için bir aile kodu girin.';
+}
+
+
+/* ---------- plan hesaplama ---------- */
+let PL;
+function build(){
+  const steps=[];let day=1;const known=[];
+  st.seq.forEach((s,idx)=>{
+    const nw=s.f.filter(k=>!known.includes(k));
+    steps.push({f:s.f,len:s.len,idx,start:day,end:day+s.len-1,nw,kb:known.slice()});
+    nw.forEach(k=>known.push(k)); day+=s.len;
+  });
+  const filler=day<=TOTAL?{f:[],len:TOTAL-day+1,idx:-1,start:day,end:TOTAL,nw:[],kb:known.slice(),filler:true}:null;
+  PL={steps,filler,seqEnd:day-1};
+}
+function stepOf(d){for(const s of PL.steps)if(d>=s.start&&d<=s.end)return s;return PL.filler;}
+
+const PROF={
+ yolk:()=>['¼ sarı','⅓–½ sarı','½ sarı'],
+ protein:()=>['1 tatlı kaşığı','2 tatlı kaşığı','1 yemek kaşığı'],
+ small:()=>['1 yemek kaşığı','1–2 yemek kaşığı','2 yemek kaşığı'],
+ std:d=>d<=13?['1 yemek kaşığı','1–2 yemek kaşığı','2 yemek kaşığı']:['1–2 yemek kaşığı','2–3 yemek kaşığı','3–4 yemek kaşığı']
+};
+const FIRST=['1–2 tatlı kaşığı','2–3 tatlı kaşığı','1–2 yemek kaşığı'];
+function baseAmt(d,slot){
+  if(slot==='oglen') return d<=7?'2–3 yemek kaşığı':d<=13?'3–4 yemek kaşığı':d<=31?'4–5 yemek kaşığı':d<=45?'5–6 yemek kaşığı':'6–8 yemek kaşığı';
+  return d<=31?'2–4 yemek kaşığı':d<=45?'3–4 yemek kaşığı':'4–5 yemek kaşığı';
+}
+function newAmt(s,i,d){
+  const order=['yolk','protein','small','std'];
+  const prof=order.find(p=>s.nw.some(k=>LIB[k].p===p))||'std';
+  const ii=Math.min(i,2);
+  if(prof==='std'&&s.idx===0) return FIRST[ii];
+  return PROF[prof](d)[ii];
+}
+function rot(list,d,k,used){
+  let a=list.filter(x=>!used.has(x)); if(!a.length) a=list.slice();
+  const out=[]; for(let j=0;j<Math.min(k,a.length);j++) out.push(a[(d+j)%a.length]);
+  return out;
+}
+function puree(ks){return ks.length===1?LIB[ks[0]].form:cap(ks.map(k=>lc(nm(k))).join(' + '))+' püresi';}
+function meatAmt(d){return d<=30?'1 yemek kaşığı':d<=40?'1–1½ yemek kaşığı':'1½–2 yemek kaşığı';}
+function oilLine(d){if(d<7)return null;return 'Zeytinyağı: '+(d<=10?'birkaç damla':d<=13?'½ tatlı kaşığı':d<=30?'½–1 tatlı kaşığı':'1 tatlı kaşığı');}
+
+function dayPlan(d){
+  const s=stepOf(d), i=d-s.start, kb=s.kb;
+  const by=c=>kb.filter(k=>LIB[k].cat===c);
+  const veg=by('sebze'),fruit=by('meyve'),grain=by('tahil').concat(kb.filter(k=>k==='mercimek'));
+  const meats=kb.filter(k=>MEATS.includes(k));
+  const slots=d<=13?['oglen']:d<=31?['oglen','ikindi']:['kahvalti','oglen','ikindi'];
+  const M={};slots.forEach(k=>M[k]=[]);
+  const used=new Set(s.f);
+  const add=(slot,t,r,nw)=>{if(t)M[slot].push({t,r,nw:!!nw});};
+  let stepSlot=null, stepCats=s.f.map(k=>LIB[k].cat);
+  if(s.f.length){
+    if(s.f.length===1&&s.f[0]==='yumurta') stepSlot='kahvalti';
+    else if(stepCats.includes('protein')||stepCats.includes('sebze')) stepSlot='oglen';
+    else if(stepCats.every(c=>c==='meyve')) stepSlot=M.ikindi?'ikindi':'oglen';
+    else stepSlot=M.kahvalti?'kahvalti':'oglen';
+    if(!M[stepSlot]) M[stepSlot]=[];
+    let line;
+    const amt=s.nw.length?newAmt(s,i,d):baseAmt(d,stepSlot);
+    if(s.f.length===1) line=LIB[s.f[0]].form+': '+amt;
+    else line=cap(s.f.map(k=>lc(nm(k))).join(' + '))+' karışımı: '+amt+(s.nw.length?' (yeni: '+s.nw.map(nm).join(', ')+')':'');
+    const isVeg=stepCats.includes('sebze');
+    add(stepSlot,line,stepSlot==='oglen'?(isVeg?0:2.5):0,s.nw.length>0);
+  }
+  // öğle
+  const newProtein=s.nw.some(k=>MEATS.includes(k));
+  if(stepSlot!=='oglen'||!s.nw.length||!stepCats.includes('sebze')){
+    if(!(stepSlot==='oglen'&&!s.nw.length&&stepCats.includes('sebze'))){
+      const v=rot(veg,d,2,used);
+      if(v.length){add('oglen',puree(v)+': '+baseAmt(d,'oglen'),1);v.forEach(x=>used.add(x));}
+    }
+  } else {
+    const v=rot(veg,d,d<=13?1:2,used);
+    if(v.length){add('oglen',d<=13?'İsterse '+lc(puree(v))+': 1 yemek kaşığı':puree(v)+': 2–3 yemek kaşığı',1);v.forEach(x=>used.add(x));}
+  }
+  if(d>=14&&grain.length&&!(stepSlot==='oglen'&&stepCats.includes('tahil'))){
+    const g=rot(grain,d,1,used); if(g.length){add('oglen',LIB[g[0]].form+': 2 yemek kaşığı',2);used.add(g[0]);}
+  }
+  if(meats.length&&!newProtein){
+    let m;
+    const others=meats.filter(k=>k!=='kuzu');
+    if(meats.includes('kuzu')&&others.length) m=(d%3===0)?others[Math.floor(d/3)%others.length]:'kuzu';
+    else m=meats[d%meats.length];
+    add('oglen',LIB[m].form+': '+meatAmt(d),3);
+  }
+  add('oglen',oilLine(d),4);
+  if(kb.includes('yumurta')&&!s.f.includes('yumurta')&&d%2===0){
+    const tg=M.kahvalti?'kahvalti':'oglen';
+    add(tg,'Yumurta sarısı: '+(d<=30?'½':'1 tam')+' (gün aşırı)',5);
+  }
+  add('oglen','Su: yemekle birkaç yudum, bardaktan',6);
+  // ikindi
+  if(M.ikindi&&stepSlot!=='ikindi'){
+    const fr=rot(fruit,d,d>45&&fruit.length>=3?2:1,used);
+    if(fr.length){add('ikindi',puree(fr)+': '+baseAmt(d,'ikindi'),1);fr.forEach(x=>used.add(x));}
+    else{const g=rot(grain,d+1,1,new Set());if(g.length)add('ikindi',LIB[g[0]].form+': '+baseAmt(d,'ikindi'),1);
+      else{const v=rot(veg,d+1,1,new Set());if(v.length)add('ikindi',puree(v)+': '+baseAmt(d,'ikindi'),1);}}
+  }
+  // kahvaltı
+  if(slots.includes('kahvalti')&&(stepSlot!=='kahvalti'||s.f.every(k=>k==='yumurta'))){
+    const g=rot(grain.filter(k=>k!=='mercimek'),d+1,1,new Set()), fr=rot(fruit,d+2,1,used);
+    let t=null;
+    if(g.length&&fr.length) t=LIB[g[0]].form+' + '+lc(nm(fr[0]));
+    else if(g.length) t=LIB[g[0]].form; else if(fr.length) t=puree(fr);
+    if(t) add('kahvalti',t+': '+baseAmt(d,'kahvalti'),1);
+  }
+  Object.keys(M).forEach(k=>{M[k].sort((a,b)=>a.r-b.r);if(!M[k].length)delete M[k];});
+  return {s,i,meals:M,early:!slots.includes('kahvalti')};
+}
+function phaseNote(d){
+  if(d<=7) return ['Tadım dönemi','Günde 1 öğün, pürüzsüz ve akışkan kıvam. Önce emzirin ya da mamasını verin, 30–60 dk sonra kaşıkla deneyin. Birkaç kaşık yemesi bile başarı.'];
+  if(d<=13) return ['Demir kaynakları başlıyor','Öğle öğünü toplam 2–4 yemek kaşığı. Yumurta günlerinde sabah ayrıca küçük bir tadım var.'];
+  if(d<=31) return ['Günde 2 öğün','Öğle 4–6, ikindi 2–4 yemek kaşığı. Kıvamı yavaş yavaş koyulaştırın.'];
+  if(d<=45) return ['Günde 3 öğün','Öğle 5–7, diğer öğünler 3–4 yemek kaşığı. Çatalla ezilmiş, hafif pütürlü kıvama geçin; yumuşak parçaları eline verebilirsiniz.'];
+  return ['Günde 3 öğün, daha çok doku','Öğle 6–8 yemek kaşığı (≈ yarım su bardağı), diğerleri 4–5. Pütürlü kıvam ve ezilebilen yumuşak parçalar.'];
+}
+function stepName(s){return s.filler?'Bildiği besinlerle devam':s.f.map(nm).join(' + ');}
+function stepColor(s){
+  if(!s.f.length) return '#9DAEA4';
+  if(s.f.length===1) return LIB[s.f[0]].c;
+  const n=s.f.length; return 'conic-gradient('+s.f.map((k,j)=>LIB[k].c+' '+(j*360/n)+'deg '+((j+1)*360/n)+'deg').join(',')+')';
+}
+function barColor(s){
+  if(s.f.length<=1) return s.f.length?LIB[s.f[0]].c:'#9DAEA4';
+  const n=s.f.length; return 'linear-gradient('+s.f.map((k,j)=>LIB[k].c+' '+(j*100/n)+'% '+((j+1)*100/n)+'%').join(',')+')';
+}
+
+/* ---------- tarih ---------- */
+function parseD(x){const [y,m,dd]=x.split('-').map(Number);return new Date(y,m-1,dd);}
+function dateOf(d){const x=parseD(st.start);x.setDate(x.getDate()+d-1);return x;}
+function todayIdx(){const n=new Date();const t=new Date(n.getFullYear(),n.getMonth(),n.getDate());return Math.round((t-parseD(st.start))/86400000)+1;}
+const fmtLong=new Intl.DateTimeFormat('tr-TR',{day:'numeric',month:'long',weekday:'long'});
+const fmtS=new Intl.DateTimeFormat('tr-TR',{day:'numeric',month:'short'});
+const fmtWd=new Intl.DateTimeFormat('tr-TR',{weekday:'short'});
+const clampDay=d=>Math.min(TOTAL,Math.max(1,d));
+const $=id=>document.getElementById(id);
+let sel;
+
+function dayStatus(d){
+  const r=st.days[d];const p=dayPlan(d);const ks=Object.keys(p.meals);
+  return {c:r?ks.filter(k=>r.m[k]).length:0,n:ks.length,r:r?r.r:null};
+}
+const SLOT={kahvalti:['Kahvaltı','~09:00'],oglen:['Öğle','~12:00'],ikindi:['İkindi','~16:00']};
+
+/* ---------- Gün ---------- */
+function renderDay(){
+  const d=sel,p=dayPlan(d),s=p.s,r=rec(d),t=todayIdx();
+  const fl=fmtLong.format(dateOf(d));
+  $('dTitle').textContent=(d===t?'Bugün, ':'')+cap(fl);
+  $('dSub').textContent='Gün '+d+' / '+TOTAL+(t<1?', plan '+(1-t)+' gün sonra başlıyor':'');
+  $('prev').disabled=d<=1;$('next').disabled=d>=TOTAL;$('goToday').hidden=(d===clampDay(t));
+  let tags='';
+  if(s.nw.length) tags+='<span class="tag new">Yeni besin, '+(p.i+1)+'/'+s.len+'. gün</span>';
+  else tags+='<span class="tag calm">Yeni besin yok</span>';
+  if(s.f.length>1) tags+='<span class="tag mix">Karışım</span>';
+  if(s.nw.some(k=>LIB[k].fl.includes('al'))) tags+='<span class="tag allergen">Alerjen</span>';
+  if(s.nw.some(k=>LIB[k].fl.includes('doc'))) tags+='<span class="tag doc">Doktor önerisi</span>';
+  if(s.nw.length){const ml=Math.max(...s.nw.map(k=>LIB[k].lv));tags+='<span class="tag lv'+ml+'">'+ml+'. '+lc(LEVELS[ml].n)+'</span>';}
+  $('tags').innerHTML=tags;
+  $('foodName').textContent=stepName(s);
+  let meta='';
+  if(s.nw.length>1) meta='Bu adımda birden fazla yeni besin var; tepki olursa hangisinden olduğunu ayırt etmek zorlaşır.';
+  else if(s.nw.length) meta=p.i===0?'Bugün ilk kez tanışıyor. Sabah ya da öğle verin, sonra 2 saat gözleyin.':p.i===s.len-1?'Son gün: sorun yoksa yarın sıradaki adıma geçebilirsiniz.':'Önceki gün sorun olmadıysa miktarı biraz artırın.';
+  $('foodMeta').textContent=meta;
+  $('foodTip').textContent=s.nw.length?s.nw.map(k=>LIB[k].t).join(' '):s.filler?'Sıranızda bu güne adım yok. Bildiği besinlerle devam edin ya da Sıra bölümünden yeni adım ekleyin.':'Yeni besin yok. Bildiği besinleri karıştırarak pekiştirin.';
+  const w=s.nw.filter(k=>LIB[k].w).map(k=>LIB[k].w).join(' ');
+  $('foodWarn').textContent=w;$('foodWarn').hidden=!w;
+  // tabak
+  const pl=$('plate');let h='<div class="core" style="background:'+(s.f.length?stepColor(s):'var(--leaf-soft)')+'"></div>';
+  const kn=s.kb, N=Math.max(18,kn.length);
+  kn.forEach((k,j)=>{const a=-Math.PI/2+j*2*Math.PI/N;h+='<span class="dot" title="'+nm(k)+'" style="left:'+(66+58*Math.cos(a)).toFixed(1)+'px;top:'+(66+58*Math.sin(a)).toFixed(1)+'px;background:'+LIB[k].c+'"></span>';});
+  pl.innerHTML=h;
+  // öğünler
+  let mh='';
+  for(const slot of ['kahvalti','oglen','ikindi']){
+    if(!p.meals[slot]) continue;
+    const lab=(slot==='kahvalti'&&p.early)?['Sabah tadımı','~10:00']:SLOT[slot];
+    const on=!!r.m[slot];
+    mh+='<div class="meal'+(on?' checked':'')+'"><div><h4>'+lab[0]+'<small>'+lab[1]+'</small></h4><ul>'+
+      p.meals[slot].map(it=>'<li'+(it.nw?' class="newitem"':'')+'>'+it.t+'</li>').join('')+
+      '</ul></div><button class="check" data-slot="'+slot+'" aria-pressed="'+on+'" aria-label="'+lab[0]+' yedi olarak işaretle">✓</button></div>';
+  }
+  $('meals').innerHTML=mh;
+  const ph=phaseNote(d);
+  $('phase').innerHTML='<b>'+ph[0]+'</b>'+ph[1]+' Miktarlar üst sınır değil; tokluk işaretlerine uyun.';
+  document.querySelectorAll('#rx button').forEach(b=>b.setAttribute('aria-pressed',String(r.r===b.dataset.r)));
+  $('wMild').hidden=r.r!=='mild';$('wSevere').hidden=r.r!=='severe';
+  $('note').value=r.note||'';
+  renderStrip();
+}
+function renderStrip(){
+  const t=todayIdx();let h='';
+  for(let d=1;d<=TOTAL;d++){
+    const s=stepOf(d),x=dayStatus(d);
+    const cls=[x.c>0?'done':'',d===sel?'sel':'',d===t?'today':'',(x.r==='mild'||x.r==='severe')?'react':''].join(' ');
+    h+='<button class="'+cls+'" data-d="'+d+'" style="background:'+barColor(s)+'" aria-label="Gün '+d+', '+stepName(s)+'"></button>';
+  }
+  const el=$('strip');el.innerHTML=h;const sb=el.querySelector('.sel');if(sb)el.scrollLeft=sb.offsetLeft-el.clientWidth/2+11;
+}
+
+/* ---------- Plan ---------- */
+function renderPlan(){
+  const t=todayIdx();let h='';
+  PL.steps.forEach(s=>{
+    if(s.start>TOTAL) return;
+    s.nw.forEach(k=>{
+      let done=true,react=false;
+      for(let d=s.start;d<=Math.min(s.end,TOTAL);d++){const x=dayStatus(d);if(x.c===0)done=false;if(x.r==='mild'||x.r==='severe')react=true;}
+      const cur=t>=s.start&&t<=s.end;
+      const cls=react?'react':done?'done':cur?'cur':'up';
+      h+='<span class="chip '+cls+'"><i style="background:'+LIB[k].c+'"></i>'+nm(k)+(react?' !':done?' ✓':'')+'</span>';
+    });
+  });
+  $('foods').innerHTML=h;
+  let w='';
+  for(let wk=0;wk*7<TOTAL;wk++){
+    const a=wk*7+1,z=Math.min(TOTAL,a+6);
+    w+='<div class="week"><h3>Hafta '+(wk+1)+'</h3><p class="wk">'+fmtS.format(dateOf(a))+' – '+fmtS.format(dateOf(z))+'. '+phaseNote(a)[0]+'</p>';
+    for(let d=a;d<=z;d++){
+      const s=stepOf(d),x=dayStatus(d),dt=dateOf(d);
+      const stat=(x.r==='mild'||x.r==='severe')?'<span class="s bad">Reaksiyon</span>':x.c===x.n?'<span class="s full">Tamam</span>':'<span class="s">'+x.c+'/'+x.n+' öğün</span>';
+      w+='<button class="drow'+(d===t?' istoday':'')+'" data-d="'+d+'"><span class="d"><b>'+fmtS.format(dt)+'</b>'+fmtWd.format(dt)+', gün '+d+'</span>'+
+        '<span class="f"><i style="background:'+barColor(s)+'"></i><span>'+stepName(s)+(s.nw.length?' <small>'+(d-s.start+1)+'/'+s.len+'</small>':'')+'</span></span>'+stat+'</button>';
+    }
+    w+='</div>';
+  }
+  $('weeks').innerHTML=w;
+}
+
+/* ---------- Sıra ---------- */
+function stepState(n){
+  const t=todayIdx(),s=PL.steps[n];
+  return {past:s.end<t,started:s.start<t,minLen:s.start<t?Math.min(7,t-s.start+1):1};
+}
+function warnings(){
+  const w=[];
+  PL.steps.forEach((s,n)=>{
+    if(s.nw.length>1) w.push(['w',(n+1)+'. adımda birden fazla yeni besin var ('+s.nw.map(nm).join(', ')+'). Tepki olursa hangisinden olduğunu ayırt edemezsiniz.']);
+    if(s.nw.length&&s.len<3) w.push(['w',(n+1)+'. adım yeni besin içeriyor ama '+s.len+' gün sürüyor; 3 gün önerilir.']);
+    s.nw.forEach(k=>{if(LIB[k].w) w.push(['w',nm(k)+' ('+(n+1)+'. adım): '+LIB[k].w]);});
+    s.nw.forEach(k=>{if(LIB[k].lv===3&&s.start<15) w.push(['w',nm(k)+' “dikkatli” kademede ama '+s.start+'. günde başlıyor; genellikle ilk iki haftadan sonra önerilir.']);});
+    if(n<3) s.nw.forEach(k=>{if(LIB[k].lv===2&&!LIB[k].fl.includes('doc')) w.push(['i',nm(k)+' ilk basamak besini değil; ilk adımlarda 1. kademeden seçmek daha güvenli.']);});
+  });
+  ['kuzu','yumurta'].forEach(k=>{
+    const s=PL.steps.find(x=>x.nw.includes(k));
+    if(!s) w.push(['w',nm(k)+' sırada yok; doktorunuz 2. haftadan itibaren başlamayı önermişti.']);
+    else if(s.start<8||s.start>14) w.push(['w',nm(k)+' '+s.start+'. günde başlıyor; doktorunuz 2. haftayı (8–14. gün) önermişti.']);
+  });
+  if(PL.seqEnd>TOTAL) w.push(['i','Sıranın son '+(PL.seqEnd-TOTAL)+' günü 61 günlük planın dışında kalıyor.']);
+  if(PL.filler) w.push(['i','Sıra '+PL.seqEnd+'. günde bitiyor; kalan günler bildiği besinlerle devam olarak görünür.']);
+  return w;
+}
+function renderStart(){
+  $('startDate').value=st.start;const t=todayIdx();
+  let info='1. gün '+cap(fmtLong.format(dateOf(1)))+', 61. gün '+fmtLong.format(dateOf(TOTAL))+'. ';
+  info+=t<1?'Plan '+(1-t)+' gün sonra başlıyor.':t>TOTAL?'Plan bitti.':'Bugün '+t+'. gün.';
+  info+=' Değiştirirseniz işaretleriniz gün numarasıyla birlikte yeni tarihlere taşınır.';
+  $('startInfo').textContent=info;
+  const now=new Date();const iso=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
+  $('startToday').disabled=(st.start===iso);
+}
+function setStart(v){commit({t:'meta',start:v});build();sel=clampDay(todayIdx());updateRange();renderSeq();toast('Başlangıç: '+fmtLong.format(dateOf(1)));}
+function renderSeq(){
+  renderStart();
+  const ws=warnings();
+  $('warns').innerHTML=ws.length?'<div class="wbox">'+ws.map(x=>'<p class="'+(x[0]==='i'?'info':'')+'">'+x[1]+'</p>').join('')+'</div>':'';
+  const t=todayIdx();let h='';const L=PL.steps.length;
+  PL.steps.forEach((s,n)=>{
+    const ss=stepState(n),prevStarted=n>0&&stepState(n-1).started,nextStarted=n<L-1&&stepState(n+1).started;
+    const cur=t>=s.start&&t<=s.end;
+    let tags=s.nw.length?'<span class="tag new">Yeni</span>':'<span class="tag calm">Pekiştirme</span>';
+    if(s.f.length>1) tags+='<span class="tag mix">Karışım</span>';
+    if(s.nw.some(k=>LIB[k].fl.includes('al'))) tags+='<span class="tag allergen">Alerjen</span>';
+    if(s.nw.some(k=>LIB[k].fl.includes('doc'))) tags+='<span class="tag doc">Doktor önerisi</span>';
+    if(s.nw.length){const ml=Math.max(...s.nw.map(k=>LIB[k].lv));tags+='<span class="tag lv'+ml+'">'+ml+'. '+lc(LEVELS[ml].n)+'</span>';}
+    if(s.nw.some(k=>LIB[k].fl.includes('dr'))) tags+='<span class="tag allergen">Doktora danışın</span>';
+    const range=s.start>TOTAL?'61 günün dışında':fmtS.format(dateOf(s.start))+(s.len>1?' – '+fmtS.format(dateOf(s.end)):'')+', gün '+s.start+(s.len>1?'–'+s.end:'');
+    h+='<div class="seqcard'+(ss.past?' locked':'')+(s.start>TOTAL?' outside':'')+(cur?' now':'')+'"><div class="bar" style="background:'+barColor(s)+'"></div><div class="in">'+
+      '<div class="seqtop"><span>'+range+(cur?', şu an':'')+'</span><span class="stepper"><button data-act="minus" data-i="'+n+'" aria-label="Bir gün azalt"'+(ss.past||s.len<=ss.minLen?' disabled':'')+'>−</button><span>'+s.len+' gün</span><button data-act="plus" data-i="'+n+'" aria-label="Bir gün artır"'+(ss.past||s.len>=7?' disabled':'')+'>+</button></span></div>'+
+      '<div class="seqname"><span class="num">'+(n+1)+'.</span>'+stepName(s)+'</div><div>'+tags+'</div>'+
+      '<div class="acts">'+
+       '<button data-act="up" data-i="'+n+'" aria-label="Yukarı taşı"'+(n===0||ss.started||prevStarted?' disabled':'')+'>↑</button>'+
+       '<button data-act="down" data-i="'+n+'" aria-label="Aşağı taşı"'+(n===L-1||ss.started?' disabled':'')+'>↓</button>'+
+       '<button data-act="edit" data-i="'+n+'"'+(ss.started?' disabled':'')+'>Değiştir</button>'+
+       '<button data-act="after" data-i="'+n+'"'+(nextStarted?' disabled':'')+'>Sonrasına ekle</button>'+
+       '<button data-act="del" data-i="'+n+'" aria-label="Adımı sil"'+(ss.started||L<=1?' disabled':'')+'>Sil</button>'+
+      '</div></div></div>';
+  });
+  $('seq').innerHTML=h;
+}
+function changed(msg){commit({t:'meta',seq:st.seq});build();renderSeq();if(msg)toast(msg);}
+
+/* ---------- besin listeleri ---------- */
+let libFilter='all',shFilter='all',libLv='all',shLv='all';
+const FILTERS=[['all','Hepsi'],['sebze','Sebze'],['meyve','Meyve'],['tahil','Tahıl'],['protein','Protein']];
+function chipsHtml(cur){return FILTERS.map(f=>'<button data-f="'+f[0]+'" aria-pressed="'+(f[0]===cur)+'">'+f[1]+'</button>').join('');}
+const LVDOT={1:'var(--leaf)',2:'var(--sky)',3:'var(--amber)',4:'var(--alert)'};
+function lvChipsHtml(cur){return '<button data-l="all" aria-pressed="'+(cur==='all')+'">Tüm kademeler</button>'+[1,2,3,4].map(l=>'<button data-l="'+l+'" aria-pressed="'+(String(l)===String(cur))+'"><span class="ld" style="background:'+LVDOT[l]+'"></span>'+l+'. '+lc(LEVELS[l].n)+'</button>').join('');}
+function groups(filter,q,lv){
+  const out=[];q=lc(q||'').trim();lv=lv||'all';
+  for(const c of ['sebze','meyve','tahil','protein']){
+    if(filter!=='all'&&filter!==c) continue;
+    const ses=(c==='sebze'||c==='meyve')?['m','y','d']:[null];
+    for(const se of ses){
+      const ks=Object.keys(LIB).filter(k=>LIB[k].cat===c&&(se===null||LIB[k].s===se)&&(!q||lc(nm(k)).includes(q))&&(lv==='all'||String(LIB[k].lv)===String(lv))).sort((a,b)=>LIB[a].lv-LIB[b].lv);
+      if(ks.length) out.push({title:CATS[c]+(se?': '+lc(SEAS[se]):''),ks});
+    }
+  }
+  return out;
+}
+function introStep(k){const n=PL.steps.findIndex(s=>s.nw.includes(k));return n<0?null:n+1;}
+function flagTxt(k){return LIB[k].fl.map(f=>FLAGS[f]);}
+
+function renderLib(){
+  $('libChips').innerHTML=chipsHtml(libFilter);$('libLv').innerHTML=lvChipsHtml(libLv);
+  $('lvLegend').innerHTML=[1,2,3,4].map(l=>'<div><span class="lvp lv'+l+'">'+l+'. '+lc(LEVELS[l].n)+'</span><span>'+LEVELS[l].d+'</span></div>').join('');
+  const gs=groups(libFilter,'',libLv);let h='';
+  if(!gs.length) h='<p class="lead">Bu filtreye uyan besin yok.</p>';
+  gs.forEach(g=>{
+    h+='<div class="grp">'+g.title+'</div>';
+    g.ks.forEach(k=>{
+      const n=introStep(k);const fl=flagTxt(k);
+      const sub=(n?'Sırada: '+n+'. adım':'Sırada yok')+(fl.length?', '+fl.join(', '):'');
+      h+='<details class="food"><summary><span class="nm"><i style="background:'+LIB[k].c+'"></i><span>'+nm(k)+'<small>'+lvPill(k)+sub+'</small></span></span></summary><div class="body"><p>'+LIB[k].t+'</p>'+
+        (LIB[k].w?'<p class="warnline">'+LIB[k].w+'</p>':'')+
+        (n?'':'<button class="primary" data-addk="'+k+'">Sıranın sonuna ekle</button>')+'</div></details>';
+    });
+  });
+  $('lib').innerHTML=h;
+}
+
+/* ---------- seçim paneli ---------- */
+let SH=null; // {mode:'add'|'edit', pos, sel:[]}
+function openSheet(mode,pos){
+  SH={mode,pos,sel:mode==='edit'?st.seq[pos].f.slice():[],q:''};
+  $('shTitle').textContent=mode==='edit'?(pos+1)+'. adımı değiştir':(pos+1)+'. adım olarak ekle';
+  $('shSave').textContent=mode==='edit'?'Kaydet':'Adımı ekle';
+  $('shQ').value='';shFilter='all';shLv='all';
+  $('sheet').hidden=false;document.body.style.overflow='hidden';
+  renderSheet();
+}
+function closeSheet(){SH=null;$('sheet').hidden=true;document.body.style.overflow='';}
+function knownAt(pos){const k=[];st.seq.slice(0,pos).forEach(s=>s.f.forEach(x=>{if(!k.includes(x))k.push(x);}));return k;}
+function renderSheet(){
+  if(!SH) return;
+  $('shChips').innerHTML=chipsHtml(shFilter);$('shLv').innerHTML=lvChipsHtml(shLv);
+  const kn=knownAt(SH.pos);const gs=groups(shFilter,SH.q,shLv);let h='';
+  gs.forEach(g=>{
+    h+='<div class="grp">'+g.title+'</div>';
+    g.ks.forEach(k=>{
+      const on=SH.sel.includes(k);const n=introStep(k);
+      const status=kn.includes(k)?'bildiği besin':n&&!(SH.mode==='edit'&&n===SH.pos+1)?'yeni, şu an '+n+'. adımda planlı':'yeni';
+      const fl=flagTxt(k);
+      h+='<button class="frow" data-k="'+k+'" aria-pressed="'+on+'"><i style="background:'+LIB[k].c+'"></i><span class="fn">'+nm(k)+'<small>'+lvPill(k)+status+(fl.length?', '+fl.join(', '):'')+'</small></span><span class="tick">✓</span></button>';
+    });
+  });
+  if(!gs.length) h='<p class="lead">Bu filtreye uyan besin yok.</p>';
+  $('shList').innerHTML=h;
+  const nw=SH.sel.filter(k=>!kn.includes(k));
+  let f=SH.sel.length?'<b>'+SH.sel.map(nm).join(' + ')+'</b>':'Bir ya da birkaç besin seçin';
+  if(nw.length>1) f+='<p class="warnline">'+nw.length+' yeni besin bir arada; tepkiyi ayırt etmek zorlaşır.</p>';
+  else if(SH.sel.length&&!nw.length) f+='<p class="lead" style="margin:2px 0 0">Hepsi bildiği besin: pekiştirme adımı.</p>';
+  $('shSel').innerHTML=f;$('shSave').disabled=!SH.sel.length;
+}
+function saveSheet(){
+  if(!SH||!SH.sel.length) return;
+  const kn=knownAt(SH.pos);const hasNew=SH.sel.some(k=>!kn.includes(k));
+  if(SH.mode==='edit'){
+    const s=st.seq[SH.pos];s.f=SH.sel.slice();if(hasNew&&s.len<3)s.len=3;
+    closeSheet();changed((SH?'':'')+'Adım güncellendi');
+  } else {
+    st.seq.splice(SH.pos,0,{f:SH.sel.slice(),len:hasNew?3:1});
+    const p=SH.pos;closeSheet();changed('Eklendi: '+(p+1)+'. adım');
+  }
+}
+let tt;function toast(m){const e=$('toast');e.textContent=m;e.hidden=false;clearTimeout(tt);tt=setTimeout(()=>e.hidden=true,2200);}
+
+/* ---------- yönlendirme ---------- */
+const VIEWS=['gun','plan','sira','besinler','bilgi'];
+function route(){
+  let v=(location.hash||'').slice(1);if(!VIEWS.includes(v))v='gun';
+  VIEWS.forEach(x=>$('v-'+x).classList.toggle('on',x===v));
+  document.querySelectorAll('nav.tabs a').forEach(a=>{if(a.dataset.v===v)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+  if(v==='gun')renderDay();if(v==='plan')renderPlan();if(v==='sira')renderSeq();if(v==='besinler')renderLib();
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',route);
+
+/* ---------- olaylar ---------- */
+$('prev').onclick=()=>{sel=clampDay(sel-1);renderDay();};
+$('next').onclick=()=>{sel=clampDay(sel+1);renderDay();};
+$('goToday').onclick=()=>{sel=clampDay(todayIdx());renderDay();};
+$('strip').addEventListener('click',e=>{const b=e.target.closest('button[data-d]');if(b){sel=+b.dataset.d;renderDay();}});
+$('meals').addEventListener('click',e=>{const b=e.target.closest('.check');if(!b)return;const r=rec(sel);commit({t:'meal',d:sel,slot:b.dataset.slot,val:!r.m[b.dataset.slot]});renderDay();});
+$('rx').addEventListener('click',e=>{const b=e.target.closest('button[data-r]');if(!b)return;const r=rec(sel);commit({t:'rx',d:sel,val:(r.r===b.dataset.r)?null:b.dataset.r});renderDay();});
+$('note').addEventListener('input',e=>{commit({t:'note',d:sel,val:e.target.value},1200);});
+$('weeks').addEventListener('click',e=>{const b=e.target.closest('.drow');if(b){sel=+b.dataset.d;if(location.hash==='#gun')route();else location.hash='gun';}});
+$('startDate').addEventListener('change',e=>{if(e.target.value)setStart(e.target.value);});
+$('startToday').onclick=()=>{const n=new Date();setStart(n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0'));};
+$('libLv').addEventListener('click',e=>{const b=e.target.closest('button[data-l]');if(b){libLv=b.dataset.l;renderLib();}});
+$('shLv').addEventListener('click',e=>{const b=e.target.closest('button[data-l]');if(b){shLv=b.dataset.l;const y=0;renderSheet();$('shList').scrollTop=y;}});
+$('reset').onclick=()=>{if(confirm('Tüm işaretler, gözlemler ve notlar silinsin mi? Sıranız korunur.')){commit({t:'clear'});renderPlan();}};
+$('seq').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-act]');if(!b||b.disabled)return;
+  const n=+b.dataset.i,a=b.dataset.act,q=st.seq;
+  if(a==='plus'){q[n].len++;changed();}
+  else if(a==='minus'){q[n].len--;changed();}
+  else if(a==='up'){[q[n-1],q[n]]=[q[n],q[n-1]];changed();}
+  else if(a==='down'){[q[n+1],q[n]]=[q[n],q[n+1]];changed();}
+  else if(a==='edit') openSheet('edit',n);
+  else if(a==='after') openSheet('add',n+1);
+  else if(a==='del'){if(confirm((n+1)+'. adım ('+q[n].f.map(nm).join(' + ')+') silinsin mi?')){q.splice(n,1);changed('Adım silindi');}}
+});
+$('addEnd').onclick=()=>openSheet('add',st.seq.length);
+$('resetSeq').onclick=()=>{if(confirm('Sıra varsayılana dönsün mü? Yaptığınız değişiklikler kaybolur; işaretleriniz gün numarasına göre kalır.')){st.seq=JSON.parse(JSON.stringify(DEFAULT_SEQ));changed('Varsayılan sıra yüklendi');}};
+$('libChips').addEventListener('click',e=>{const b=e.target.closest('button[data-f]');if(b){libFilter=b.dataset.f;renderLib();}});
+$('lib').addEventListener('click',e=>{const b=e.target.closest('button[data-addk]');if(!b)return;const k=b.dataset.addk;st.seq.push({f:[k],len:3});commit({t:'meta',seq:st.seq});build();renderLib();toast(nm(k)+' sıranın sonuna eklendi ('+st.seq.length+'. adım)');});
+$('shChips').addEventListener('click',e=>{const b=e.target.closest('button[data-f]');if(b){shFilter=b.dataset.f;renderSheet();}});
+$('shList').addEventListener('click',e=>{const b=e.target.closest('.frow');if(!b||!SH)return;const k=b.dataset.k;const i=SH.sel.indexOf(k);if(i>=0)SH.sel.splice(i,1);else SH.sel.push(k);const y=$('shList').scrollTop;renderSheet();$('shList').scrollTop=y;});
+$('shQ').addEventListener('input',e=>{if(SH){SH.q=e.target.value;renderSheet();}});
+$('shClose').onclick=closeSheet;
+$('sheet').addEventListener('click',e=>{if(e.target===$('sheet'))closeSheet();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&SH)closeSheet();});
+$('shSave').onclick=saveSheet;
+function updateRange(){$('rangeLbl').textContent=fmtS.format(dateOf(1))+' – '+fmtS.format(dateOf(TOTAL));}
+
+function curView(){const v=(location.hash||'').slice(1);return VIEWS.includes(v)?v:'gun';}
+function refresh(){
+  updateRange();if(SH)return;const v=curView();
+  if(v==='gun'){if(document.activeElement!==$('note'))renderDay();}
+  else if(v==='plan')renderPlan();else if(v==='sira')renderSeq();else if(v==='besinler')renderLib();
+}
+function showGate(){$('gateErr').hidden=true;$('gateCode').value='';$('gate').hidden=false;document.body.style.overflow='hidden';setTimeout(()=>$('gateCode').focus(),50);}
+function hideGate(){$('gate').hidden=true;document.body.style.overflow='';}
+async function connect(c){
+  const err=m=>{$('gateErr').textContent=m;$('gateErr').hidden=false;};
+  const prevCode=code;code=c;$('gateGo').disabled=true;
+  try{
+    const srv=await api('GET');
+    if(!srv.rev){
+      if(!confirm('Bu kodla kayıtlı veri yok. Bu telefondaki plan ve işaretlerle yeni bir ortak alan oluşturulsun mu?\n\nEşiniz bu kodla zaten kurduysa “İptal”e basıp kodu kontrol edin.')){code=prevCode;$('gateGo').disabled=false;return;}
+      pending=[{t:'replace',state:{start:st.start,seq:st.seq,days:st.days}}];
+    } else {
+      if(Object.keys(st.days).length){try{localStorage.setItem(KEY+'-yerel-yedek',JSON.stringify(st));}catch(e){}}
+      pending=[];
+    }
+    savePending();
+    try{localStorage.setItem(CODE_KEY,c);localStorage.removeItem(LOCAL_KEY);}catch(e){}
+    localOnly=false;hideGate();
+    if(srv.rev){adopt(srv);setStatus('ok');toast('Ortak veriler yüklendi');}
+    else{await flush();toast('Ortak alan oluşturuldu');}
+  }catch(e){code=prevCode;err('Sunucuya ulaşılamadı. Sayfayı Netlify adresinizden açtığınızdan ve fonksiyonun yüklendiğinden emin olun.');}
+  $('gateGo').disabled=false;
+}
+$('gateGo').onclick=()=>{const c=$('gateCode').value.trim();if(c.length<6){$('gateErr').textContent='Kod en az 6 karakter olmalı.';$('gateErr').hidden=false;return;}connect(c);};
+$('gateCode').addEventListener('keydown',e=>{if(e.key==='Enter')$('gateGo').click();});
+$('gateLocal').onclick=()=>{localOnly=true;try{localStorage.setItem(LOCAL_KEY,'1');}catch(e){}hideGate();setStatus('');};
+$('sync').onclick=()=>{if(!code)showGate();else pull();};
+$('codeChange').onclick=showGate;
+$('goLocal').onclick=()=>{if(!code)return;if(confirm('Bu telefon ortak kayıttan ayrılsın mı? Veriler sunucuda kalır; aynı kodla tekrar bağlanabilirsiniz.')){code=null;pending=[];savePending();try{localStorage.removeItem(CODE_KEY);localStorage.setItem(LOCAL_KEY,'1');}catch(e){}setStatus('');}};
+$('backupDl').onclick=()=>{
+  const n=new Date(),iso=n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0');
+  const blob=new Blob([JSON.stringify({app:'arda-ek-gida',v:1,exported:n.toISOString(),start:st.start,seq:st.seq,days:st.days},null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='arda-ek-gida-yedek-'+iso+'.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);
+};
+$('backupUp').onclick=()=>$('backupFile').click();
+$('backupFile').addEventListener('change',async e=>{
+  const f=e.target.files&&e.target.files[0];e.target.value='';if(!f)return;
+  try{const d=JSON.parse(await f.text());
+    if(!d||d.app!=='arda-ek-gida'||!validSeq(d.seq)) throw 0;
+    if(!confirm('Mevcut plan ve işaretler yedektekilerle değiştirilsin mi?'+(code?' Bu, eşinizin telefonunda da değişir.':'')))return;
+    commit({t:'replace',state:{start:d.start,seq:d.seq,days:d.days}});build();refresh();toast('Yedek yüklendi');
+  }catch(x){toast('Bu dosya geçerli bir yedek değil');}
+});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')pull();else if(pending.length&&code){try{fetch('/api/state',{method:'POST',keepalive:true,headers:{'content-type':'application/json','x-family-code':code},body:JSON.stringify({ops:pending})});}catch(e){}}});
+setInterval(()=>{if(document.visibilityState==='visible')pull();},30000);
+
+build();sel=clampDay(todayIdx());updateRange();route();
+setStatus(code?'saving':'');
+if(code) pull(); else if(!localOnly) showGate();
+})();
+
+</script>
+</body>
+</html>
