@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
+<script>try{var t=localStorage.getItem("takviye-tema");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <title>Takviye takibi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,19 +12,19 @@
 <style>
 :root{
   --bg:#EEF2F1; --surface:#FFFFFF; --ink:#1B2A2F; --muted:#5C6B6F; --line:#D5DEDC; --zebra:#F5F8F7;
-  --teal:#1F7A6D; --teal-soft:#DCEFEB; --dawn:#D8952B; --noon:#2F8F5B; --dusk:#4A4E9C; --warn:#B4532A;
+  --teal:#1F7A6D; --teal-soft:#DCEFEB; --dawn:#D8952B; --noon:#2F8F5B; --dusk:#4A4E9C; --warn:#B4532A; --box:#7A918D; --on-teal:#FFFFFF;
   color-scheme:light; box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --bg:#111719; --surface:#1A2326; --ink:#E6EEEC; --muted:#93A3A6; --line:#2B373A; --zebra:#1F292C;
-    --teal:#4FBFAE; --teal-soft:#1D3633; --dawn:#E9AF55; --noon:#5CC08A; --dusk:#8E92E6; --warn:#E58A5F; color-scheme:dark;
+    --teal:#4FBFAE; --teal-soft:#1D3633; --dawn:#E9AF55; --noon:#5CC08A; --dusk:#8E92E6; --warn:#E58A5F; --box:#7D9498; --on-teal:#0E1B1D; color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --bg:#111719; --surface:#1A2326; --ink:#E6EEEC; --muted:#93A3A6; --line:#2B373A; --zebra:#1F292C;
-  --teal:#4FBFAE; --teal-soft:#1D3633; --dawn:#E9AF55; --noon:#5CC08A; --dusk:#8E92E6; --warn:#E58A5F; color-scheme:dark;
+  --teal:#4FBFAE; --teal-soft:#1D3633; --dawn:#E9AF55; --noon:#5CC08A; --dusk:#8E92E6; --warn:#E58A5F; --box:#7D9498; --on-teal:#0E1B1D; color-scheme:dark;
 }
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
@@ -34,10 +35,12 @@ main{max-width:560px;margin:0 auto;padding:14px 10px 28px}
 h1{font:700 22px/1.1 "Bricolage Grotesque","Public Sans",system-ui,sans-serif;margin:0;letter-spacing:-.01em}
 .sync{border:0;background:none;color:var(--muted);font-size:12px;padding:4px 0;cursor:pointer;white-space:nowrap}
 .sync.ok{color:var(--teal)} .sync.err{color:var(--warn)}
+.topr{display:flex;align-items:center;gap:8px}
+.theme{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-size:17px;line-height:1;cursor:pointer;display:grid;place-items:center;padding:0}
 
 .tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
 .tabs button{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:10px;font-weight:600;font-size:15px;cursor:pointer}
-.tabs button[aria-selected="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+.tabs button[aria-selected="true"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal)}
 .seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:3px;margin-bottom:12px}
 .seg button{border:0;background:none;border-radius:8px;padding:6px 14px;font-weight:600;font-size:13px;color:var(--muted);cursor:pointer}
 .seg button[aria-pressed="true"]{background:var(--teal-soft);color:var(--ink)}
@@ -63,9 +66,9 @@ tbody th{font-weight:400;border-left:3px solid var(--c)}
 tbody th b{display:block;font-weight:600;font-size:13px;line-height:1.25}
 tbody th small{display:block;font-size:11px;color:var(--c);line-height:1.25}
 td.todaycol{background:color-mix(in srgb,var(--teal) 8%,transparent)}
-.cb{width:28px;height:28px;border-radius:8px;border:2px solid var(--line);background:var(--surface);display:inline-grid;place-items:center;padding:0;cursor:pointer;position:relative;vertical-align:middle}
+.cb{width:28px;height:28px;border-radius:8px;border:2px solid var(--box);background:var(--surface);display:inline-grid;place-items:center;padding:0;cursor:pointer;position:relative;vertical-align:middle}
 .cb svg{width:15px;height:15px;opacity:0}
-.cb[aria-pressed="true"]{background:var(--teal);border-color:var(--teal)}
+.cb[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:var(--on-teal)}
 .cb[aria-pressed="true"] svg{opacity:1}
 .cb.opt{border-style:dashed}
 .cb:disabled{opacity:.35;cursor:default}
@@ -75,6 +78,18 @@ tr.dose td{padding-bottom:14px}
 tfoot td{font-size:11px;color:var(--muted);border-top:1px solid var(--line);font-variant-numeric:tabular-nums;padding:6px 1px}
 tfoot td.full{color:var(--teal);font-weight:600}
 .legend{color:var(--muted);font-size:12px;margin:8px 2px 0}
+/* takip tablosu */
+.tw{--nm:118px;--day:max(58px,calc((min(100vw,560px) - 22px - var(--nm)) / 7));overscroll-behavior-x:contain;scroll-behavior:smooth}
+#grid{width:calc(var(--nm) + var(--day) * 7)}
+#grid col.name{width:var(--nm)} #grid col.d{width:var(--day)}
+#grid th:first-child,#grid tbody th,#grid tfoot td:first-child{position:sticky;left:0;z-index:2;background:var(--surface);box-shadow:1px 0 0 var(--line)}
+#grid tbody tr:nth-child(even) th{background:var(--zebra)}
+#grid td{padding:8px 2px}
+#grid .cb{width:44px;height:44px;border-radius:12px}
+#grid .cb svg{width:22px;height:22px}
+#grid tr.dose td{padding-bottom:18px}
+#grid .cb .dz{bottom:-17px;font-size:11px}
+#grid thead th{font-size:12px} #grid thead th b{font-size:15px}
 
 .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:10px}
 .card .row{display:flex;align-items:center;justify-content:space-between;gap:8px}
@@ -104,7 +119,7 @@ tfoot td.full{color:var(--teal);font-weight:600}
 .gate p{color:var(--muted);margin:0 0 12px}
 .gate input{width:100%;font:inherit;font-size:16px;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
 .gate .err{color:var(--warn);font-size:13px;margin:8px 0 0}
-.primary{width:100%;margin-top:12px;border:0;background:var(--teal);color:#fff;border-radius:12px;padding:12px;font-weight:600;font-size:15px;cursor:pointer}
+.primary{width:100%;margin-top:12px;border:0;background:var(--teal);color:var(--on-teal);border-radius:12px;padding:12px;font-weight:600;font-size:15px;cursor:pointer}
 .primary:disabled{opacity:.6}
 .toast{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 14px;border-radius:10px;font-size:13px;z-index:30;max-width:90vw}
 .toast[hidden]{display:none}
@@ -113,7 +128,7 @@ tfoot td.full{color:var(--teal);font-weight:600}
 </head>
 <body>
 <main>
-  <div class="top"><h1>Takviye takibi</h1><button class="sync" id="sync" type="button"></button></div>
+  <div class="top"><h1>Takviye takibi</h1><div class="topr"><button class="sync" id="sync" type="button"></button><button class="theme" id="themeBtn" type="button" aria-label="Açık/koyu tema"></button></div></div>
   <div class="tabs" role="tablist">
     <button role="tab" data-who="aygul" id="tab-aygul">Aygül</button>
     <button role="tab" data-who="arda" id="tab-arda">Arda</button>
@@ -138,8 +153,8 @@ tfoot td.full{color:var(--teal);font-weight:600}
       <div class="mid"><b id="wkLabel"></b><button class="linkbtn" id="thisWeek" type="button">Bu haftaya dön</button></div>
       <button class="navbtn" id="next" type="button" aria-label="Sonraki hafta">›</button>
     </div>
-    <div class="wrap"><table id="grid"></table></div>
-    <p class="legend">Kesikli kutu: opsiyonel, sayıma dahil değil. İleri tarihli günler işaretlenemez.</p>
+    <div class="wrap tw" id="gridWrap"><table id="grid"></table></div>
+    <p class="legend">Diğer günleri görmek için tabloyu yana kaydırın. Kesikli kutu: opsiyonel, sayıma dahil değil. İleri tarihli günler işaretlenemez.</p>
   </section>
 
   <section id="vProgram" hidden></section>
@@ -192,7 +207,7 @@ var PEOPLE={
 };
 var DAYS=["Pzt","Sal","Çar","Per","Cum","Cmt","Paz"];
 var MONTHS=["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"];
-var CHECK='<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var CHECK='<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
 /* ---------- tarih yardımcıları ---------- */
 function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
@@ -314,7 +329,7 @@ $("gateGo").addEventListener("click",login);
 $("gateName").addEventListener("keydown",function(e){if(e.key==="Enter")login();});
 
 /* ---------- görünüm durumu ---------- */
-var who="aygul", view="takip", weekStart=mondayOf(todayDate());
+var who="aygul", view="takip", weekStart=mondayOf(todayDate()), focusToday=true;
 function readHash(){
   var h=(location.hash||"").slice(1).split("-");
   who=PEOPLE[h[0]]?h[0]:"aygul";
@@ -325,15 +340,15 @@ function writeHash(){
   if(location.hash!==h) history.replaceState(null,"",h);
 }
 document.querySelectorAll(".tabs button").forEach(function(b){
-  b.addEventListener("click",function(){who=b.dataset.who;writeHash();render();});
+  b.addEventListener("click",function(){who=b.dataset.who;focusToday=true;writeHash();render();});
 });
 document.querySelectorAll(".seg button").forEach(function(b){
-  b.addEventListener("click",function(){view=b.dataset.view;writeHash();render();});
+  b.addEventListener("click",function(){view=b.dataset.view;focusToday=true;writeHash();render();});
 });
-window.addEventListener("hashchange",function(){readHash();render();});
-$("prev").addEventListener("click",function(){weekStart=addDays(weekStart,-7);render();});
-$("next").addEventListener("click",function(){weekStart=addDays(weekStart,7);render();});
-$("thisWeek").addEventListener("click",function(){weekStart=mondayOf(todayDate());render();});
+window.addEventListener("hashchange",function(){readHash();focusToday=true;render();});
+$("prev").addEventListener("click",function(){weekStart=addDays(weekStart,-7);focusToday=true;render();});
+$("next").addEventListener("click",function(){weekStart=addDays(weekStart,7);focusToday=true;render();});
+$("thisWeek").addEventListener("click",function(){weekStart=mondayOf(todayDate());focusToday=true;render();});
 
 /* ---------- Microfer dozu ---------- */
 $("doseToggle").addEventListener("click",function(){
@@ -378,7 +393,7 @@ function renderTakip(){
     }).join(""):'<li><span>Henüz doz adımı yok. Tarih seçip doza dokunun.</span></li>';
   }
 
-  var box=st.checks[who]||{}, h='<colgroup><col class="name">'+'<col>'.repeat(7)+'</colgroup><thead><tr><th scope="col"></th>';
+  var box=st.checks[who]||{}, h='<colgroup><col class="name">'+'<col class="d">'.repeat(7)+'</colgroup><thead><tr><th scope="col"></th>';
   dates.forEach(function(d,i){
     h+='<th scope="col"'+(d===today?' class="today"':'')+'>'+DAYS[i]+'<b>'+Number(d.slice(8))+'</b></th>';
   });
@@ -403,7 +418,16 @@ function renderTakip(){
     h+='<td class="'+(full?'full':'')+(d===today?' todaycol':'')+'">'+(d>today?'':full?'✓':done+'/'+req.length)+'</td>';
   });
   h+='</tr></tfoot>';
+  var gw=$("gridWrap"), keep=gw.scrollLeft;
   $("grid").innerHTML=h;
+  if(focusToday){
+    focusToday=false;
+    var tIdx=dates.indexOf(today), th=tIdx>-1?$("grid").querySelectorAll("thead th")[tIdx+1]:null;
+    gw.style.scrollBehavior="auto";
+    if(th){var nm=$("grid").querySelector("tbody th");gw.scrollLeft=Math.max(0,th.offsetLeft-(nm?nm.offsetWidth:0)-(tIdx>0?th.offsetWidth:0));}
+    else gw.scrollLeft=0;
+    gw.style.scrollBehavior="";
+  } else gw.scrollLeft=keep;
 }
 $("grid").addEventListener("click",function(e){
   var b=e.target.closest(".cb"); if(!b||b.disabled) return;
@@ -441,8 +465,16 @@ document.addEventListener("visibilitychange",function(){
 setInterval(function(){if(document.visibilityState==="visible")pull();},30000);
 // Gece yarısı geçince "bugün" vurgusunu güncelle
 var lastDay=iso(todayDate());
-setInterval(function(){var d=iso(todayDate());if(d!==lastDay){lastDay=d;render();}},60000);
+setInterval(function(){var d=iso(todayDate());if(d!==lastDay){lastDay=d;weekStart=mondayOf(todayDate());focusToday=true;render();}},60000);
 
+function isDark(){var t=document.documentElement.getAttribute("data-theme");return t?t==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches;}
+function paintTheme(){var d=isDark();$("themeBtn").textContent=d?"☀":"☾";$("themeBtn").setAttribute("aria-label",d?"Açık temaya geç":"Koyu temaya geç");}
+$("themeBtn").addEventListener("click",function(){
+  var t=isDark()?"light":"dark";document.documentElement.setAttribute("data-theme",t);
+  try{localStorage.setItem("takviye-tema",t);}catch(e){}paintTheme();
+});
+try{window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",paintTheme);}catch(e){}
+paintTheme();
 readHash(); writeHash(); render();
 if(name){setStatus("saving");pull();} else showGate();
 })();
